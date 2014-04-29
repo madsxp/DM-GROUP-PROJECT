@@ -3,11 +3,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 
 public class DataManager extends Data {
 
 	public ArrayList<WeatherDay> weatherData;
 	private SimpleDateFormat dateParser;
+	public HashMap<Date, Day> days;
 	
 	public DataManager() {
 		
@@ -16,21 +18,21 @@ public class DataManager extends Data {
 	}
 	
 	
-	public void fitAllData(String[][] data, String[] headers) {
+	public void fitAllWundergroundData(String[][] data, String[] headers) {
 		
 		if (data.length > 0) {
 			weatherData = new ArrayList<WeatherDay>();
 			
 			for (String[] row : data) {
 				
-				weatherData.add(fitEntryToModel(row, headers));
+				weatherData.add(fitWundergroundEntry(row, headers));
 				
 			}
 		}
 	}
 	
 	// Create a WeatherDay object and fit data to it
-	public WeatherDay fitEntryToModel(String[] data, String[] headers) {
+	public WeatherDay fitWundergroundEntry(String[] data, String[] headers) {
 		
 		WeatherDay wd = new WeatherDay();
 		
@@ -87,7 +89,72 @@ public class DataManager extends Data {
 			wd.set_date(date);
 			
 		}
+		
+		// Temperature max
+		int index_temperature_max = Arrays.asList(headers).indexOf("MaxTemperatureC");
+		Double temperature_max = null;
+		try {
+			temperature_max = Double.parseDouble(data[index_temperature_max]);
+		} catch (Exception e) {
+			
+		}
+		
+		if (temperature_max != null) {
+			
+			wd.set_temperature(temperature_max);
+			
+		}
+		
 		return wd;
+		
+	}
+	
+	public void createDays() {
+		
+		days = new HashMap<Date, Day>();
+		
+		// weatherdays
+		for (WeatherDay wd : weatherData) {
+			
+			Date date = wd.get_date();
+			
+			if (days.containsKey(date)) {
+				
+				System.out.println("tood.. contains date already");
+				
+			}
+			else {
+				
+				Day day = new Day();
+				day.weatherDay = wd;
+				
+				days.put(date, day);
+				
+			}
+			
+		}
+		
+	}
+	
+	public Day getDay(int year, int month, int day) {
+		
+		return days.get(date(year, month, day));
+			
+	}
+	
+	public Date date(int year, int month, int day) {
+		
+		Date date = new Date();
+		
+		try {
+			date = dateParser.parse(year + "-" + month + "-" + day);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			date = null;
+			e.printStackTrace();
+		}
+		
+		return date;
 		
 	}
 	

@@ -5,6 +5,7 @@ public class WeatherDay extends Data {
 
 	private ArrayList<EVENT> events;
 	private Date date;
+	private double temperature_max;
 
 	// SET
 	public void set_events(ArrayList<EVENT> data) {
@@ -26,6 +27,12 @@ public class WeatherDay extends Data {
 		
 	}
 	
+	public void set_temperature(double data) {
+		
+		temperature_max = data;
+		
+	}
+	
 	// GET
 	public ArrayList<EVENT> get_events() {
 		
@@ -36,6 +43,12 @@ public class WeatherDay extends Data {
 	public Date get_date() {
 		
 		return date;
+		
+	}
+	
+	public double get_temperature_max() {
+		
+		return temperature_max;
 		
 	}
 	

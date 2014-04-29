@@ -24,7 +24,7 @@ public class CSVFileReader {
 	 * @return Two dimensional string array containing the data from the csv file
 	 * @throws IOException
 	 */
-	public static String[][] read(String csvFile, boolean useNullForBlank)
+	public static String[][] readWunderground(String csvFile, boolean useNullForBlank)
 			throws IOException {
 		List<String[]> lines = new ArrayList<String[]>();
 
