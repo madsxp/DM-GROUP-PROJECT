@@ -31,29 +31,26 @@ public class CSVFileReader {
 		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
 				csvFile)));
 		// read the header
-		String line = bufRdr.readLine();
+		String line = bufRdr.readLine().replaceAll("\\s+","");
+		
 		StringTokenizer tok = new StringTokenizer(line, ",");
+		
 		final int numberOfColumns = tok.countTokens();
 
 		// read each line of text file
 		while ((line = bufRdr.readLine()) != null) {
 			int col = 0;
 			StringTokenizer st = new StringTokenizer(line, ",");
+
+			String[] cols = line.split(",");
+	
 			String[] lineTokens = new String[numberOfColumns];
-			while (st.hasMoreTokens()) {
+			while (col < numberOfColumns) {
 				// get next token and store it in the array
-				lineTokens[col] = st.nextToken();
+				lineTokens[col] = cols[col];
 				if (!useNullForBlank && lineTokens[col] == null)
 					lineTokens[col] = "";
 				col++;
-			}
-			// If last column was null
-			if (!useNullForBlank) {
-				while (col < numberOfColumns) {
-					if (lineTokens[col] == null)
-						lineTokens[col] = "";
-					col++;
-				}
 			}
 
 			lines.add(lineTokens);
@@ -102,9 +99,9 @@ public class CSVFileReader {
 		
 		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(csvFile)));
 		// read the headers
-		String line = bufRdr.readLine();
+		String line = bufRdr.readLine().replaceAll("\\s+","");
 		
-		String[] arr = line.split(","); 
+		String[] arr = line.split(",");
 		
 		return arr;
 		
