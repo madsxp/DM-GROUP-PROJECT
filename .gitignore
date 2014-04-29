@@ -16,3 +16,6 @@ hs_err_pid*
 .project
 .settings
 bin
+nbproject
+build.xml
+manifest.mf
