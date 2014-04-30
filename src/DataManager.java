@@ -151,7 +151,7 @@ public class DataManager extends Data {
 			
 		}
 		
-		// Close
+		// Close (price)
 		int index_close = Arrays.asList(headers).indexOf("Close");
 		Double close = 0.0;
 		
