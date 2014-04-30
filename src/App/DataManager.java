@@ -1,9 +1,14 @@
+package App;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+
+import Models.Day;
+import Models.EuroinvesterDay;
+import Models.WeatherDay;
 
 public class DataManager extends Data {
 

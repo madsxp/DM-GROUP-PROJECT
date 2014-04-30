@@ -1,7 +1,9 @@
+package Models;
+
 import java.util.ArrayList;
 import java.util.Date;
 
-public class WeatherDay extends Data {
+public class WeatherDay extends App.Data {
 	
 	private Date date;
 	private ArrayList<EVENT> events;
