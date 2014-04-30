@@ -65,6 +65,7 @@ public class DataManager extends Data {
 				default:
 					System.out.println("Unknown event : " + event);
 					System.out.println(data[index_events]);
+					System.out.println(data[0]);
 					break;
 			
 			}	
