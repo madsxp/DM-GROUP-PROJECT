@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class WeatherDay extends Data {
-
-	private ArrayList<EVENT> events;
+	
 	private Date date;
+	private ArrayList<EVENT> events;
 	private double temperature_max;
 
 	// SET

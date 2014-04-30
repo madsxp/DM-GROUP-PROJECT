@@ -5,7 +5,7 @@ public class Day {
 
 	public Date date;
 	public WeatherDay weatherDay;
-	
+	public EuroinvesterDay euroEuroinvesterDay;
 	
 	
 }

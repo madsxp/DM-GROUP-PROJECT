@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class DataManager extends Data {
 
 	public ArrayList<WeatherDay> weatherData;
+	public ArrayList<EuroinvesterDay> euroinvesterData;
 	private SimpleDateFormat dateParser;
 	public HashMap<Date, Day> days;
 	
@@ -58,6 +59,9 @@ public class DataManager extends Data {
 					break;
 				case "hail":
 					events.add(EVENT.HAIL);
+					break;
+				case "tornado":
+					events.add(EVENT.TORNADO);
 					break;
 				case "":
 					// empty string
@@ -110,6 +114,63 @@ public class DataManager extends Data {
 		
 	}
 	
+	public void fitAllEuroinvesterData(String[][] data, String[] headers) {
+		
+		if (data.length > 0) {
+			euroinvesterData = new ArrayList<EuroinvesterDay>();
+			
+			for (String[] row : data) {
+				
+				euroinvesterData.add(fitEuroinvesterEntry(row, headers));
+				
+			}
+		}
+	}
+
+
+	// Create a EuroinvesterDay object and fit data to it
+	public EuroinvesterDay fitEuroinvesterEntry(String[] data, String[] headers) {
+		
+		EuroinvesterDay ed = new EuroinvesterDay();
+		
+		// Date
+		int index_date = Arrays.asList(headers).indexOf("Date");
+		Date date = new Date();
+		
+		try {
+			date = dateParser.parse(data[index_date]);
+		} catch (ParseException e) {
+			date = null;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (date != null) {
+			
+			ed.set_date(date);
+			
+		}
+		
+		// Close
+		int index_close = Arrays.asList(headers).indexOf("Close");
+		Double close = 0.0;
+		
+		try {
+			close = Double.parseDouble(data[index_close]);
+		} catch (Exception e) {
+			
+		}
+		
+		if (close != null) {
+			
+			ed.set_close(close);
+			
+		}
+		
+		return ed;
+		
+	}
+	
 	public void createDays() {
 		
 		days = new HashMap<Date, Day>();
@@ -128,6 +189,7 @@ public class DataManager extends Data {
 				
 				Day day = new Day();
 				day.weatherDay = wd;
+				day.date = date;
 				
 				days.put(date, day);
 				
@@ -135,6 +197,28 @@ public class DataManager extends Data {
 			
 		}
 		
+		// euroinvesterdays
+		for (EuroinvesterDay ed : euroinvesterData) {
+			
+			Date date = ed.get_date();
+			
+			if (days.containsKey(date)) {
+				
+				days.get(date).euroEuroinvesterDay = ed;
+				
+			}
+			else {
+				
+				Day day = new Day();
+				day.euroEuroinvesterDay = ed;
+				day.date = date;
+						
+				days.put(date, day);
+				
+			}
+			
+		}
+				
 	}
 	
 	public Day getDay(int year, int month, int day) {

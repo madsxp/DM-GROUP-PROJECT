@@ -7,7 +7,8 @@ public class Data {
 		RAIN,
 		SNOW,
 		THUNDERSTORM,
-		HAIL
+		HAIL,
+		TORNADO
 		
 	}
 	

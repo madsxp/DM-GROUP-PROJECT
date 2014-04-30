@@ -7,21 +7,31 @@ public class Main {
 		
 		// Load file
 		CSVFileReader reader = new CSVFileReader();
-		String[][] data = reader.readWunderground("data/weather.csv", false);
-		String[] headers = reader.readHeaders("data/weather.csv");
+		String[][] wundergroundData = reader.readWunderground("data/weather.csv", false);
+		String[] wundergroundHeaders = reader.readHeaders("data/weather.csv");
+		
+		String[][] euroinvesterData = reader.readEuroinvester("data/OMX C20 and OMX C20 CAP.csv", false);
+		String[] euroinvesterHeaders = reader.readHeaders("data/OMX C20 and OMX C20 CAP.csv");
 		
 		// Data manager
 		DataManager dataManager = new DataManager();
 		
-		dataManager.fitAllWundergroundData(data, headers);
+		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
+		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
 		
 		dataManager.createDays();
 
-		// year, month, date
+		// date format: (year, month, date)
+		
 		Day testDay = dataManager.getDay(1996, 8, 8);
-		System.out.println(testDay.weatherDay.get_temperature_max());
+		System.out.println(testDay.date + " - max temp: " + testDay.weatherDay.get_temperature_max() + " degrees, close price: " + testDay.euroEuroinvesterDay.get_cose());
 		
+		// classifying a "good day".. grade?
 		
+		// apriori
+		// id3
+		
+		// required: 2 methods from 2 different areas
 		
 //		for (WeatherDay wd : dataManager.weatherData) {
 //			

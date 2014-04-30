@@ -57,6 +57,57 @@ public class CSVFileReader {
 		}
 		String[][] ret = new String[lines.size()][];
 		bufRdr.close();
+		
+		System.out.println("--------------------" );
+		System.out.println("Wunderground data" );
+		System.out.println("Read " + ret.length + " lines");
+		System.out.println("--------------------\n" );
+		
+		
+		return lines.toArray(ret);
+	}
+	
+	
+	public static String[][] readEuroinvester(String csvFile, boolean useNullForBlank)
+			throws IOException {
+		List<String[]> lines = new ArrayList<String[]>();
+
+		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
+				csvFile)));
+		// read the header
+		String line = bufRdr.readLine().replaceAll("\\s+","");
+		
+		StringTokenizer tok = new StringTokenizer(line, ",");
+		
+		final int numberOfColumns = tok.countTokens();
+
+		// read each line of text file
+		while ((line = bufRdr.readLine()) != null) {
+			int col = 0;
+			StringTokenizer st = new StringTokenizer(line, ",");
+
+			String[] cols = line.split(",");
+	
+			String[] lineTokens = new String[numberOfColumns];
+			while (col < numberOfColumns) {
+				// get next token and store it in the array
+				lineTokens[col] = cols[col];
+				if (!useNullForBlank && lineTokens[col] == null)
+					lineTokens[col] = "";
+				col++;
+			}
+
+			lines.add(lineTokens);
+		}
+		String[][] ret = new String[lines.size()][];
+		bufRdr.close();
+		
+		System.out.println("--------------------" );
+		System.out.println("Euroinvester data" );
+		System.out.println("Read " + ret.length + " lines");
+		System.out.println("--------------------\n" );
+		
+		
 		return lines.toArray(ret);
 	}
 
