@@ -111,11 +111,53 @@ public class DataManager extends Data {
 		
 		if (temperature_max != null) {
 			
-			wd.set_temperature(temperature_max);
+			wd.set_temperature_max(temperature_max);
+			
+		}
+		
+		// Temperature min
+		int index_temperature_min = Arrays.asList(headers).indexOf("MinTemperatureC");
+		Double temperature_min = null;
+		try {
+			temperature_min = Double.parseDouble(data[index_temperature_min]);
+		} catch (Exception e) {
+			
+		}
+		
+		if (temperature_max != null) {
+			
+			wd.set_temperature_min(temperature_min);
+			
+		}
+		
+		// Windspeed mean
+		int index_windspeed_mean = Arrays.asList(headers).indexOf("MeanWindSpeedKm/h");
+		Double windspeed_mean = null;
+		try {
+			windspeed_mean = Double.parseDouble(data[index_windspeed_mean]);
+		} catch (Exception e) {
+			
+		}
+		
+		if (temperature_max != null) {
+			
+			wd.set_wind_speed_mean(windspeed_mean);
 			
 		}
 		
 		return wd;
+		
+	}
+	
+	public void addAdditionalWeatherData(ArrayList<WeatherDay> weatherDays) {
+		
+		for (WeatherDay wd : weatherDays) {
+			
+			// Calculate mean temperature
+			
+			// Calculate wind chill factor
+			
+		}
 		
 	}
 	

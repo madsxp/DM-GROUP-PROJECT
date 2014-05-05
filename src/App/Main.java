@@ -28,7 +28,9 @@ public class Main {
 		
 		Day testDay = dataManager.getDay(2001, 1, 1);		
 		
-		System.out.println(testDay.date + " - max temp: " + testDay.weatherDay.get_temperature_max() + " degrees, close price: " + testDay.euroEuroinvesterDay.get_cose() + ", events: " + testDay.weatherDay.get_events());
+		//System.out.println(testDay.date + " - max temp: " + testDay.weatherDay.get_temperature_max() + " degrees, close price: " + testDay.euroEuroinvesterDay.get_cose() + ", events: " + testDay.weatherDay.get_events());
+		
+		System.out.println(testDay.weatherDay.get_temperature_min());
 		
 		// classifying a "good day".. grade?
 		

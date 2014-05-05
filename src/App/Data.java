@@ -1,7 +1,9 @@
 package App;
 
 public class Data {
-
+	
+	public static int weatherDayCount = 0;
+	
 	public enum EVENT {
 		
 		FOG,
