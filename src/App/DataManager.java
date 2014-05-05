@@ -179,7 +179,22 @@ public class DataManager extends Data {
                 + 0.4867 * weatherDay.get_temperature_mean()
                 * Math.pow(weatherDay.get_wind_speed_mean(), 0.16));
 
+        // Calculate heat index
+        double mean_temperature = (weatherDay.get_temperature_mean())*9/5+32; // Celcius to Fahrenheit
         
+        if (weatherDay.get_temperature_mean() > 26 && weatherDay.get_relative_humidity() > 40) {
+             
+            double heatindex_in_Fahrenheit = (-42.379+2.04901523*mean_temperature
+                    +10.1433127*weatherDay.get_relative_humidity()
+                    -0.22475541*mean_temperature*weatherDay.get_relative_humidity()
+                    -6.83783*Math.pow(10, -3)*Math.pow(mean_temperature, 2)
+                    -5.481717*Math.pow(10, -2)*Math.pow(weatherDay.get_relative_humidity(), 2)
+                    +1.22874*Math.pow(10, -3)*Math.pow(mean_temperature, 2)*weatherDay.get_relative_humidity()
+                    +8.5282*Math.pow(10, -4)*mean_temperature*Math.pow(weatherDay.get_relative_humidity(), 2)
+                    -1.99*Math.pow(10, -6)*Math.pow(mean_temperature, 2)*Math.pow(weatherDay.get_relative_humidity(), 2));
+            
+            weatherDay.set_heat_index((heatindex_in_Fahrenheit-32)*5/9);
+        }
         
 
     }
