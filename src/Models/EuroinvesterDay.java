@@ -7,6 +7,13 @@ public class EuroinvesterDay {
 	Date date;
 	double close;
 	
+	public String getReadableData() {
+		
+		return "\n"
+				+ "   Close : " + get_cose() + "\n"; 
+		
+	}
+	
 	// SET
 	
 	public void set_date(Date data) {

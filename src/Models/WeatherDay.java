@@ -26,6 +26,13 @@ public class WeatherDay extends App.Data {
 		
 	}
 	
+	public String getReadableData() {
+		
+		return "\n"
+				+ "   Temperature - Max : " + get_temperature_max() + "\n"; 
+		
+	}
+
 	// SET
 	public void set_events(ArrayList<EVENT> data) {
 		

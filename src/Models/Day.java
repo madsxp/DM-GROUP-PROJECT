@@ -8,4 +8,16 @@ public class Day {
 	public WeatherDay weatherDay;
 	public EuroinvesterDay euroEuroinvesterDay;
 	
+	public String getReadableData() {
+		
+		return	
+				"------------------------------------------------------\n"
+		+ 		"Day\n"
+		+ 		"Date: " + date.toString() + "\n"
+		+		"Weather data: " + weatherDay.getReadableData()
+		+		"Euroinvestor data: " + euroEuroinvesterDay.getReadableData()
+		+		"-----------------------------------------------------\n";
+		
+	}
+	
 }
