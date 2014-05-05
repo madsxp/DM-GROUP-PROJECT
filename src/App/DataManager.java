@@ -176,6 +176,11 @@ public class DataManager extends Data {
 		// Calculate mean temperature
 		
 		// Calculate wind chill factor
+                weatherDay.set_temperature_mean((weatherDay.get_temperature_min()+weatherDay.get_temperature_max())/2);
+                weatherDay.set_wind_chill_factor(13.12+0.6215*weatherDay.get_temperature_mean()
+                        -13.96*Math.pow(weatherDay.get_wind_speed_mean(), 0.16)
+                        +0.4867*weatherDay.get_temperature_mean()
+                        *Math.pow(weatherDay.get_wind_speed_mean(), 0.16));
 	
 	}
 	

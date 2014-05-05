@@ -29,7 +29,10 @@ public class Main {
 		
 		// date format: (year, month, date)
 		
-		Day testDay = dataManager.getDay(2001, 1, 1);		
+		Day testDay = dataManager.getDay(2001, 1, 1);	
+                
+                System.out.println("Mean temp: " + testDay.weatherDay.get_temperature_mean());
+                System.out.println("Wind chill: " + testDay.weatherDay.get_wind_chill_factor());
 		
 
 	}
