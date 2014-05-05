@@ -196,18 +196,32 @@ public class DataManager extends Data {
         // Calculate heat index
         double mean_temperature = (weatherDay.get_temperature_mean())*9/5+32; // Celcius to Fahrenheit
         
-        if (weatherDay.get_temperature_mean() > -2 && weatherDay.get_relative_humidity() > 40) {
+        if (weatherDay.get_temperature_mean() > 26 && weatherDay.get_relative_humidity() > 40) {
              
-            double heatindex_in_Fahrenheit = (-42.379+2.04901523*mean_temperature
-                    +10.1433127*weatherDay.get_relative_humidity()
-                    -0.22475541*mean_temperature*weatherDay.get_relative_humidity()
-                    -6.83783*Math.pow(10, -3)*Math.pow(mean_temperature, 2)
-                    -5.481717*Math.pow(10, -2)*Math.pow(weatherDay.get_relative_humidity(), 2)
-                    +1.22874*Math.pow(10, -3)*Math.pow(mean_temperature, 2)*weatherDay.get_relative_humidity()
-                    +8.5282*Math.pow(10, -4)*mean_temperature*Math.pow(weatherDay.get_relative_humidity(), 2)
-                    -1.99*Math.pow(10, -6)*Math.pow(mean_temperature, 2)*Math.pow(weatherDay.get_relative_humidity(), 2));
+        	double relative_humidity = weatherDay.get_relative_humidity();
+        	double c1 = -42.379;
+        	double c2 = 2.04901523;
+        	double c3 = 10.1433127;
+        	double c4 = -0.22475541;
+        	double c5 = -6.83783*Math.pow(10, -3);
+        	double c6 = -5.481717*Math.pow(10, -2);
+        	double c7 = 1.22874*Math.pow(10, -3);
+        	double c8 = 8.5282*Math.pow(10, -4);
+        	double c9 = -1.99*Math.pow(10, -6);
+        	
+        	double heatindex_in_Fahrenheit = 
+        			c1 + 
+        			(c2*mean_temperature) + 
+        			(c3*relative_humidity) + 
+        			(c4*mean_temperature*relative_humidity) + 
+        			(c5*Math.pow(mean_temperature, 2)) + 
+        			(c6*Math.pow(relative_humidity, 2))+
+        			(c7*Math.pow(mean_temperature, 2)*relative_humidity)+
+        			(c8*mean_temperature*Math.pow(relative_humidity, 2))+
+        			(c9*Math.pow(relative_humidity, 2)*Math.pow(mean_temperature, 2));
             
             weatherDay.set_heat_index((heatindex_in_Fahrenheit-32)*5/9);
+        
         }
         
 
