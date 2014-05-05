@@ -22,30 +22,15 @@ public class Main {
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
 		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
 		
+		// Calculate stuff like mean, wind-chill-factor etc.
+		dataManager.addAdditionalWeatherData(dataManager.weatherData);
+		
 		dataManager.createDays();
-
+		
 		// date format: (year, month, date)
 		
 		Day testDay = dataManager.getDay(2001, 1, 1);		
 		
-		//System.out.println(testDay.date + " - max temp: " + testDay.weatherDay.get_temperature_max() + " degrees, close price: " + testDay.euroEuroinvesterDay.get_cose() + ", events: " + testDay.weatherDay.get_events());
-		
-		System.out.println(testDay.weatherDay.get_temperature_min());
-		
-		// classifying a "good day".. grade?
-		
-		// apriori
-		// id3
-		
-		// required: 2 methods from 2 different areas
-		
-//		for (WeatherDay wd : dataManager.weatherData) {
-//			
-//			System.out.println("date: " + wd.get_date());
-//			System.out.println("events: " + wd.get_events());
-//			System.out.println("max temp: " + wd.get_temperature_max());
-//			System.out.println("");
-//			
-//		}
+
 	}
 }

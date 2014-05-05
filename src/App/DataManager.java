@@ -149,16 +149,34 @@ public class DataManager extends Data {
 		
 	}
 	
-	public void addAdditionalWeatherData(ArrayList<WeatherDay> weatherDays) {
+	public void addAdditionalWeatherDataToDays(ArrayList<Day> days) {
+		
+		for (Day d : days) {
+			
+			addAdditionalWeatherDataToDays(d.weatherDay);
+			
+			//TODO: maybe update the weatherData array too?
+			
+			// like this? addAdditionalWeatherDataToDays(weatherData.get(d.weatherDay.id));
+			
+		}	
+	}
+	
+	public void addAdditionalWeatherDataToWeatherDays(ArrayList<WeatherDay> weatherDays) {
 		
 		for (WeatherDay wd : weatherDays) {
 			
-			// Calculate mean temperature
+			addAdditionalWeatherDataToDays(wd);
 			
-			// Calculate wind chill factor
-			
-		}
+		}	
+	}
+	
+	public void addAdditionalWeatherDataToDays(WeatherDay weatherDay) {	
 		
+		// Calculate mean temperature
+		
+		// Calculate wind chill factor
+	
 	}
 	
 	public void fitAllEuroinvesterData(String[][] data, String[] headers) {
