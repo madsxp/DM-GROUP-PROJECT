@@ -58,6 +58,12 @@ public class WeatherDay extends App.Data {
 		
 	}
 	
+	public void set_temperature_mean(double data) {
+		
+		temperature_mean = data;
+		
+	}
+	
 	public void set_wind_chill_factor(double data) {
 		
 		wind_chill_factor = data;
