@@ -33,6 +33,7 @@ public class Main {
                 
                 System.out.println("Mean temp: " + testDay.weatherDay.get_temperature_mean());
                 System.out.println("Wind chill: " + testDay.weatherDay.get_wind_chill_factor());
+                System.out.println("Heat index: " + testDay.weatherDay.get_heat_index());
 		
 
 	}

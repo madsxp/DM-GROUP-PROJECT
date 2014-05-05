@@ -136,14 +136,28 @@ public class DataManager extends Data {
         } catch (Exception e) {
         }
 
-        if (temperature_max != null) {
+        if (windspeed_mean != null) {
 
             wd.set_wind_speed_mean(windspeed_mean);
 
         }
+        
+        // Relative humidity
+        int index_relative_humidity = Arrays.asList(headers).indexOf("MeanHumidity");
+        Double relative_humidity = null;
+        try {
+            relative_humidity = Double.parseDouble(data[index_relative_humidity]);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        if (relative_humidity != null) {
+
+            wd.set_relative_humidity(relative_humidity);
+        }
 
         return wd;
-
+        
     }
 
     public void addAdditionalWeatherDataToDays(ArrayList<Day> days) {
@@ -182,7 +196,7 @@ public class DataManager extends Data {
         // Calculate heat index
         double mean_temperature = (weatherDay.get_temperature_mean())*9/5+32; // Celcius to Fahrenheit
         
-        if (weatherDay.get_temperature_mean() > 26 && weatherDay.get_relative_humidity() > 40) {
+        if (weatherDay.get_temperature_mean() > -2 && weatherDay.get_relative_humidity() > 40) {
              
             double heatindex_in_Fahrenheit = (-42.379+2.04901523*mean_temperature
                     +10.1433127*weatherDay.get_relative_humidity()
