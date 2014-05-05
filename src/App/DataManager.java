@@ -153,7 +153,7 @@ public class DataManager extends Data {
 		
 		for (Day d : days) {
 			
-			addAdditionalWeatherDataToDays(d.weatherDay);
+			addAdditionalWeatherDataToDay(d.weatherDay);
 			
 			//TODO: maybe update the weatherData array too?
 			
@@ -166,12 +166,12 @@ public class DataManager extends Data {
 		
 		for (WeatherDay wd : weatherDays) {
 			
-			addAdditionalWeatherDataToDays(wd);
+			addAdditionalWeatherDataToDay(wd);
 			
 		}	
 	}
 	
-	public void addAdditionalWeatherDataToDays(WeatherDay weatherDay) {	
+	public void addAdditionalWeatherDataToDay(WeatherDay weatherDay) {	
 		
 		// Calculate mean temperature
 		

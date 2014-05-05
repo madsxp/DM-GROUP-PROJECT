@@ -23,7 +23,7 @@ public class Main {
 		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
 		
 		// Calculate stuff like mean, wind-chill-factor etc.
-		dataManager.addAdditionalWeatherData(dataManager.weatherData);
+		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
 		
 		dataManager.createDays();
 		
