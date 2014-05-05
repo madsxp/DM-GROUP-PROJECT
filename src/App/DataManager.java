@@ -196,7 +196,7 @@ public class DataManager extends Data {
         // Calculate heat index
         double mean_temperature = (weatherDay.get_temperature_mean())*9/5+32; // Celcius to Fahrenheit
         
-        if (weatherDay.get_temperature_mean() > -2 && weatherDay.get_relative_humidity() > 40) {
+        if (weatherDay.get_temperature_mean() > 26 && weatherDay.get_relative_humidity() > 40) {
              
             double heatindex_in_Fahrenheit = (-42.379+2.04901523*mean_temperature
                     +10.1433127*weatherDay.get_relative_humidity()
