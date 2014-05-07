@@ -40,7 +40,9 @@ public class App {
 		
 		// date format: (year, month, date)
 		
-		Day testDay = dataManager.getDay(2001, 8, 7);		
+		Day testDay = dataManager.getDay(2004, 8, 7);		
+		
+		System.out.println(testDay);
 		
 		//waitForInput();
 		

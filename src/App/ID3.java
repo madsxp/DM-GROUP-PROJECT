@@ -4,6 +4,8 @@
  */
 package App;
 
+import Models.Day;
+
 
 /**
  *
@@ -11,11 +13,18 @@ package App;
  */
 public class ID3 {
     
-    public void ID3Algorithm(String[][] D, String[] attribute_list) {
+    public void ID3Algorithm(Day[] D, String[] attribute_list) {
         
     } 
     
     public void attribute_selection_method() {
         
     }
+    
+    class Node {
+    	
+    	
+    	
+    }
+    
 }

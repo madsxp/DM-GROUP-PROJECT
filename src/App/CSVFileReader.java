@@ -27,8 +27,12 @@ public class CSVFileReader {
 	 */
 	public static String[][] readWunderground(String csvFile, boolean useNullForBlank)
 			throws IOException {
+		
+		System.out.println("--------------------" );
+		System.out.println("Reading Wunderground data" );
+		
 		List<String[]> lines = new ArrayList<String[]>();
-
+		
 		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
 				csvFile)));
 		// read the header
@@ -58,9 +62,7 @@ public class CSVFileReader {
 		}
 		String[][] ret = new String[lines.size()][];
 		bufRdr.close();
-		
-		System.out.println("--------------------" );
-		System.out.println("Wunderground data" );
+	
 		System.out.println("Read " + ret.length + " lines");
 		System.out.println("--------------------\n" );
 		
@@ -71,6 +73,9 @@ public class CSVFileReader {
 	
 	public static String[][] readEuroinvester(String csvFile, boolean useNullForBlank)
 			throws IOException {
+		
+		System.out.println("--------------------" );
+		System.out.println("Reading Euroinvester data" );
 		List<String[]> lines = new ArrayList<String[]>();
 
 		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
@@ -102,9 +107,7 @@ public class CSVFileReader {
 		}
 		String[][] ret = new String[lines.size()][];
 		bufRdr.close();
-		
-		System.out.println("--------------------" );
-		System.out.println("Euroinvester data" );
+	
 		System.out.println("Read " + ret.length + " lines");
 		System.out.println("--------------------\n" );
 		
