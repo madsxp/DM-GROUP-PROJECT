@@ -351,4 +351,28 @@ public class DataManager extends Data {
         return date;
 
     }
+    
+    
+    
+    class Node {
+    	
+    	String condition;
+    	
+    	public Node(String condition) {
+    		
+    		this.condition = condition;
+    		
+    	}
+    	
+    	ArrayList<Node> children = new ArrayList<Node>();
+    	
+    	public void addChild(Node child) {
+    		
+    		children.add(child);
+    		
+    	}
+    	
+    	
+    }
+     
 }

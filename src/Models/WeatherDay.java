@@ -17,8 +17,9 @@ public class WeatherDay extends App.Data {
     private Double relative_humidity;
     // calculated data
     private Double temperature_mean;
-    private Double wind_speed_mean;
+    private Double wind_speed_mean;    
 
+    
     // CONSTRUCTOR
     public WeatherDay() {
 
@@ -240,4 +241,5 @@ public class WeatherDay extends App.Data {
         return value;
 
     }
+
 }

@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class EuroinvesterDay {
 
-	Date date;
-	double close;
+	private Date date;
+	private double close;
 	
 	public String getReadableData() {
 		

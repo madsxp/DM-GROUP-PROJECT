@@ -42,7 +42,6 @@ public class App {
 		
 		Day testDay = dataManager.getDay(2001, 8, 7);		
 		
-		System.out.println(testDay.weatherDay.get_heat_index());
 		//waitForInput();
 		
 	}
