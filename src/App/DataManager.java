@@ -28,8 +28,9 @@ public class DataManager extends Data {
 
     public void fitAllWundergroundData(String[][] data, String[] headers) {
     	
-    	System.out.println("--------------------" );
+    	System.out.println("----------------------------------------" );
 		System.out.println("Creating WeatherDays" );
+		System.out.println("----------------------------------------" );
 		
         if (data.length > 0) {
             weatherData = new ArrayList<WeatherDay>();
@@ -46,8 +47,8 @@ public class DataManager extends Data {
 
             }
             
-            System.out.println("Skipped " + skipped + " day(s)");
-    		System.out.println("--------------------\n" );
+            System.out.println("  * Skipped " + skipped + " day(s)");
+    		System.out.println("----------------------------------------\n" );
             
         }
 		
@@ -234,11 +235,12 @@ public class DataManager extends Data {
 
     public void addAdditionalWeatherDataToWeatherDays(ArrayList<WeatherDay> weatherDays) {
     	
-    	System.out.println("--------------------" );
+    	System.out.println("----------------------------------------" );
 		System.out.println("Adding additional data to WeatherDays");
-		System.out.println(" * mean temperature");
-		System.out.println(" * wind chill factor");
-		System.out.println(" * heat index");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * mean temperature");
+		System.out.println("  * wind chill factor");
+		System.out.println("  * heat index");
 		
         for (WeatherDay wd : weatherDays) {
         	
@@ -246,7 +248,7 @@ public class DataManager extends Data {
 
         }
         
-        System.out.println("--------------------\n" );
+        System.out.println("----------------------------------------\n" );
         
     }
 
@@ -301,8 +303,9 @@ public class DataManager extends Data {
         	
         	int skipped = 0;
         	
-        	System.out.println("--------------------" );
+        	System.out.println("----------------------------------------" );
     		System.out.println("Creating EuroinvestorDays" );
+    		System.out.println("----------------------------------------" );
     		
             euroinvesterData = new ArrayList<EuroinvesterDay>();
 
@@ -316,8 +319,8 @@ public class DataManager extends Data {
 
             }
             
-            System.out.println("Skipped " + skipped + " day(s)");
-    		System.out.println("--------------------\n" );
+            System.out.println("  * Skipped " + skipped + " day(s)");
+    		System.out.println("----------------------------------------\n" );
     		
         }
     }
@@ -366,8 +369,9 @@ public class DataManager extends Data {
 
     public void createDays() {
     	
-    	System.out.println("--------------------" );
+    	System.out.println("----------------------------------------" );
 		System.out.println("Combining into Days");
+		System.out.println("----------------------------------------" );
         
         days = new HashMap<Date, Day>();
 
@@ -433,9 +437,9 @@ public class DataManager extends Data {
         	days.remove(date);
         	
         }
-        System.out.println("Removed " + toBeRemoved.size() + " days not overlapping");
+        System.out.println("  * Removed " + toBeRemoved.size() + " days not overlapping");
         
-        System.out.println("--------------------\n" );
+        System.out.println("----------------------------------------\n" );
         
     }
 
