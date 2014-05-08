@@ -14,26 +14,26 @@ public class EuroinvesterDay {
 		
 	}
 	
-	// SET
+	// DATE
 	
 	public void set_date(Date data) {
 		
 		date = data;
 		
 	}
+
+	public Date get_date() {
+		
+		return date;
+		
+	}
+
+		
+	// CLOSE
 	
 	public void set_close(double data) {
 		
 		close = data;
-		
-	}
-	
-	
-	// GET
-	
-	public Date get_date() {
-		
-		return date;
 		
 	}
 	

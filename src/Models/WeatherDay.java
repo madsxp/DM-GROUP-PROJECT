@@ -263,7 +263,10 @@ public class WeatherDay extends App.Data {
             value = heat_index;
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Message: heat_index not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+            System.err.println("Message: heat_index not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED MEAN TEMPERATURE");
+            
+            value = get_temperature_mean();
+            
         }
         return value;
     }
