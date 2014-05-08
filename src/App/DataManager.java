@@ -10,6 +10,9 @@ import java.util.HashMap;
 import Models.Day;
 import Models.EuroinvesterDay;
 import Models.WeatherDay;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class DataManager extends Data {
 
@@ -17,6 +20,9 @@ public class DataManager extends Data {
     public ArrayList<EuroinvesterDay> euroinvesterData;
     private SimpleDateFormat dateParser;
     public HashMap<Date, Day> days;
+    public String[] headers;
+    
+    
 
     public DataManager() {
 
@@ -336,5 +342,17 @@ public class DataManager extends Data {
 
         return date;
 
+    }
+    
+        //Shows data
+    public void show(String[][] showData, String tableTitle) {
+        JTable table = new JTable(showData, headers);
+        JScrollPane scollPane = new JScrollPane(table);
+        JFrame frame = new JFrame(tableTitle);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(scollPane);
+        frame.pack();
+        frame.setVisible(true);
+        
     }
 }
