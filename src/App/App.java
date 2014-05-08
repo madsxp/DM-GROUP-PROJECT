@@ -42,7 +42,6 @@ public class App {
 		
 		Day testDay = dataManager.getDay(2004, 8, 7);		
 
-		
 		//waitForInput();
 		
 	}
