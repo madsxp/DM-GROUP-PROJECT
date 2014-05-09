@@ -33,7 +33,6 @@ public class App {
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
 		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
                 
-                dataManager.show(dataManager.weatherData);
 		
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
@@ -42,9 +41,8 @@ public class App {
 		
 		// date format: (year, month, date)
 		
-		Day testDay = dataManager.getDay(2001, 1, 1);		
-		
-		System.out.println(testDay.weatherDay.get_heat_index());
+		Day testDay = dataManager.getDay(2004, 8, 7);		
+
 		//waitForInput();
 		
 	}

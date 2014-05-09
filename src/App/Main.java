@@ -1,8 +1,5 @@
 package App;
 import java.io.IOException;
-import java.util.Date;
-
-import Models.Day;
 
 public class Main {
 
