@@ -12,6 +12,9 @@ import java.util.Map;
 import Models.Day;
 import Models.EuroinvesterDay;
 import Models.WeatherDay;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class DataManager extends Data {
 
@@ -19,6 +22,9 @@ public class DataManager extends Data {
     public ArrayList<EuroinvesterDay> euroinvesterData;
     private SimpleDateFormat dateParser;
     public HashMap<Date, Day> days;
+    public String[] headers;
+    
+    
 
     public DataManager() {
 
@@ -462,6 +468,6 @@ public class DataManager extends Data {
         }
 
         return date;
-
-    }     
+         
+        }
 }

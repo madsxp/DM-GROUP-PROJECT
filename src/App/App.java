@@ -32,6 +32,7 @@ public class App {
 		
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
 		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
+                
 		
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
