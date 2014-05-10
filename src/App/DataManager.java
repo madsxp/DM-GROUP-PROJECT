@@ -470,4 +470,21 @@ public class DataManager extends Data {
         return date;
          
         }
+    
+//            //Shows data
+//    public void showWeatherDayTable(ArrayList<WeatherDay> showData, String tableTitle) {
+//        JTable table = new JTable(showData, headers);
+//        JScrollPane scollPane = new JScrollPane(table);
+//        JFrame frame = new JFrame(tableTitle);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.add(scollPane);
+//        frame.pack();
+//        frame.setVisible(true);
+//        
+//    }
+//    
+//    public String[][] convertListToString(ArrayList<WeatherDay> data) {
+//        for
+//        return
+//    }
 }

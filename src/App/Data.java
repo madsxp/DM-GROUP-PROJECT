@@ -17,6 +17,23 @@ public class Data {
 		TORNADO
 		
 	}
+        
+        public enum APRIORI_TEMPERATURE {
+            
+                MAXMinusInfinityToMinus15,
+                MAXMinus15toMinus10,
+                MAXMinus10toMinus5,
+                MAXMinus5toZero,
+                MAXZeroTo5,
+                MAX5To10,
+                MAX10To15,
+                MAX15To20,
+                MAX20To25,
+                MAX25To30,
+                MAX30To35,
+                MAX35ToInfinity
+              
+        }
 	
 	
 	
