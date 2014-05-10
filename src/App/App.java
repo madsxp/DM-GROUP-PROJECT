@@ -36,6 +36,7 @@ public class App {
                 
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
+		dataManager.addAdditionalDataToEuroinvestorDay(dataManager.euroinvesterData);
 		
 		dataManager.createDays();
                 
