@@ -41,7 +41,11 @@ public class App {
 		
 		// date format: (year, month, date)
 		
-		Day testDay = dataManager.getDay(2004, 8, 7);		
+		dataManager.calculateStats();
+		
+		Day testDay = dataManager.getDay(2005, 11, 24);
+		
+		System.out.println(testDay.get_weatherDay().get_cloud_cover());
 
 		//waitForInput();
 		

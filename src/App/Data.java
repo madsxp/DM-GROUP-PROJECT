@@ -18,8 +18,6 @@ public class Data {
 		
 	}
 	
-	
-	
 	public enum WEATHERDAY_ATTRIBUTES {
 	
 			date,
@@ -30,9 +28,16 @@ public class Data {
 		    wind_speed_mean,
 		    humidity_min,
 		    humidity_max,
+		    dew_point,
 		    heat_index,
 		    temperature_mean, 
 		    wind_chill_factor,
+		    pressure,
+		    visibility,
+		    gust_speed,
+		    precipitation,
+		    wind_direction,
+		    cloud_cover
 	
 	}
 	
@@ -64,13 +69,31 @@ public class Data {
 			case humidity_max:
 				return "MaxHumidity";
 				
+			case dew_point:
+				return "DewPointC";
+				
+			case pressure:
+				return "MeanSeaLevelPressurehPa";
+				
+			case visibility:
+				return "MeanVisibilityKm";
+				
+			case gust_speed:
+				return "MaxGustSpeedKm/h";
+				
+			case precipitation:
+				return "Precipitationmm";
+				
+			case wind_direction:
+				return "WindDirDegrees";
+				
+			case cloud_cover:
+				return "CloudCover";
+				
 			default:
 				// TODO: handle this
 				return "";
 		
 		}
-		
 	}
-	
-	
 }

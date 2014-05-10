@@ -23,13 +23,14 @@ public class DataManager extends Data {
     private SimpleDateFormat dateParser;
     public HashMap<Date, Day> days;
     public String[] headers;
-    
+    public Stats stats;
     
 
     public DataManager() {
 
         dateParser = new SimpleDateFormat("yyyy-MM-dd");
-
+        stats = new Stats();
+        
     }
 
     public void fitAllWundergroundData(String[][] data, String[] headers) {
@@ -217,6 +218,104 @@ public class DataManager extends Data {
             wd.set_humidity_min(humidity_min);
         }
         
+        // DEW POINT
+        int index_dew_point = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.dew_point));
+        Double dew_point = null;
+        try {
+        	dew_point = Double.parseDouble(data[index_dew_point]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (dew_point != null) {
+
+            wd.set_dew_point(dew_point);
+        }
+        
+        // PRESSURE
+        int index_pressure = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.pressure));
+        Double pressure = null;
+        try {
+        	pressure = Double.parseDouble(data[index_pressure]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (pressure != null) {
+
+            wd.set_pressure(pressure);
+        }
+        
+        // VISIBILITY
+        int index_visibility = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.visibility));
+        Double visibility = null;
+        try {
+        	visibility = Double.parseDouble(data[index_visibility]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (visibility != null) {
+
+            wd.set_visibility(visibility);
+        }
+        
+        // GUST SPEED
+        int index_gust_speed = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.gust_speed));
+        Double gust_speed = null;
+        try {
+        	gust_speed = Double.parseDouble(data[index_gust_speed]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (gust_speed != null) {
+
+            wd.set_gust_speed(gust_speed);
+        }
+        
+        // PRECIPITATION
+        int index_precipitation = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.precipitation));
+        Double precipitation = null;
+        try {
+        	precipitation = Double.parseDouble(data[index_precipitation]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (precipitation != null) {
+
+            wd.set_precipitation(precipitation);
+        }
+        
+        // WIND DIRECTION
+        int index_wind_direction = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.wind_direction));
+        Double wind_direction = null;
+        try {
+        	wind_direction = Double.parseDouble(data[index_wind_direction]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (wind_direction != null) {
+
+            wd.set_wind_direction(wind_direction);
+        }
+        
+        // CLOUD COVER
+        int index_cloud_cover = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.cloud_cover));
+        Double cloud_cover = null;
+        try {
+        	cloud_cover = Double.parseDouble(data[index_cloud_cover]);
+        } catch (Exception e) {
+        	errors++;
+        }
+
+        if (cloud_cover != null) {
+
+            wd.set_cloud_cover(cloud_cover);
+        }
+        
         // TODO: 3?
         if (errors > 3) {
         	return null;
@@ -299,8 +398,60 @@ public class DataManager extends Data {
             weatherDay.set_heat_index((heatindex_in_Fahrenheit-32)*5/9);
         
         }
+    }
+    
+    public class Stats {
+    	
+    	public Double maxTempMax;
+    	public Double maxTempMean;
+    	public Double minTempMin;
+    	
+    }
+    
+    // Min, max, mean and so on
+    public void calculateStats() {
+    	
+    	Iterator it = days.entrySet().iterator();
         
-
+    	// stats
+    	stats.maxTempMax = Double.NEGATIVE_INFINITY;
+    	stats.maxTempMean = Double.NEGATIVE_INFINITY;
+    	stats.minTempMin = Double.POSITIVE_INFINITY;
+    	
+    	Day day2 = new Day();
+    	
+        while (it.hasNext()) {
+            
+        	Map.Entry pairs = (Map.Entry)it.next(); 
+            
+            Day day = (Day) pairs.getValue();
+            
+            // maxTempMax
+            if (day.get_weatherDay().get_temperature_max() > stats.maxTempMax) {
+            	
+            	stats.maxTempMax = day.get_weatherDay().get_temperature_max();
+            	
+            }
+            
+            // maxTempMean
+            if (day.get_weatherDay().get_temperature_mean() > stats.maxTempMean) {
+            	
+            	stats.maxTempMean = day.get_weatherDay().get_temperature_mean();
+            	
+            }
+            
+            // minTempMin
+            if (day.get_weatherDay().get_temperature_min() < stats.minTempMin) {
+            	
+            	stats.minTempMin = day.get_weatherDay().get_temperature_min();
+            	
+            }
+            
+            
+            
+        }
+        
+        
     }
 
     public void fitAllEuroinvesterData(String[][] data, String[] headers) {

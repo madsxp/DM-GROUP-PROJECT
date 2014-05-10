@@ -1,4 +1,4 @@
-CET,Max TemperatureC,Mean TemperatureC,Min TemperatureC,Dew PointC,MeanDew PointC,Min DewpointC,Max Humidity, Mean Humidity, Min Humidity, Max Sea Level PressurehPa, Mean Sea Level PressurehPa, Min Sea Level PressurehPa, Max VisibilityKm, Mean VisibilityKm, Min VisibilitykM, Max Wind SpeedKm/h, Mean Wind SpeedKm/h, Max Gust SpeedKm/h,Precipitationmm, CloudCover, Events,WindDirDegrees
+CET,Max TemperatureC,Mean TemperatureC,Min TemperatureC,Dew PointC,MeanDew PointC,Min DewpointC,Max Humidity, Mean Humidity, Min Humidity, Max Sea Level  , Mean Sea Level PressurehPa, Min Sea Level PressurehPa, Max VisibilityKm, Mean VisibilityKm, Min VisibilitykM, Max Wind SpeedKm/h, Mean Wind SpeedKm/h, Max Gust SpeedKm/h,Precipitationmm, CloudCover, Events,WindDirDegrees
 1996-7-1,16,12,9,12,9,8,94,79,63,1000,998,997,10,10,6,24,19,,0.00,5,Rain,248
 1996-7-2,15,12,9,11,9,6,94,79,55,1005,1000,998,10,10,6,27,19,,0.00,2,Rain,242
 1996-7-3,17,13,9,11,9,6,93,75,55,1008,1007,1005,10,10,10,26,19,,0.00,4,,234

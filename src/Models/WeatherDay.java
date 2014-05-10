@@ -14,6 +14,13 @@ public class WeatherDay extends App.Data {
     private Double wind_speed_mean;
     private Double humidity_min;
     private Double humidity_max;
+    private Double dew_point;
+    private Double pressure;
+    private Double visibility;
+    private Double gust_speed;
+    private Double precipitation;
+    private Double wind_direction;
+    private Double cloud_cover;
     
     // post calculated data
     
@@ -210,24 +217,30 @@ public class WeatherDay extends App.Data {
         return value;
     }
     
-    
-    
+    // TEMPERATURE MEAN
     public void set_temperature_mean(double data) {
 
         temperature_mean = data;
 
     }
     
+    public double get_temperature_mean() {
+
+        double value = 0.0;
+        try {
+            value = temperature_mean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: temperature_mean not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
     
+    // WIND CHILL FACTOR
     public void set_wind_chill_factor(double data) {
 
         wind_chill_factor = data;
 
-    }
-
-    public void set_heat_index(double data) {
-
-        heat_index = data;
     }
 
     public double get_wind_chill_factor() {
@@ -241,19 +254,12 @@ public class WeatherDay extends App.Data {
         }
         return value;
     }
-
     
+    // HEAT INDEX
+    
+    public void set_heat_index(double data) {
 
-    public double get_temperature_mean() {
-
-        double value = 0.0;
-        try {
-            value = temperature_mean;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Message: temperature_mean not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
-        }
-        return value;
+        heat_index = data;
     }
 
     public double get_heat_index() {
@@ -270,5 +276,139 @@ public class WeatherDay extends App.Data {
         }
         return value;
     }
+    
+    // DEW POINT    
+    public double get_dew_point() {
 
+        double value = 0.0;
+        try {
+            value = dew_point;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: dew_point not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_dew_point(double data) {
+
+        dew_point = data;
+
+    }
+    
+    // PRESSURE  
+    public double get_pressure() {
+
+        double value = 0.0;
+        try {
+            value = pressure;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: pressure not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_pressure(double data) {
+
+        pressure = data;
+
+    }
+
+    // VISIBILITY
+    public double get_visibility() {
+
+        double value = 0.0;
+        try {
+            value = visibility;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: visibility not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_visibility(double data) {
+
+        visibility = data;
+
+    }
+    
+    // GUST SPEED
+    public double get_gust_speed() {
+
+        double value = 0.0;
+        try {
+            value = gust_speed;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: gust speed not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_gust_speed(double data) {
+
+        gust_speed = data;
+
+    }
+    
+    // PRECIPITATION
+    public double get_precipitation() {
+
+        double value = 0.0;
+        try {
+            value = precipitation;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: precipitation not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_precipitation(double data) {
+
+    	precipitation = data;
+
+    }
+    
+    // TODO: validate 0-360 degrees
+    // WIND DIRECTION
+    public double get_wind_direction() {
+
+        double value = 0.0;
+        try {
+            value = wind_direction;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: wind direction not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_wind_direction(double data) {
+
+    	wind_direction = data;
+
+    }
+    
+    // CLOUD COVER
+    public double get_cloud_cover() {
+
+        double value = 0.0;
+        try {
+            value = cloud_cover;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Message: cloud cover not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+        }
+        return value;
+    }
+    
+    public void set_cloud_cover(double data) {
+
+    	cloud_cover = data;
+
+    }
+    
 }
