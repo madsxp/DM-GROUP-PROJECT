@@ -545,6 +545,129 @@ public class DataManager extends Data {
 
     }
 
+    public void addDiscreteValuesToWeatherDays(ArrayList<WeatherDay> weatherDays) {
+    	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Adding discrete values for WeatherDay");
+		System.out.println("(for apriori)");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * Price development");
+		System.out.println("----------------------------------------\n" );
+		
+    	for (WeatherDay wd : weatherDays) {
+    		
+    		addDiscreteValuesToWeatherDay(wd);
+    		
+    	}
+    }
+    
+    public void addDiscreteValuesToWeatherDay(WeatherDay weatherDay) {
+    	
+    	// Temperature (max)
+    	
+    	double maxTemp = weatherDay.get_temperature_max();
+    	
+    	if (maxTemp < -15) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAXMinusInfinityToMinus15);
+    		
+    	}
+    	else if (maxTemp < -10) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAXMinus15toMinus10);
+    		
+    	}
+    	else if (maxTemp < -5) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAXMinus10toMinus5);
+    		
+    	}
+		else if (maxTemp < 0) {
+	    		
+    		weatherDay.discreteValues.add(PROPERTY.MAXMinus5toZero);
+    		
+    	}
+		else if (maxTemp < 5) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAXZeroTo5);
+			
+		}
+		else if (maxTemp < 10) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX5To10);
+			
+		}
+		else if (maxTemp < 15) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX10To15);
+			
+		}
+		else if (maxTemp < 20) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX15To20);
+			
+		}
+		else if (maxTemp < 25) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX20To25);
+			
+		}
+		else if (maxTemp < 30) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX25To30);
+			
+		}
+		else if (maxTemp < 35) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX30To35);
+			
+		}
+		else if (maxTemp > 35) {
+			
+			weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+			
+		}       
+    	
+    }
+    
+    public void addDiscreteValuesToEuroinvestorDays(ArrayList<EuroinvesterDay> euroinvestorDays) {
+    	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Adding discrete values for EuroinvestorDays");
+		System.out.println("(for apriori)");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * Price development");
+		System.out.println("----------------------------------------\n" );
+		
+    	for (EuroinvesterDay ed : euroinvestorDays) {
+    		
+    		addDiscreteValuesToEuroinvestorDay(ed);
+    		
+    	}
+    }
+    
+    public void addDiscreteValuesToEuroinvestorDay(EuroinvesterDay euroinvestorDay) {
+    			
+    	// Price development
+       	if (euroinvestorDay.get_development() > 0) {
+    		
+    		euroinvestorDay.discreteValues.add(PROPERTY.price_increase);
+    		
+    	}
+    	else if (euroinvestorDay.get_development() < 0) {
+    		
+    		euroinvestorDay.discreteValues.add(PROPERTY.price_decrease);
+    		
+    	}
+    	else {
+    		
+    		euroinvestorDay.discreteValues.add(PROPERTY.price_no_change);
+    		
+    	}
+    	
+    	
+    }
+
     public void createDays() {
     	
     	System.out.println("----------------------------------------" );

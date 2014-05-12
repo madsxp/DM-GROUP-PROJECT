@@ -1,12 +1,26 @@
 package Models;
+import java.util.ArrayList;
 import java.util.Date;
 
+import App.Data;
+import App.Data.PROPERTY;
 
 public class EuroinvesterDay {
 
 	private Date date;
 	private Double close;
 	private Double development;
+	
+	// discrete values (for apriori)
+	public ArrayList<PROPERTY> discreteValues;
+	
+	// CONSTRUCTOR
+	
+	public EuroinvesterDay() {
+		
+		discreteValues = new ArrayList<PROPERTY>();
+		
+	}
 	
 	public String getReadableData() {
 		
@@ -57,6 +71,7 @@ public class EuroinvesterDay {
 		return development;
 		
 	}
+
 }
 
 

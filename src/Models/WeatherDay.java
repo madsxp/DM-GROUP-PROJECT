@@ -3,6 +3,8 @@ package Models;
 import java.util.ArrayList;
 import java.util.Date;
 
+import App.Data.PROPERTY;
+
 public class WeatherDay extends App.Data {
 
     public int id;
@@ -28,6 +30,8 @@ public class WeatherDay extends App.Data {
     private Double temperature_mean; 
     private Double wind_chill_factor;
 
+    // discrete values (for apriori)
+ 	public ArrayList<PROPERTY> discreteValues;
     
     // CONSTRUCTOR
     
@@ -35,7 +39,9 @@ public class WeatherDay extends App.Data {
 
         id = weatherDayCount;
         weatherDayCount++;
-
+        
+        discreteValues = new ArrayList<PROPERTY>();
+        
     }
     
     // DATA TO STRING

@@ -38,6 +38,10 @@ public class App {
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
 		dataManager.addAdditionalDataToEuroinvestorDay(dataManager.euroinvesterData);
 		
+		// Add discrete values (for apriori)
+		dataManager.addDiscreteValuesToEuroinvestorDays(dataManager.euroinvesterData);
+		dataManager.addDiscreteValuesToWeatherDays(dataManager.weatherData);
+		
 		dataManager.createDays();
                 
                 //dataManager.show(, null);
@@ -46,11 +50,24 @@ public class App {
 		
 		dataManager.calculateStats();
 		
-		Day testDay = dataManager.getDay(2005, 11, 24);
-		
-		System.out.println(testDay.get_weatherDay().get_cloud_cover());
+//		Day testDay = dataManager.getDay(2005, 11, 24);
+//		
+//		System.out.println(testDay.get_euroinvesterDay().get_development());
 
+		
+		// Apriori
+		
+		Apriori apriori = new Apriori(dataManager.days);
+		
+		//apriori.printDataSetsLines(0, 100);
+		apriori.run(100);
+		
+		
+		
 		//waitForInput();
+		
+		
+		
 		
 	}
 	
