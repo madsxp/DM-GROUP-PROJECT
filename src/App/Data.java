@@ -106,6 +106,19 @@ public class Data {
         KMPERHOURLow
         
     }
+    
+     public enum APRIORY_WIND_DIRECTION {
+
+        NORTHERN,
+        NORTHEASTERN,
+        EASTERN,
+        SOUTHEASTERN,
+        SOUTHERN,
+        SOUTHWESTERN,
+        WESTERN,
+        NORTHWESTERN,
+        
+    }
 
     public enum APRIORY_MAX_HUMIDITY {
 
