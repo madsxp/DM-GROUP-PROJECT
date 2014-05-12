@@ -5,7 +5,8 @@ import java.util.Date;
 public class EuroinvesterDay {
 
 	private Date date;
-	private double close;
+	private Double close;
+	private Double development;
 	
 	public String getReadableData() {
 		
@@ -40,6 +41,20 @@ public class EuroinvesterDay {
 	public double get_cose() {
 		
 		return close;
+		
+	}
+	
+	// DEVELOPMENT
+
+	public void set_development(double data) {
+		
+		development = data;
+		
+	}
+	
+	public double get_development() {
+		
+		return development;
 		
 	}
 }

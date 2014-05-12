@@ -325,19 +325,33 @@ public class DataManager extends Data {
         }
     }
 
-    public void addAdditionalWeatherDataToDays(ArrayList<Day> days) {
-
-        for (Day d : days) {
-
-            addAdditionalWeatherDataToDay(d.get_weatherDay());
-
-            //TODO: maybe update the weatherData array too?
-
-            // like this? addAdditionalWeatherDataToDays(weatherData.get(d.weatherDay.id));
+    public void addAdditionalDataToEuroinvestorDay(ArrayList<EuroinvesterDay> euroinvestorDays) {
+    	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Adding additional data to EuroinvestorDays");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * Price development");
+		
+		EuroinvesterDay previousDay = new EuroinvesterDay();
+		previousDay.set_close(0);
+		
+        for (EuroinvesterDay ed : euroinvestorDays) {
+        	
+        	addAdditionalEuroinvestorDataToDay(ed, previousDay);
+        	previousDay = ed;
 
         }
+        
+        System.out.println("----------------------------------------\n" );
+        
     }
-
+    
+    public void addAdditionalEuroinvestorDataToDay(EuroinvesterDay euroinvestorDay, EuroinvesterDay previousDay) {
+    	
+    	euroinvestorDay.set_development(euroinvestorDay.get_cose() - previousDay.get_cose());
+    	
+    }
+ 
     public void addAdditionalWeatherDataToWeatherDays(ArrayList<WeatherDay> weatherDays) {
     	
     	System.out.println("----------------------------------------" );
@@ -411,6 +425,13 @@ public class DataManager extends Data {
     // Min, max, mean and so on
     public void calculateStats() {
     	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Calculating stats");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * Max temperature");
+		System.out.println("  * Min temperature");
+		System.out.println("----------------------------------------\n" );
+		
     	Iterator it = days.entrySet().iterator();
         
     	// stats
