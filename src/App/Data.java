@@ -98,6 +98,14 @@ public class Data {
         MEANStorm,
         MEANHurricane
     }
+    
+    public enum APRIORY_GUST_SPEED {
+
+        KMPERHOURHigh,
+        KMPERHOURMid,
+        KMPERHOURLow
+        
+    }
 
     public enum APRIORY_MAX_HUMIDITY {
 
@@ -127,6 +135,21 @@ public class Data {
         HPAMid,
         HPALow
         
+    }
+    
+    public enum APRIORY_VISIBILITY {
+
+        KMHigh,
+        KMMid,
+        KMLow
+        
+    }
+    
+     public enum APRIORY_CLOUD_COVER {
+
+        High,
+        Mid,
+        Low
     }
     
     public enum WEATHERDAY_ATTRIBUTES {
