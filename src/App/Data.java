@@ -64,8 +64,9 @@ public class Data {
         MEAN30To35,
         MEAN35ToInfinity
     }
-    
+
     public enum APRIORY_WIND_SPEED_MAX {
+
         MAXCalm,
         MAXLightAir,
         MAXLightBreeze,
@@ -79,11 +80,10 @@ public class Data {
         MAXWholeGale,
         MAXStorm,
         MAXHurricane
-        
     }
-    
+
     public enum APRIORY_WIND_SPEED_MEAN {
-        
+
         MEANCalm,
         MEANLightAir,
         MEANLightBreeze,
@@ -97,25 +97,30 @@ public class Data {
         MEANWholeGale,
         MEANStorm,
         MEANHurricane
-       
     }
-    
+
     public enum APRIORY_MAX_HUMIDITY {
-        
+
         MAXHigh,
         MAXMid,
         MAXLow
-        
     }
-    
+
     public enum APRIORY_MIN_HUMIDITY {
-        
+
         MINHigh,
         MINMid,
         MINLow
+    }
+
+    public enum APRIORY_DEW_POINT {
+        
+        CELSIUShigh,
+        CELSIUSMid,
+        CELSIUSLow
         
     }
-        
+
     public enum WEATHERDAY_ATTRIBUTES {
 
         date,
