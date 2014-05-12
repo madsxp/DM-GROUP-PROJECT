@@ -99,6 +99,22 @@ public class Data {
         MEANHurricane
        
     }
+    
+    public enum APRIORY_MAX_HUMIDITY {
+        
+        MAXHigh,
+        MAXMid,
+        MAXLow
+        
+    }
+    
+    public enum APRIORY_MIN_HUMIDITY {
+        
+        MINHigh,
+        MINMid,
+        MINLow
+        
+    }
         
     public enum WEATHERDAY_ATTRIBUTES {
 
