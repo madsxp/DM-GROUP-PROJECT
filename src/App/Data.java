@@ -115,12 +115,20 @@ public class Data {
 
     public enum APRIORY_DEW_POINT {
         
-        CELSIUShigh,
+        CELSIUSHigh,
         CELSIUSMid,
         CELSIUSLow
         
     }
+    
+    public enum APRIORY_PRESSURE {
 
+        HPAHigh,
+        HPAMid,
+        HPALow
+        
+    }
+    
     public enum WEATHERDAY_ATTRIBUTES {
 
         date,
