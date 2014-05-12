@@ -626,7 +626,136 @@ public class DataManager extends Data {
 			
 			weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
 			
-		}       
+		}   
+    	
+    	// Wind speed (max)
+    	double windSpeed = weatherDay.get_wind_speed_max();
+    	
+    	if (windSpeed > 117) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 103) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 89) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 75) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 62) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 50) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 39) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 29) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 20) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 12) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 6) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windSpeed > 1) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    	}
+    	
+    	
+    	// Wind direction
+    	double windDirection = weatherDay.get_wind_direction();
+    	
+    	if (windDirection > 337.5) {
+    		
+    		// North
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 292.5) {
+    		
+    		// North-East
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 247.5) {
+    		
+    		// East
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 202.5) {
+    		
+    		// South-Easy
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 157.5) {
+    		
+    		// South
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 112.5) {
+    		
+    		// South-West
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 67.5) {
+    		
+    		// West
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else if (windDirection > 22.5) {
+    		
+    		// North-West
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	else {
+    		
+    		// North
+    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
+    		
+    	}
+    	
+    	
     	
     }
     
