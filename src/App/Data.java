@@ -94,8 +94,8 @@ public class Data {
         MEANModerateGale,
         MEANFreshGale,
         MEANStrongGale,
-        MEANWholeGale,
         MEANStorm,
+        MEANViolentStorm,
         MEANHurricane
     }
     
@@ -164,6 +164,10 @@ public class Data {
         Mid,
         Low
     }
+     
+     public enum APRIORY_PRECIPITATION {
+         
+     }
     
     public enum WEATHERDAY_ATTRIBUTES {
 
