@@ -64,7 +64,42 @@ public class Data {
         MEAN30To35,
         MEAN35ToInfinity
     }
-
+    
+    public enum APRIORY_WIND_SPEED_MAX {
+        MAXCalm,
+        MAXLightAir,
+        MAXLightBreeze,
+        MAXGentleBreese,
+        MAXModerate,
+        MAXFreshBreeze,
+        MAXStrongBreeeze,
+        MAXModerateGale,
+        MAXFreshGale,
+        MAXStrongGale,
+        MAXWholeGale,
+        MAXStorm,
+        MAXHurricane
+        
+    }
+    
+    public enum APRIORY_WIND_SPEED_MEAN {
+        
+        MEANCalm,
+        MEANLightAir,
+        MEANLightBreeze,
+        MEANGentleBreese,
+        MEANModerate,
+        MEANFreshBreeze,
+        MEANStrongBreeeze,
+        MEANModerateGale,
+        MEANFreshGale,
+        MEANStrongGale,
+        MEANWholeGale,
+        MEANStorm,
+        MEANHurricane
+       
+    }
+        
     public enum WEATHERDAY_ATTRIBUTES {
 
         date,
