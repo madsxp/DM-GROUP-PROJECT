@@ -419,6 +419,7 @@ public class DataManager extends Data {
     	public Double maxTempMax;
     	public Double maxTempMean;
     	public Double minTempMin;
+    	public Double meanHumidity;
     	
     }
     
@@ -439,7 +440,7 @@ public class DataManager extends Data {
     	stats.maxTempMean = Double.NEGATIVE_INFINITY;
     	stats.minTempMin = Double.POSITIVE_INFINITY;
     	
-    	Day day2 = new Day();
+    	stats.meanHumidity = 0.;
     	
         while (it.hasNext()) {
             
@@ -468,10 +469,12 @@ public class DataManager extends Data {
             	
             }
             
+            stats.meanHumidity += day.get_weatherDay().get_humidity_max();
             
             
         }
         
+        stats.meanHumidity = stats.meanHumidity / days.size();
         
     }
 
@@ -545,238 +548,35 @@ public class DataManager extends Data {
 
     }
 
-    public void addDiscreteValuesToWeatherDays(ArrayList<WeatherDay> weatherDays) {
+    public void addDiscreteValuesToDays() {
     	
     	System.out.println("----------------------------------------" );
-		System.out.println("Adding discrete values for WeatherDay");
+		System.out.println("Adding discrete values for days");
 		System.out.println("(for apriori)");
 		System.out.println("----------------------------------------" );
 		System.out.println("  * Price development");
 		System.out.println("----------------------------------------\n" );
 		
-    	for (WeatherDay wd : weatherDays) {
-    		
-    		addDiscreteValuesToWeatherDay(wd);
-    		
-    	}
+		Iterator it = days.entrySet().iterator();
+        
+        // Remove days that has no weather or euroinvestor data
+        ArrayList<Date> toBeRemoved = new ArrayList<Date>();
+        
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next(); 
+            
+            Day day = (Day) pairs.getValue();
+            
+            addDiscreteValuesToDay(day);
+        
+        }   
     }
     
-    public void addDiscreteValuesToWeatherDay(WeatherDay weatherDay) {
+    public void addDiscreteValuesToDay(Day day) {
     	
-    	// Temperature (max)
+    	WeatherDay weatherDay = day.get_weatherDay();
+    	EuroinvesterDay euroinvestorDay = day.get_euroinvesterDay();
     	
-    	double maxTemp = weatherDay.get_temperature_max();
-    	
-    	if (maxTemp < -15) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAXMinusInfinityToMinus15);
-    		
-    	}
-    	else if (maxTemp < -10) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAXMinus15toMinus10);
-    		
-    	}
-    	else if (maxTemp < -5) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAXMinus10toMinus5);
-    		
-    	}
-		else if (maxTemp < 0) {
-	    		
-    		weatherDay.discreteValues.add(PROPERTY.MAXMinus5toZero);
-    		
-    	}
-		else if (maxTemp < 5) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAXZeroTo5);
-			
-		}
-		else if (maxTemp < 10) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX5To10);
-			
-		}
-		else if (maxTemp < 15) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX10To15);
-			
-		}
-		else if (maxTemp < 20) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX15To20);
-			
-		}
-		else if (maxTemp < 25) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX20To25);
-			
-		}
-		else if (maxTemp < 30) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX25To30);
-			
-		}
-		else if (maxTemp < 35) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX30To35);
-			
-		}
-		else if (maxTemp > 35) {
-			
-			weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-			
-		}   
-    	
-    	// Wind speed (max)
-    	double windSpeed = weatherDay.get_wind_speed_max();
-    	
-    	if (windSpeed > 117) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 103) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 89) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 75) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 62) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 50) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 39) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 29) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 20) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 12) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 6) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windSpeed > 1) {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else {
-    		
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    	}
-    	
-    	
-    	// Wind direction
-    	double windDirection = weatherDay.get_wind_direction();
-    	
-    	if (windDirection > 337.5) {
-    		
-    		// North
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 292.5) {
-    		
-    		// North-East
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 247.5) {
-    		
-    		// East
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 202.5) {
-    		
-    		// South-Easy
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 157.5) {
-    		
-    		// South
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 112.5) {
-    		
-    		// South-West
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 67.5) {
-    		
-    		// West
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else if (windDirection > 22.5) {
-    		
-    		// North-West
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	else {
-    		
-    		// North
-    		weatherDay.discreteValues.add(PROPERTY.MAX35ToInfinity);
-    		
-    	}
-    	
-    	
-    	
-    }
-    
-    public void addDiscreteValuesToEuroinvestorDays(ArrayList<EuroinvesterDay> euroinvestorDays) {
-    	
-    	System.out.println("----------------------------------------" );
-		System.out.println("Adding discrete values for EuroinvestorDays");
-		System.out.println("(for apriori)");
-		System.out.println("----------------------------------------" );
-		System.out.println("  * Price development");
-		System.out.println("----------------------------------------\n" );
-		
-    	for (EuroinvesterDay ed : euroinvestorDays) {
-    		
-    		addDiscreteValuesToEuroinvestorDay(ed);
-    		
-    	}
-    }
-    
-    public void addDiscreteValuesToEuroinvestorDay(EuroinvesterDay euroinvestorDay) {
-    			
     	// Price development
        	if (euroinvestorDay.get_development() > 0) {
     		
@@ -793,10 +593,221 @@ public class DataManager extends Data {
     		euroinvestorDay.discreteValues.add(PROPERTY.price_no_change);
     		
     	}
+       	
+       	
+    	// Temperature (max)
     	
+    	double maxTemp = weatherDay.get_temperature_max();
+    	
+    	if (maxTemp < -15) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.TempMaxMinusInfinityToMinus15);
+    		
+    	}
+    	else if (maxTemp < -10) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.TempMaxMinus15toMinus10);
+    		
+    	}
+    	else if (maxTemp < -5) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.TempMaxMinus10toMinus5);
+    		
+    	}
+		else if (maxTemp < 0) {
+	    		
+    		weatherDay.discreteValues.add(PROPERTY.TempMaxMinus5toZero);
+    		
+    	}
+		else if (maxTemp < 5) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMaxZeroTo5);
+			
+		}
+		else if (maxTemp < 10) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax5To10);
+			
+		}
+		else if (maxTemp < 15) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax10To15);
+			
+		}
+		else if (maxTemp < 20) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax15To20);
+			
+		}
+		else if (maxTemp < 25) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax20To25);
+			
+		}
+		else if (maxTemp < 30) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax25To30);
+			
+		}
+		else if (maxTemp < 35) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax30To35);
+			
+		}
+		else if (maxTemp > 35) {
+			
+			weatherDay.discreteValues.add(PROPERTY.TempMax35ToInfinity);
+			
+		}   
+    	
+    	// Wind speed (max)
+    	double windSpeed = weatherDay.get_wind_speed_max();
+    	
+    	if (windSpeed > 117) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxHurricane);
+    		
+    	}
+    	else if (windSpeed > 103) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxViolentStorm);
+    		
+    	}
+    	else if (windSpeed > 89) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxStorm);
+    		
+    	}
+    	else if (windSpeed > 75) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxStrongGale);
+    		
+    	}
+    	else if (windSpeed > 62) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxFreshGale);
+    		
+    	}
+    	else if (windSpeed > 50) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxModerateGale);
+    		
+    	}
+    	else if (windSpeed > 39) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxStrongBreeeze);
+    		
+    	}
+    	else if (windSpeed > 29) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxFreshBreeze);
+    		
+    	}
+    	else if (windSpeed > 20) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxModerate);
+    		
+    	}
+    	else if (windSpeed > 12) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxGentleBreese);
+    		
+    	}
+    	else if (windSpeed > 6) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxLightBreeze);
+    		
+    	}
+    	else if (windSpeed > 1) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxLightBreeze);
+    		
+    	}
+    	else {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.SpeedMaxCalm);
+    	}
+    	
+    	
+    	// Wind direction
+    	double windDirection = weatherDay.get_wind_direction();
+    	
+    	if (windDirection > 337.5) {
+    		
+    		// North
+    		weatherDay.discreteValues.add(PROPERTY.directionNORTHERN);
+    		
+    	}
+    	else if (windDirection > 292.5) {
+    		
+    		// North-East
+    		weatherDay.discreteValues.add(PROPERTY.directionNORTHEASTERN);
+    		
+    	}
+    	else if (windDirection > 247.5) {
+    		
+    		// East
+    		weatherDay.discreteValues.add(PROPERTY.directionEASTERN);
+    		
+    	}
+    	else if (windDirection > 202.5) {
+    		
+    		// South-East
+    		weatherDay.discreteValues.add(PROPERTY.directionSOUTHEASTERN);
+    		
+    	}
+    	else if (windDirection > 157.5) {
+    		
+    		// South
+    		weatherDay.discreteValues.add(PROPERTY.directionSOUTHERN);
+    		
+    	}
+    	else if (windDirection > 112.5) {
+    		
+    		// South-West
+    		weatherDay.discreteValues.add(PROPERTY.directionSOUTHWESTERN);
+    		
+    	}
+    	else if (windDirection > 67.5) {
+    		
+    		// West
+    		weatherDay.discreteValues.add(PROPERTY.directionWESTERN);
+    		
+    	}
+    	else if (windDirection > 22.5) {
+    		
+    		// North-West
+    		weatherDay.discreteValues.add(PROPERTY.directionNORTHWESTERN);
+    		
+    	}
+    	else {
+    		
+    		// North
+    		weatherDay.discreteValues.add(PROPERTY.directionNORTHERN);
+    		
+    	}
+    	
+    	// Humidity
+    	Double humidity = weatherDay.get_humidity_max();
+    	
+    	if ((humidity - stats.meanHumidity) > 1) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.humidityMaxHigh);
+    		
+    	}
+    	else if ((humidity - stats.meanHumidity) < -1) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.humidityMaxLow);
+    		
+    	}
+    	else {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.humidityMaxMid);
+    		
+    	}
     	
     }
-
+   
     public void createDays() {
     	
     	System.out.println("----------------------------------------" );

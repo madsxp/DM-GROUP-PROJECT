@@ -116,7 +116,7 @@ public class Data {
         SOUTHERN,
         SOUTHWESTERN,
         WESTERN,
-        NORTHWESTERN,
+        NORTHWESTERN
         
     }
 
@@ -125,6 +125,7 @@ public class Data {
         MAXHigh,
         MAXMid,
         MAXLow
+    
     }
 
     public enum APRIORY_MIN_HUMIDITY {
@@ -201,19 +202,49 @@ public class Data {
 		
 		// WEATHER
 		// temperature
-		MAXMinusInfinityToMinus15,
-        MAXMinus15toMinus10,
-        MAXMinus10toMinus5,
-        MAXMinus5toZero,
-        MAXZeroTo5,
-        MAX5To10,
-        MAX10To15,
-        MAX15To20,
-        MAX20To25,
-        MAX25To30,
-        MAX30To35,
-        MAX35ToInfinity
+		TempMaxMinusInfinityToMinus15,
+        TempMaxMinus15toMinus10,
+        TempMaxMinus10toMinus5,
+        TempMaxMinus5toZero,
+        TempMaxZeroTo5,
+        TempMax5To10,
+        TempMax10To15,
+        TempMax15To20,
+        TempMax20To25,
+        TempMax25To30,
+        TempMax30To35,
+        TempMax35ToInfinity,
 		
+        // wind speed max
+        SpeedMaxCalm,
+        SpeedMaxLightAir,
+        SpeedMaxLightBreeze,
+        SpeedMaxGentleBreese,
+        SpeedMaxModerate,
+        SpeedMaxFreshBreeze,
+        SpeedMaxStrongBreeeze,
+        SpeedMaxModerateGale,
+        SpeedMaxFreshGale,
+        SpeedMaxStrongGale,
+        SpeedMaxStorm,
+        SpeedMaxViolentStorm,
+        SpeedMaxHurricane,
+        
+        // wind direction
+        directionNORTHERN,
+        directionNORTHEASTERN,
+        directionEASTERN,
+        directionSOUTHEASTERN,
+        directionSOUTHERN,
+        directionSOUTHWESTERN,
+        directionWESTERN,
+        directionNORTHWESTERN,
+        
+        // humidity
+        humidityMaxHigh,
+        humidityMaxMid,
+        humidityMaxLow
+        
 	}
 
     public String get_weatherday_label(WEATHERDAY_ATTRIBUTES attribute) {

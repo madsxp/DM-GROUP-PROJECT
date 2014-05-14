@@ -3,7 +3,9 @@ package App;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+import App.Data.PROPERTY;
 import Models.Day;
 
 public class App {
@@ -38,17 +40,20 @@ public class App {
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
 		dataManager.addAdditionalDataToEuroinvestorDay(dataManager.euroinvesterData);
 		
-		// Add discrete values (for apriori)
-		dataManager.addDiscreteValuesToEuroinvestorDays(dataManager.euroinvesterData);
-		dataManager.addDiscreteValuesToWeatherDays(dataManager.weatherData);
-		
 		dataManager.createDays();
+		
+		dataManager.calculateStats();
+		
+		// Add discrete values (for apriori)
+		dataManager.addDiscreteValuesToDays();
+		
+		
                 
                 //dataManager.show(, null);
 		
 		// date format: (year, month, date)
 		
-		dataManager.calculateStats();
+		
 		
 //		Day testDay = dataManager.getDay(2005, 11, 24);
 //		
@@ -59,14 +64,18 @@ public class App {
 		
 		Apriori apriori = new Apriori(dataManager.days);
 		
+//		ArrayList<PROPERTY> customList = new ArrayList<PROPERTY>();
+//		customList.add(PROPERTY.price_increase);
+//		customList.add(PROPERTY.directionEASTERN);
+//		customList.add(PROPERTY.directionNORTHEASTERN);
+//		
+//		apriori.setSpecificPropertySet(customList);
+		
 		//apriori.printDataSetsLines(0, 100);
-		apriori.run(100);
-		
-		
+		apriori.run(140);
 		
 		//waitForInput();
-		
-		
+				
 		
 		
 	}

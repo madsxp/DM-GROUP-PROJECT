@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Properties;
 
 import App.Data.PROPERTY;
 import Models.Day;
@@ -18,7 +19,10 @@ public class Apriori {
 	
 	// Current size of pattern set
 	int K = 1;
-		
+	
+	// Days
+	HashMap<Date, Day> days;
+
 	ArrayList<ArrayList<PROPERTY>> dataSets;
 	
 	ArrayList<ArrayList<PROPERTY>> candidates;
@@ -28,7 +32,14 @@ public class Apriori {
 	
 	public Apriori(HashMap<Date, Day> days) {
 		
-		convertDays(days);
+		this.days = days;
+		convertDays(this.days, null);
+		
+	}
+	
+	public void setSpecificPropertySet(ArrayList<PROPERTY> propertyList) {
+		
+		convertDays(days, propertyList);
 		
 	}
 	
@@ -292,7 +303,7 @@ public class Apriori {
 		
 	}
 	
-	private void convertDays(HashMap<Date, Day> days) {
+	private void convertDays(HashMap<Date, Day> days, ArrayList<PROPERTY> properties) {
 		
 		System.out.println("----------------------------------------" );
 		System.out.println("Apriori");
@@ -316,19 +327,23 @@ public class Apriori {
             
             for (PROPERTY property : euroinvestorDay.discreteValues) {
             	
-            	dataSet.add(property);
-            	
+            	if (properties == null || properties.indexOf(property) != -1) {
+            		dataSet.add(property);
+            	}
             }
             
             for (PROPERTY property : weatherDay.discreteValues) {
             	
-            	dataSet.add(property);
-            	
+            	if (properties == null || properties.indexOf(property) != -1) {
+            		dataSet.add(property);
+            	}
             }
                         
             dataSets.add(dataSet);
             
         }	
 	}
+	
+	
 	
 }
