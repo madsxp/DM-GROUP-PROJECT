@@ -67,7 +67,7 @@ public class App {
 		
 		// Apriori
 		
-		//Apriori apriori = new Apriori(dataManager.days);
+		Apriori apriori = new Apriori(dataManager.days);
 		
 //		ArrayList<PROPERTY> customList = new ArrayList<PROPERTY>();
 //		customList.add(PROPERTY.price_increase);
@@ -77,7 +77,7 @@ public class App {
 //		apriori.setSpecificPropertySet(customList);
 		
 		//apriori.printDataSetsLines(0, 100);
-		//apriori.run(140);
+		apriori.run(100);
 		
 		//waitForInput();
 		
