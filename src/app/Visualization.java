@@ -1,6 +1,11 @@
 package app;
 
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -14,33 +19,43 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import app.Data.WEATHERDAY_ATTRIBUTE;
 import models.Day;
 
-public class Visualization {
+public class Visualization extends Data {
 	
 	private SimpleDateFormat dateParser;
 	private SimpleDateFormat dateParserSimple;
+	private DecimalFormat df;
 	
 	public Visualization() {
 		
 		dateParser = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
 		dateParserSimple = new SimpleDateFormat("yyyy-MM-dd EEE");
+		df = new DecimalFormat("#.#");
 		
 	}
-	
-	public void showTable(HashMap<Date, Day> days) {
+
+	public void showDaysTable(HashMap<Date, Day> days) {
 		
 		String[][] daysS = convertDaysToStringArray(days);
-		String[] headers = new String[WEATHERDAY_ATTRIBUTE.values().length];
+		// -1 because both has date
+		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+EUROINVESTOR_ATTRIBUTE.values().length-1;
+		String[] headers = new String[numOfcolumns];
 		
 		int i = 0;
-		for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+		for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
     		
-			headers[i] = attr.toString();
-    		i++;
-			
+    		headers[i] = attr.toString();
+       		i++;  		
+    		
     	}
+		for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+			if (attr != WEATHERDAY_ATTRIBUTE.date) {
+				headers[i] = attr.toString();
+	    		i++;
+			}
+    	}
+		
 		
 		Arrays.sort(daysS, new Comparator<String[]>() {
 			@Override
@@ -67,8 +82,8 @@ public class Visualization {
 				else {
 					
 				 return 0;	
-				}
 				
+				}
 			}
         });
 		
@@ -76,16 +91,35 @@ public class Visualization {
 		
 		table = new JTable(daysS, headers);
 		
-		table.setFont(new Font("Arial", Font.PLAIN, 12));
+		table.setFont(new Font("Arial", Font.PLAIN, 13));
 		
-		JScrollPane scrollPane = new JScrollPane(table);
+		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
 		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 	
+		for (int k = 2; k < headers.length; k++) {
+			
+			table.getColumnModel().getColumn(k).setPreferredWidth(headers[k].length()*8);
+			
+		}
+		
+		// set min width of columns
+		table.getColumnModel().getColumn(0).setPreferredWidth(110);
+		table.getColumnModel().getColumn(3).setPreferredWidth(220);
+				
+		table.setRowHeight(30);
+		table.setIntercellSpacing(new Dimension(0,0));
+		
 		JFrame frame = new JFrame("Days");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.add(scrollPane);
 		
+		Container c = frame.getContentPane();
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        c.setPreferredSize(d);
+        
 		frame.pack();
 	    frame.setVisible(true);
 		
@@ -96,7 +130,8 @@ public class Visualization {
 		String[][] daysS = new String[days.size()][];
 		
 		Iterator it = days.entrySet().iterator();
-		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length;
+		// TODO: +1 is a bit dirty...
+		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+EUROINVESTOR_ATTRIBUTE.values().length-1;
 		int j = 0;
 		
         while (it.hasNext()) {
@@ -106,25 +141,67 @@ public class Visualization {
         	String[] dayS = new String[numOfcolumns];
         	
         	int i = 0;
-        	for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+        	for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
         		
-        		String data;
-        		
-        		if (i == 0) {
-        			
-        			data = dateParserSimple.format((Date) day.get_weatherDay().get(attr));
-        			
-        		}
-        		else {
-        			
-        			data = day.get_weatherDay().get(attr).toString();
-        			
-        		}
-        		
-        		dayS[i] = data;
-        		i++;
+	        		String data;
+	        		
+	        		data = null;
+	        		
+	        		switch (get_euroinvestor_type(attr)) {
+		        		case date:
+		        			data = dateParserSimple.format((Date) day.get_euroinvesterDay().get(attr));
+		        			break;
+		        		case nominal:
+		        			data = day.get_euroinvesterDay().get(attr).toString();
+		        			break;
+		        		case numeric:
+		        			data = df.format((Double) day.get_euroinvesterDay().get(attr)).toString();
+		        			// exception for development. Add + symbol for clarity
+		        			if (attr == EUROINVESTOR_ATTRIBUTE.development && (Double) day.get_euroinvesterDay().get(attr) > 0) {
+		        				
+		        				data = "+" + data;
+		        				
+		        			}
+		        			break;
+	        			default:
+	        				// TODO:
+	        				break;
+	        				
+	        		}
+	        		
+	        		dayS[i] = data;
+	        		i++;
         		
         	}
+        	for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+        		if (attr != WEATHERDAY_ATTRIBUTE.date) {
+	        		String data;
+	        		
+	        		data = null;
+	        		
+	        		switch (get_weatherday_type(attr)) {
+	        		
+		        		case date:
+		        			data = dateParserSimple.format((Date) day.get_weatherDay().get(attr));
+		        			break;
+		        		case nominal:
+		        			data = day.get_weatherDay().get(attr).toString();
+		        			break;
+		        		case numeric:
+		        			data = df.format((Double) day.get_weatherDay().get(attr)).toString();
+		        			break;
+	        			default:
+	        				// TODO:
+	        				break;
+	        				
+	        		}
+	        		
+	        		dayS[i] = data;
+	        		i++;
+        		}
+        	}
+        	
+        	
         	
         	daysS[j] = dayS;
         			

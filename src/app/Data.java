@@ -173,8 +173,16 @@ public class Data {
     	 medium_rain,
     	 high_rain
          
-     }
+    }
     
+    public enum EUROINVESTOR_ATTRIBUTE {
+    	
+    	date,
+    	close,
+    	development
+    	
+    }
+     
     public enum WEATHERDAY_ATTRIBUTE {
 
         date,
@@ -195,6 +203,59 @@ public class Data {
         precipitation,
         wind_direction,
         cloud_cover
+    
+    }
+    
+    enum DATA_TYPE {
+    	
+    	nominal,
+    	numeric,
+    	bool,
+    	date,
+    	no_type
+    
+    }
+    public DATA_TYPE get_euroinvestor_type(EUROINVESTOR_ATTRIBUTE attr) {
+    	
+    	switch (attr) {
+    	case date:
+    		return DATA_TYPE.date;
+    	case development:
+    		return DATA_TYPE.numeric;
+    	case close:
+    		return DATA_TYPE.numeric;
+    	default:
+    		return DATA_TYPE.no_type;
+    	}
+    }
+    public DATA_TYPE get_weatherday_type(WEATHERDAY_ATTRIBUTE attr) {
+    	
+    	switch (attr) {
+    		
+    	case date:
+    		return DATA_TYPE.date;
+    	case events:
+    		return DATA_TYPE.nominal;
+    	case cloud_cover:
+    	case dew_point:
+    	case gust_speed:
+    	case heat_index:
+    	case humidity_max:
+    	case humidity_min:
+    	case precipitation:
+    	case pressure:
+    	case temperature_max:
+    	case temperature_mean:
+    	case temperature_min:
+    	case visibility:
+    	case wind_chill_factor:
+    	case wind_direction:
+    	case wind_speed_max:
+    	case wind_speed_mean:
+    		return DATA_TYPE.numeric;   
+    	default:
+    		return DATA_TYPE.no_type;
+    	}
     }
     
     public enum PROPERTY {
@@ -313,4 +374,13 @@ public class Data {
 
         }
     }
+
+    public enum DATA_MODEL {
+    	
+    	WeatherDay,
+    	EuroinvestorDay
+    	
+    }
+
 }
+

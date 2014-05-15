@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import models.Day;
+import app.Data.EUROINVESTOR_ATTRIBUTE;
 import app.Data.PROPERTY;
 
 public class App {
@@ -52,37 +53,22 @@ public class App {
 		// Add discrete values (for apriori)
 		dataManager.addDiscreteValuesToDays();
 		
-		
-                
-                //dataManager.show(, null);
-		
 		// date format: (year, month, date)
 		
 		Visualization visualization = new Visualization();
 		
-		visualization.showTable(dataManager.days);
+		visualization.showDaysTable(dataManager.days);
 		
+		//KNN knn = new KNN(dataManager.days, dataManager);
 		
-//		Day testDay = dataManager.getDay(2005, 11, 24);
-//		
-//		System.out.println(testDay.get_euroinvesterDay().get_development());
-
+		Day testDay = dataManager.getDay(2010, 5, 10);
+		
+		//knn.run(testDay, EUROINVESTOR_ATTRIBUTE.development, 100);
 		
 		// Apriori
 		
-		Apriori apriori = new Apriori(dataManager.days);
+		//Apriori apriori = new Apriori(dataManager.days);
 		
-//		ArrayList<PROPERTY> customList = new ArrayList<PROPERTY>();
-//		customList.add(PROPERTY.price_increase);
-//		customList.add(PROPERTY.directionEASTERN);
-//		customList.add(PROPERTY.directionNORTHEASTERN);
-//		
-//		apriori.setSpecificPropertySet(customList);
-		
-		//apriori.printDataSetsLines(0, 100);
-
-                apriori.run(100);
-
 		//apriori.run(370);
 		
 		//waitForInput();

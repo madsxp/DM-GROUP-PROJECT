@@ -1,5 +1,6 @@
 package app;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.swing.text.html.MinimalHTMLWriter;
 
 import models.Day;
 import models.EuroinvesterDay;
@@ -387,10 +390,10 @@ public class DataManager extends Data {
     
     public void addAdditionalEuroinvestorDataToDay(EuroinvesterDay euroinvestorDay, EuroinvesterDay previousDay) {
     	
-    	euroinvestorDay.set_development(euroinvestorDay.get_cose() - previousDay.get_cose());
+    	euroinvestorDay.set_development(euroinvestorDay.get_close() - previousDay.get_close());
     	
     }
- 
+    
     public void addAdditionalWeatherDataToWeatherDays(ArrayList<WeatherDay> weatherDays) {
     	
     	System.out.println("----------------------------------------" );
@@ -460,6 +463,12 @@ public class DataManager extends Data {
     	public Double minTempMin;
     	public Double meanHumidity;
     	public Double meanPrecipitation;
+    	public Double maxDewpoint;
+    	public Double minDewpoint;
+    	public Double maxGustspeed;
+    	public Double minGustspeed;
+    	public Double maxHeatindex;
+    	public Double minHeatindex;
     	
     }
     
@@ -473,6 +482,8 @@ public class DataManager extends Data {
 		System.out.println("  * Min temperature / day");
 		System.out.println("  * Mean temperature / day");
 		System.out.println("  * Mean humidity / day");
+		System.out.println("  * Min dewpoint / day");
+		System.out.println("  * Max dewpoint / day");
 		System.out.println("  * Mean precipitation / day (when it rains)");
 		System.out.println("----------------------------------------\n" );
 		
@@ -485,6 +496,13 @@ public class DataManager extends Data {
     	
     	stats.meanHumidity = 0.;
     	stats.meanPrecipitation = 0.;
+    	
+    	stats.maxDewpoint = Double.NEGATIVE_INFINITY;
+    	stats.minDewpoint = Double.POSITIVE_INFINITY;
+    	stats.maxGustspeed = Double.NEGATIVE_INFINITY;
+    	stats.minGustspeed = Double.POSITIVE_INFINITY;
+    	stats.maxHeatindex = Double.NEGATIVE_INFINITY;
+    	stats.minHeatindex = Double.POSITIVE_INFINITY;
     	
         while (it.hasNext()) {
             
@@ -513,6 +531,8 @@ public class DataManager extends Data {
             	
             }
             
+            // mean humidity
+            
             stats.meanHumidity += day.get_weatherDay().get_humidity_max();
             
             
@@ -524,7 +544,55 @@ public class DataManager extends Data {
             	
             	stats.meanPrecipitation += precipitation;
             	
-            }            
+            }
+            
+            Double dewPoint = day.get_weatherDay().get_dew_point();
+            
+            // min dewPoint
+            if (dewPoint < stats.minDewpoint) {
+            	
+            	stats.minDewpoint = dewPoint;
+            	
+            }
+            // max dewPoint
+            if (dewPoint > stats.maxDewpoint) {
+            	
+            	stats.maxDewpoint = dewPoint;
+            	
+            }
+            
+            Double gustSpeed = day.get_weatherDay().get_gust_speed();
+            
+            // min gustSpeed
+            if (gustSpeed < stats.minGustspeed) {
+            	
+            	stats.minGustspeed = gustSpeed;
+            	
+            }
+            // max gustSpeed
+            if (dewPoint > stats.maxGustspeed) {
+            	
+            	stats.maxGustspeed = gustSpeed;
+            	
+            }
+            
+            Double heatIndex = day.get_weatherDay().get_gust_speed();
+            
+            // min heatIndex
+            if (heatIndex < stats.minHeatindex) {
+            	
+            	stats.minHeatindex = heatIndex;
+            	
+            }
+            // max heatIndex
+            if (heatIndex > stats.maxHeatindex) {
+            	
+            	stats.maxHeatindex = heatIndex;
+            	
+            }
+            
+           
+            
         }
         
         stats.meanPrecipitation = stats.meanPrecipitation / days.size();
@@ -887,8 +955,39 @@ public class DataManager extends Data {
     		weatherDay.discreteValues.add(PROPERTY.no_rain);
     		
     	}
+    }
+    
+    public Double getNormalizedValue(Object attr, Double value) {
     	
-    	
+    	switch (attr.getClass().getSimpleName()) {
+    		
+    		case "WEATHERDAY_ATTRIBUTE":
+    			WEATHERDAY_ATTRIBUTE w_attr = (WEATHERDAY_ATTRIBUTE) attr;
+    			switch(w_attr) {
+    				// TODO: remove
+    				case date:
+    					return value;
+    				case events:
+    					return value;
+    				case cloud_cover:
+    					return value/10;
+    				case dew_point:
+    					return (value - stats.minDewpoint) / (stats.maxDewpoint - stats.minDewpoint);
+    				case gust_speed:
+    					return (value - stats.minGustspeed) / (stats.maxGustspeed - stats.minGustspeed);
+    				case heat_index:
+    					return (value - stats.minGustspeed) / (stats.maxGustspeed - stats.minGustspeed);
+    			
+    			}
+    			break;
+    		case "EUROINVESTOR_ATTRIBUTE":
+    			break;
+    		default:
+    			break;
+    	}
+  
+    	return 0.0;
+    			
     }
    
     public void createDays() {
