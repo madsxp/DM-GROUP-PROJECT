@@ -70,6 +70,50 @@ public class CSVFileReader {
 		return lines.toArray(ret);
 	}
 	
+	public static String[][] readNoaa(String csvFile, boolean useNullForBlank)
+			throws IOException {
+		
+		System.out.println("----------------------------------------" );
+		System.out.println("Reading Noaa data" );
+		System.out.println("----------------------------------------" );
+		List<String[]> lines = new ArrayList<String[]>();
+		
+		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
+				csvFile)));
+		// read the header
+		String line = bufRdr.readLine();
+		
+		StringTokenizer tok = new StringTokenizer(line, ",");
+		
+		final int numberOfColumns = tok.countTokens();
+
+		// read each line of text file
+		while ((line = bufRdr.readLine()) != null) {
+			int col = 0;
+
+			String[] cols = line.split(",");
+	
+			String[] lineTokens = new String[numberOfColumns];
+			while (col < numberOfColumns) {
+				// get next token and store it in the array
+				lineTokens[col] = cols[col];
+				if (!useNullForBlank && lineTokens[col] == null)
+					lineTokens[col] = "";
+				col++;
+			}
+
+			lines.add(lineTokens);
+		}
+		String[][] ret = new String[lines.size()][];
+		bufRdr.close();
+	
+		System.out.println("  * Read " + ret.length + " lines");
+		System.out.println("----------------------------------------\n" );
+		
+		
+		return lines.toArray(ret);
+	}
+	
 	
 	public static String[][] readEuroinvester(String csvFile, boolean useNullForBlank)
 			throws IOException {
@@ -156,6 +200,18 @@ public class CSVFileReader {
 		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(csvFile)));
 		// read the headers
 		String line = bufRdr.readLine().replaceAll("\\s+","");
+		
+		String[] arr = line.split(",");
+		
+		return arr;
+		
+	}
+	
+	public static String[] readHeadersComma(String csvFile) throws IOException {
+		
+		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(csvFile)));
+		// read the headers
+		String line = bufRdr.readLine();
 		
 		String[] arr = line.split(",");
 		

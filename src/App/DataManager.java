@@ -325,6 +325,42 @@ public class DataManager extends Data {
         }
     }
 
+    public void addNoaaDataToDays(HashMap<Date, Day> days, String[][] noaaData) { 
+    	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Adding NOAA data to weather days");
+		System.out.println("----------------------------------------" );
+		System.out.println("  * Precipitation");
+    	
+		SimpleDateFormat noaaDateParser = new SimpleDateFormat("yyyyMMdd");
+		int counter = 0;
+		for (int i = 1; i < noaaData.length; i++) {
+			
+			Date date = null;
+			
+			try {
+				date = noaaDateParser.parse(noaaData[i][2].replace(" ", ""));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (date != null) {
+				
+				Day day = days.get(date);
+				
+				if (day != null) {
+					
+					day.get_weatherDay().set_precipitation(1);
+					
+				}
+			}
+		}
+		
+		System.out.println("----------------------------------------\n" );
+		
+    }
+    
     public void addAdditionalDataToEuroinvestorDay(ArrayList<EuroinvesterDay> euroinvestorDays) {
     	
     	System.out.println("----------------------------------------" );

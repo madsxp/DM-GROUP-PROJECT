@@ -29,6 +29,9 @@ public class App {
 		String[][] euroinvesterData = reader.readEuroinvester("data/OMX C20 and OMX C20 CAP.csv", false);
 		String[] euroinvesterHeaders = reader.readHeaders("data/OMX C20 and OMX C20 CAP.csv");
 		
+		String[][] noaaData = reader.readNoaa("data/weather_noaa.csv", false);
+		String[] noaaHeaders = reader.readHeadersComma("data/weather_noaa.csv");
+		
 		// Data manager
 		dataManager = new DataManager();
 		
@@ -41,6 +44,8 @@ public class App {
 		dataManager.addAdditionalDataToEuroinvestorDay(dataManager.euroinvesterData);
 		
 		dataManager.createDays();
+		
+		dataManager.addNoaaDataToDays(dataManager.days, noaaData);
 		
 		dataManager.calculateStats();
 		
@@ -62,7 +67,7 @@ public class App {
 		
 		// Apriori
 		
-		Apriori apriori = new Apriori(dataManager.days);
+		//Apriori apriori = new Apriori(dataManager.days);
 		
 //		ArrayList<PROPERTY> customList = new ArrayList<PROPERTY>();
 //		customList.add(PROPERTY.price_increase);
@@ -72,11 +77,9 @@ public class App {
 //		apriori.setSpecificPropertySet(customList);
 		
 		//apriori.printDataSetsLines(0, 100);
-		apriori.run(140);
+		//apriori.run(140);
 		
 		//waitForInput();
-				
-		
 		
 	}
 	
