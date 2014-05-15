@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,10 +7,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
-import App.Data.PROPERTY;
-import Models.Day;
-import Models.EuroinvesterDay;
-import Models.WeatherDay;
+import models.Day;
+import models.EuroinvesterDay;
+import models.WeatherDay;
+import app.Data.PROPERTY;
 
 public class Apriori {
 	

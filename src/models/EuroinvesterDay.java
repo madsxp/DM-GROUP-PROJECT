@@ -1,9 +1,9 @@
-package Models;
+package models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import App.Data;
-import App.Data.PROPERTY;
+import app.Data;
+import app.Data.PROPERTY;
 
 public class EuroinvesterDay {
 

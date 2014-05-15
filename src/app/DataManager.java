@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,12 +9,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import Models.Day;
-import Models.EuroinvesterDay;
-import Models.WeatherDay;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import models.Day;
+import models.EuroinvesterDay;
+import models.WeatherDay;
 
 public class DataManager extends Data {
 
@@ -73,7 +70,7 @@ public class DataManager extends Data {
         // Add attributes from data
         
         // DATE
-        int index_date = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.date));
+        int index_date = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.date));
         Date date = new Date();
 
         try {
@@ -91,7 +88,7 @@ public class DataManager extends Data {
         }
         
         // EVENTS
-        int index_events = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.events));
+        int index_events = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.events));
         String[] string_events = data[index_events].replaceAll("\\s+", "").split("-");
         ArrayList<EVENT> events = new ArrayList<EVENT>();
 
@@ -131,7 +128,7 @@ public class DataManager extends Data {
         wd.set_events(events);
         
         // TEMPERATURE MAX
-        int index_temperature_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.temperature_max));
+        int index_temperature_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.temperature_max));
         Double temperature_max = null;
         try {
             temperature_max = Double.parseDouble(data[index_temperature_max]);
@@ -146,7 +143,7 @@ public class DataManager extends Data {
         }
 
         // TEMPERATURE MIN
-        int index_temperature_min = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.temperature_min));
+        int index_temperature_min = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.temperature_min));
         Double temperature_min = null;
         try {
             temperature_min = Double.parseDouble(data[index_temperature_min]);
@@ -161,7 +158,7 @@ public class DataManager extends Data {
         }
 
         // WINDSPEED MAX
-        int index_windspeed_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.wind_speed_max));
+        int index_windspeed_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.wind_speed_max));
         Double windspeed_max = null;
         try {
             windspeed_max = Double.parseDouble(data[index_windspeed_max]);
@@ -176,7 +173,7 @@ public class DataManager extends Data {
         }
         
         // WINDSPEED MEAN
-        int index_windspeed_mean = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.wind_speed_mean));
+        int index_windspeed_mean = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.wind_speed_mean));
         Double windspeed_mean = null;
         try {
             windspeed_mean = Double.parseDouble(data[index_windspeed_mean]);
@@ -191,7 +188,7 @@ public class DataManager extends Data {
         }
         
         // HUMIDITY MAX
-        int index_humidity_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.humidity_max));
+        int index_humidity_max = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.humidity_max));
         Double humidity_max = null;
         try {
             humidity_max = Double.parseDouble(data[index_humidity_max]);
@@ -205,7 +202,7 @@ public class DataManager extends Data {
         }
         
         // HUMIDITY MIN
-        int index_humidity_min = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.humidity_min));
+        int index_humidity_min = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.humidity_min));
         Double humidity_min = null;
         try {
             humidity_min = Double.parseDouble(data[index_humidity_min]);
@@ -219,7 +216,7 @@ public class DataManager extends Data {
         }
         
         // DEW POINT
-        int index_dew_point = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.dew_point));
+        int index_dew_point = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.dew_point));
         Double dew_point = null;
         try {
         	dew_point = Double.parseDouble(data[index_dew_point]);
@@ -233,7 +230,7 @@ public class DataManager extends Data {
         }
         
         // PRESSURE
-        int index_pressure = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.pressure));
+        int index_pressure = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.pressure));
         Double pressure = null;
         try {
         	pressure = Double.parseDouble(data[index_pressure]);
@@ -247,7 +244,7 @@ public class DataManager extends Data {
         }
         
         // VISIBILITY
-        int index_visibility = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.visibility));
+        int index_visibility = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.visibility));
         Double visibility = null;
         try {
         	visibility = Double.parseDouble(data[index_visibility]);
@@ -261,7 +258,7 @@ public class DataManager extends Data {
         }
         
         // GUST SPEED
-        int index_gust_speed = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.gust_speed));
+        int index_gust_speed = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.gust_speed));
         Double gust_speed = null;
         try {
         	gust_speed = Double.parseDouble(data[index_gust_speed]);
@@ -275,7 +272,7 @@ public class DataManager extends Data {
         }
         
         // PRECIPITATION
-        int index_precipitation = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.precipitation));
+        int index_precipitation = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.precipitation));
         Double precipitation = null;
         try {
         	precipitation = Double.parseDouble(data[index_precipitation]);
@@ -289,7 +286,7 @@ public class DataManager extends Data {
         }
         
         // WIND DIRECTION
-        int index_wind_direction = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.wind_direction));
+        int index_wind_direction = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.wind_direction));
         Double wind_direction = null;
         try {
         	wind_direction = Double.parseDouble(data[index_wind_direction]);
@@ -303,7 +300,7 @@ public class DataManager extends Data {
         }
         
         // CLOUD COVER
-        int index_cloud_cover = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTES.cloud_cover));
+        int index_cloud_cover = Arrays.asList(headers).indexOf(get_weatherday_label(WEATHERDAY_ATTRIBUTE.cloud_cover));
         Double cloud_cover = null;
         try {
         	cloud_cover = Double.parseDouble(data[index_cloud_cover]);
@@ -333,7 +330,7 @@ public class DataManager extends Data {
 		System.out.println("  * Precipitation");
     	
 		SimpleDateFormat noaaDateParser = new SimpleDateFormat("yyyyMMdd");
-		int counter = 0;
+		
 		for (int i = 1; i < noaaData.length; i++) {
 			
 			Date date = null;
@@ -351,9 +348,15 @@ public class DataManager extends Data {
 				
 				if (day != null) {
 					
-					day.get_weatherDay().set_precipitation(1);
+					Double precipitation = Double.parseDouble(noaaData[i][19].replaceAll("[^\\d.]", ""));
+					// From inches to mm
+					Double precipitationInMM = precipitation * 25.4;
+					day.get_weatherDay().set_precipitation(precipitationInMM);
 					
 				}
+				
+				
+				
 			}
 		}
 		
@@ -456,6 +459,7 @@ public class DataManager extends Data {
     	public Double maxTempMean;
     	public Double minTempMin;
     	public Double meanHumidity;
+    	public Double meanPrecipitation;
     	
     }
     
@@ -465,8 +469,11 @@ public class DataManager extends Data {
     	System.out.println("----------------------------------------" );
 		System.out.println("Calculating stats");
 		System.out.println("----------------------------------------" );
-		System.out.println("  * Max temperature");
-		System.out.println("  * Min temperature");
+		System.out.println("  * Max temperature / day");
+		System.out.println("  * Min temperature / day");
+		System.out.println("  * Mean temperature / day");
+		System.out.println("  * Mean humidity / day");
+		System.out.println("  * Mean precipitation / day (when it rains)");
 		System.out.println("----------------------------------------\n" );
 		
     	Iterator it = days.entrySet().iterator();
@@ -477,6 +484,7 @@ public class DataManager extends Data {
     	stats.minTempMin = Double.POSITIVE_INFINITY;
     	
     	stats.meanHumidity = 0.;
+    	stats.meanPrecipitation = 0.;
     	
         while (it.hasNext()) {
             
@@ -508,8 +516,18 @@ public class DataManager extends Data {
             stats.meanHumidity += day.get_weatherDay().get_humidity_max();
             
             
+            // Precipitation
+            
+            Double precipitation = day.get_weatherDay().get_precipitation();
+            
+            if (precipitation > 0 && precipitation != 99.99) {
+            	
+            	stats.meanPrecipitation += precipitation;
+            	
+            }            
         }
         
+        stats.meanPrecipitation = stats.meanPrecipitation / days.size();
         stats.meanHumidity = stats.meanHumidity / days.size();
         
     }
@@ -579,7 +597,7 @@ public class DataManager extends Data {
             ed.set_close(close);
 
         }
-
+        
         return ed;
 
     }
@@ -841,6 +859,35 @@ public class DataManager extends Data {
     		weatherDay.discreteValues.add(PROPERTY.humidityMaxMid);
     		
     	}
+    	
+    	// Precipitation
+    	
+    	Double precipitation = weatherDay.get_precipitation();
+    	
+    	if (precipitation == 99.99) {
+    		  		
+    	}
+    	else if (precipitation > stats.meanPrecipitation + 20) {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.high_rain);
+    		
+    	}
+    	else if (precipitation > stats.meanPrecipitation - 20){
+    		
+    		weatherDay.discreteValues.add(PROPERTY.medium_rain);
+    		
+    	}
+    	else if (precipitation > 0) { 
+    		
+    		weatherDay.discreteValues.add(PROPERTY.small_rain);
+    		
+    	}
+    	else {
+    		
+    		weatherDay.discreteValues.add(PROPERTY.no_rain);
+    		
+    	}
+    	
     	
     }
    

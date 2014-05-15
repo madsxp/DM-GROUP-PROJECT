@@ -1,11 +1,11 @@
-package Models;
+package models;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-import App.Data.PROPERTY;
+import app.Data.PROPERTY;
 
-public class WeatherDay extends App.Data {
+public class WeatherDay extends app.Data {
 
     public int id;
     private Date date;
@@ -52,6 +52,52 @@ public class WeatherDay extends App.Data {
 				+ "   Temperature - Max : " + get_temperature_max() + "\n"; 
 		
 	}
+    
+    public Object get(WEATHERDAY_ATTRIBUTE attr) {
+    	
+    	switch(attr) {
+    	
+	    	case cloud_cover:
+	    		return get_cloud_cover();
+	    	case date:
+	    		return get_date();
+	    	case dew_point:
+	    		return get_dew_point();
+	    	case events:
+	    		return get_events();
+	    	case gust_speed:
+	    		return get_gust_speed();
+	    	case heat_index:
+	    		return get_heat_index();
+	    	case humidity_max:
+	    		return get_humidity_max();
+	    	case humidity_min:
+	    		return get_humidity_min();
+	    	case precipitation:
+	    		return get_precipitation();
+	    	case pressure:
+	    		return get_pressure();
+	    	case temperature_max:
+	    		return get_temperature_max();
+	    	case temperature_mean:
+	    		return get_temperature_mean();
+	    	case temperature_min:
+	    		return get_temperature_min();
+	    	case visibility:
+	    		return get_visibility();
+	    	case wind_chill_factor:
+	    		return get_wind_chill_factor();
+	    	case wind_direction:
+	    		return get_wind_direction();
+	    	case wind_speed_max:
+	    		return get_wind_speed_max();
+	    	case wind_speed_mean:
+	    		return get_wind_speed_mean();
+	    	default:
+	    		return null;
+     	}
+    }
+    
 
     // DATE
 
@@ -274,8 +320,8 @@ public class WeatherDay extends App.Data {
         try {
             value = heat_index;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Message: heat_index not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED MEAN TEMPERATURE");
+            //e.printStackTrace();
+            //System.err.println("Message: heat_index not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED MEAN TEMPERATURE");
             
             value = get_temperature_mean();
             
@@ -328,8 +374,8 @@ public class WeatherDay extends App.Data {
         try {
             value = visibility;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Message: visibility not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+            //e.printStackTrace();
+            //System.err.println("Message: visibility not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
         }
         return value;
     }
@@ -347,8 +393,8 @@ public class WeatherDay extends App.Data {
         try {
             value = gust_speed;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Message: gust speed not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+            //e.printStackTrace();
+            //System.err.println("Message: gust speed not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
         }
         return value;
     }
@@ -405,8 +451,8 @@ public class WeatherDay extends App.Data {
         try {
             value = cloud_cover;
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Message: cloud cover not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
+            //e.printStackTrace();
+            //System.err.println("Message: cloud cover not set on WeatherDay id:" + this.id + " (" + this + ") RETURNED 0.0");
         }
         return value;
     }
