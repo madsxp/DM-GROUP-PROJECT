@@ -1,4 +1,4 @@
-package App;
+package app;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,10 +167,15 @@ public class Data {
     }
      
      public enum APRIORY_PRECIPITATION {
+    	 
+    	 no_rain,
+    	 small_rain,
+    	 medium_rain,
+    	 high_rain
          
      }
     
-    public enum WEATHERDAY_ATTRIBUTES {
+    public enum WEATHERDAY_ATTRIBUTE {
 
         date,
         events,
@@ -243,11 +248,17 @@ public class Data {
         // humidity
         humidityMaxHigh,
         humidityMaxMid,
-        humidityMaxLow
+        humidityMaxLow,
+        
+        // precipitation
+        no_rain,
+   	 	small_rain,
+   	 	medium_rain,
+   	 	high_rain
         
 	}
 
-    public String get_weatherday_label(WEATHERDAY_ATTRIBUTES attribute) {
+    public String get_weatherday_label(WEATHERDAY_ATTRIBUTE attribute) {
 
         switch (attribute) {
 

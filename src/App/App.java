@@ -1,12 +1,12 @@
-package App;
+package app;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import App.Data.PROPERTY;
-import Models.Day;
+import models.Day;
+import app.Data.PROPERTY;
 
 public class App {
 
@@ -58,6 +58,9 @@ public class App {
 		
 		// date format: (year, month, date)
 		
+		Visualization visualization = new Visualization();
+		
+		visualization.showTable(dataManager.days);
 		
 		
 //		Day testDay = dataManager.getDay(2005, 11, 24);
@@ -77,7 +80,10 @@ public class App {
 //		apriori.setSpecificPropertySet(customList);
 		
 		//apriori.printDataSetsLines(0, 100);
-		apriori.run(100);
+
+                apriori.run(100);
+
+		//apriori.run(370);
 		
 		//waitForInput();
 		

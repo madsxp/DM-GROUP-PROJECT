@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package App;
+package app;
 
-import Models.Day;
+import models.Day;
 
 
 /**
