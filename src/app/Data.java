@@ -215,19 +215,20 @@ public class Data {
     	no_type
     
     }
+    
     public DATA_TYPE get_euroinvestor_type(EUROINVESTOR_ATTRIBUTE attr) {
     	
     	switch (attr) {
     	case date:
     		return DATA_TYPE.date;
     	case development:
-    		return DATA_TYPE.numeric;
     	case close:
     		return DATA_TYPE.numeric;
     	default:
     		return DATA_TYPE.no_type;
     	}
     }
+    
     public DATA_TYPE get_weatherday_type(WEATHERDAY_ATTRIBUTE attr) {
     	
     	switch (attr) {

@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -458,6 +460,7 @@ public class DataManager extends Data {
     
     public class Stats {
     	
+    	// WeatherDay stats
     	public Double maxTempMax;
     	public Double maxTempMean;
     	public Double minTempMin;
@@ -469,7 +472,265 @@ public class DataManager extends Data {
     	public Double minGustspeed;
     	public Double maxHeatindex;
     	public Double minHeatindex;
+    	public Double maxCloudcover;
+    	// return max for mean always
+    	public Double maxHumidity;
+    	public Double maxPrecipitation;
+    	public Double maxPressure;
+    	public Double maxVisibility;
+    	public Double maxWindchillfactor;
+    	public Double maxWinddirection;
+    	public Double maxWindspeed;
+    	public Double minCloudcover;
+    	// return max min mean always
+    	public Double minHumidity;
+    	public Double minPrecipitation;
+    	public Double minPressure;
+    	public Double minVisibility;
+    	public Double minWindchillfactor;
+    	public Double minWinddirection;
+    	public Double minWindspeed;
     	
+    	// Euroinvestor stats
+    	public Double maxDevelopment;
+    	public Double minDevelopment;
+    	public Double maxClose;
+    	public Double minClose;
+    	
+    	public void setMax(WEATHERDAY_ATTRIBUTE attr, Double value) {
+    		
+    		switch (attr) {
+	    		case cloud_cover:
+	    			maxCloudcover = value;
+	    			break;
+	    		case dew_point:
+	    			maxDewpoint = value;
+	    			break;
+	    		case gust_speed:
+	    			maxGustspeed = value;
+	    			break;
+	    		case heat_index:
+	    			maxHeatindex = value;
+	    			break;
+	    		case humidity_max:
+	    		case humidity_min:
+	    			maxHumidity = value;
+	    			break;
+	    		case precipitation:
+	    			maxPrecipitation = value;
+	    			break;
+	    		case pressure:
+	    			maxPressure = value;
+	    			break;
+	    		case temperature_max:
+	    		case temperature_mean:
+	    		case temperature_min:
+	    			maxTempMax = value;
+	    			break;
+	    		case visibility:
+	    			maxVisibility = value;
+	    			break;
+	    		case wind_chill_factor:
+	    			maxWindchillfactor = value;
+	    			break;
+	    		case wind_direction:
+	    			maxWinddirection = value;
+	    			break;
+	    		case wind_speed_max:
+	    		case wind_speed_mean:
+	    			maxWindspeed = value;
+	    			break;
+	    		default:
+	    			System.out.println("error in stats.setMax(), attr: " + attr);
+	    			break;
+    		}    		
+    	}
+    	
+    	public Double getMax(WEATHERDAY_ATTRIBUTE attr) {
+    		
+    		switch(attr) {
+	    		case cloud_cover:
+	    			return maxCloudcover;
+	    		case dew_point:
+	    			return maxDewpoint;
+	    		case gust_speed:
+	    			return maxGustspeed;
+	    		case heat_index:
+	    			return maxHeatindex;
+	    		case humidity_max:
+	    		case humidity_min:
+	    			return maxHumidity;
+	    		case precipitation:
+	    			return maxPrecipitation;
+	    		case pressure:
+	    			return maxPressure;
+	    		case temperature_max:
+	    		case temperature_mean:
+	    		case temperature_min:
+	    			return maxTempMax;
+	    		case visibility:
+	    			return maxVisibility;
+	    		case wind_chill_factor:
+	    			return maxWindchillfactor;
+	    		case wind_direction:
+	    			return maxWinddirection;
+	    		case wind_speed_max:
+	    		case wind_speed_mean:
+	    			return maxWindspeed;
+	    		default:
+	    			System.out.println("error in stats.getMax(), attr: " + attr);
+	    			return 0.;
+    		}
+    	}
+    	
+    	public void setMax(EUROINVESTOR_ATTRIBUTE attr, Double value) {
+    		
+    		switch (attr) {
+    			case development:
+    				maxDevelopment = value;
+    				break;
+    			case close:
+    				maxClose = value;
+    				break;
+    			default:
+    				System.out.println("error in stats.setMax(), attr: " + attr);
+    				break;
+    				
+    		}
+    	}
+    	
+    	public Double getMax(EUROINVESTOR_ATTRIBUTE attr) {
+    		
+    		switch(attr) {
+	    		case development:
+	    			return maxDevelopment;
+	    		case close:
+	    			return maxClose;
+	    		default:
+	    			System.out.println("error in stats.getMin(), attr: " + attr);
+	    			return 0.;
+			
+			}
+    		
+    	}
+    	
+    	public void setMin(WEATHERDAY_ATTRIBUTE attr, Double value) {
+    		
+    		switch (attr) {
+	    		case cloud_cover:
+	    			minCloudcover = value;
+	    			break;
+	    		case dew_point:
+	    			minDewpoint = value;
+	    			break;
+	    		case gust_speed:
+	    			minGustspeed = value;
+	    			break;
+	    		case heat_index:
+	    			minHeatindex = value;
+	    			break;
+	    		case humidity_max:
+	    		case humidity_min:
+	    			minHumidity = value;
+	    			break;
+	    		case precipitation:
+	    			minPrecipitation = value;
+	    			break;
+	    		case pressure:
+	    			minPressure = value;
+	    			break;
+	    		case temperature_max:
+	    		case temperature_mean:
+	    		case temperature_min:
+	    			minTempMin = value;
+	    			break;
+	    		case visibility:
+	    			minVisibility = value;
+	    			break;
+	    		case wind_chill_factor:
+	    			minWindchillfactor = value;
+	    			break;
+	    		case wind_direction:
+	    			minWinddirection = value;
+	    			break;
+	    		case wind_speed_max:
+	    		case wind_speed_mean:
+	    			minWindspeed = value;
+	    			break;
+	    		default:
+	    			System.out.println("error in stats.setMin(), attr: " + attr);   
+	    			break;
+    		}    		
+    	}
+    	public Double getMin(WEATHERDAY_ATTRIBUTE attr) {
+    		
+    		switch(attr) {
+	    		case cloud_cover:
+	    			return minCloudcover;
+	    		case dew_point:
+	    			return minDewpoint;
+	    		case gust_speed:
+	    			return minGustspeed;
+	    		case heat_index:
+	    			return minHeatindex;
+	    		case humidity_max:
+	    		case humidity_min:
+	    			return minHumidity;
+	    		case precipitation:
+	    			return minPrecipitation;
+	    		case pressure:
+	    			return minPressure;
+	    		case temperature_max:
+	    		case temperature_mean:
+	    		case temperature_min:
+	    			return minTempMin;
+	    		case visibility:
+	    			return minVisibility;
+	    		case wind_chill_factor:
+	    			return minWindchillfactor;
+	    		case wind_direction:
+	    			return minWinddirection;
+	    		case wind_speed_max:
+	    		case wind_speed_mean:
+	    			return minWindspeed;
+	    		default:
+	    			System.out.println("error in stats.getMin(), attr: " + attr);
+	    			return 0.;
+			}
+    		
+    	}
+    	
+    	public void setMin(EUROINVESTOR_ATTRIBUTE attr, Double value) {
+    		
+    		switch (attr) {
+				case development:
+					minDevelopment = value;
+					break;
+				case close:
+					minClose = value;
+					break;
+				default:
+					System.out.println("error in stats.setMin(), attr: " + attr);
+					break;
+				
+    		}
+    	}
+    	
+    	public Double getMin(EUROINVESTOR_ATTRIBUTE attr) {
+    		
+    		switch(attr) {
+	    		case development:
+	    			return minDevelopment;
+	    		case close:
+	    			return minClose;
+	    		default:
+	    			System.out.println("error in stats.getMin(), attr: " + attr);
+	    			return 0.;
+    		
+    		}
+    	}
+    	
+
     }
     
     // Min, max, mean and so on
@@ -490,46 +751,32 @@ public class DataManager extends Data {
     	Iterator it = days.entrySet().iterator();
         
     	// stats
-    	stats.maxTempMax = Double.NEGATIVE_INFINITY;
-    	stats.maxTempMean = Double.NEGATIVE_INFINITY;
-    	stats.minTempMin = Double.POSITIVE_INFINITY;
-    	
     	stats.meanHumidity = 0.;
     	stats.meanPrecipitation = 0.;
     	
-    	stats.maxDewpoint = Double.NEGATIVE_INFINITY;
-    	stats.minDewpoint = Double.POSITIVE_INFINITY;
-    	stats.maxGustspeed = Double.NEGATIVE_INFINITY;
-    	stats.minGustspeed = Double.POSITIVE_INFINITY;
-    	stats.maxHeatindex = Double.NEGATIVE_INFINITY;
-    	stats.minHeatindex = Double.POSITIVE_INFINITY;
-    	
+    	// Set all min and max values to positive and negative infinity
+    	// Weatherday
+    	for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+    		
+    		if (get_weatherday_type(attr) == DATA_TYPE.numeric) {
+    			stats.setMax(attr, Double.NEGATIVE_INFINITY);
+    			stats.setMin(attr, Double.POSITIVE_INFINITY);
+    		}
+    	}
+    	// Euroinvestorday
+    	for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
+    		
+    		if (get_euroinvestor_type(attr) == DATA_TYPE.numeric) {
+    			stats.setMax(attr, Double.NEGATIVE_INFINITY);
+    			stats.setMin(attr, Double.POSITIVE_INFINITY);
+    		}
+    	}
+  
         while (it.hasNext()) {
             
         	Map.Entry pairs = (Map.Entry)it.next(); 
             
             Day day = (Day) pairs.getValue();
-            
-            // maxTempMax
-            if (day.get_weatherDay().get_temperature_max() > stats.maxTempMax) {
-            	
-            	stats.maxTempMax = day.get_weatherDay().get_temperature_max();
-            	
-            }
-            
-            // maxTempMean
-            if (day.get_weatherDay().get_temperature_mean() > stats.maxTempMean) {
-            	
-            	stats.maxTempMean = day.get_weatherDay().get_temperature_mean();
-            	
-            }
-            
-            // minTempMin
-            if (day.get_weatherDay().get_temperature_min() < stats.minTempMin) {
-            	
-            	stats.minTempMin = day.get_weatherDay().get_temperature_min();
-            	
-            }
             
             // mean humidity
             
@@ -546,51 +793,41 @@ public class DataManager extends Data {
             	
             }
             
-            Double dewPoint = day.get_weatherDay().get_dew_point();
-            
-            // min dewPoint
-            if (dewPoint < stats.minDewpoint) {
+            // all max and min
+            // Weatherday
+            for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
             	
-            	stats.minDewpoint = dewPoint;
-            	
+            	if (get_weatherday_type(attr) == DATA_TYPE.numeric) {
+            		Double value = (Double) day.get_weatherDay().get(attr);
+            		if (value > stats.getMax(attr)) {
+
+            			stats.setMax(attr, value);
+            			
+                	}
+            		if (value < stats.getMin(attr)) {
+                		
+            			stats.setMin(attr, value);
+            			
+                	}
+            	}
             }
-            // max dewPoint
-            if (dewPoint > stats.maxDewpoint) {
+            // Euroinvestorday
+            for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
             	
-            	stats.maxDewpoint = dewPoint;
-            	
+            	if (get_euroinvestor_type(attr) == DATA_TYPE.numeric) {
+            		Double value = (Double) day.get_euroinvesterDay().get(attr);
+            		if (value > stats.getMax(attr)) {
+                		
+            			stats.setMax(attr, value);
+            			
+                	}
+            		if (value < stats.getMin(attr)) {
+                		
+            			stats.setMin(attr, value);
+            			
+                	}
+            	}
             }
-            
-            Double gustSpeed = day.get_weatherDay().get_gust_speed();
-            
-            // min gustSpeed
-            if (gustSpeed < stats.minGustspeed) {
-            	
-            	stats.minGustspeed = gustSpeed;
-            	
-            }
-            // max gustSpeed
-            if (dewPoint > stats.maxGustspeed) {
-            	
-            	stats.maxGustspeed = gustSpeed;
-            	
-            }
-            
-            Double heatIndex = day.get_weatherDay().get_gust_speed();
-            
-            // min heatIndex
-            if (heatIndex < stats.minHeatindex) {
-            	
-            	stats.minHeatindex = heatIndex;
-            	
-            }
-            // max heatIndex
-            if (heatIndex > stats.maxHeatindex) {
-            	
-            	stats.maxHeatindex = heatIndex;
-            	
-            }
-            
            
             
         }
@@ -963,29 +1200,25 @@ public class DataManager extends Data {
     		
     		case "WEATHERDAY_ATTRIBUTE":
     			WEATHERDAY_ATTRIBUTE w_attr = (WEATHERDAY_ATTRIBUTE) attr;
-    			switch(w_attr) {
-    				// TODO: remove
-    				case date:
-    					return value;
-    				case events:
-    					return value;
-    				case cloud_cover:
-    					return value/10;
-    				case dew_point:
-    					return (value - stats.minDewpoint) / (stats.maxDewpoint - stats.minDewpoint);
-    				case gust_speed:
-    					return (value - stats.minGustspeed) / (stats.maxGustspeed - stats.minGustspeed);
-    				case heat_index:
-    					return (value - stats.minGustspeed) / (stats.maxGustspeed - stats.minGustspeed);
-    			
+    			if (get_weatherday_type(w_attr) == DATA_TYPE.numeric) {
+
+    				return (value - stats.getMin(w_attr)) / (stats.getMax(w_attr) - stats.getMin(w_attr));
+    				
     			}
     			break;
     		case "EUROINVESTOR_ATTRIBUTE":
+    			EUROINVESTOR_ATTRIBUTE e_attr = (EUROINVESTOR_ATTRIBUTE) attr;
+    			if (get_euroinvestor_type(e_attr) == DATA_TYPE.numeric) {
+    				
+    				return (value - stats.getMin(e_attr)) / (stats.getMax(e_attr) - stats.getMin(e_attr));
+    				
+    			}
     			break;
     		default:
     			break;
     	}
-  
+    	
+    	System.out.println("Could not calculate normalized value fro attr " + attr);
     	return 0.0;
     			
     }
@@ -1071,7 +1304,33 @@ public class DataManager extends Data {
         return days.get(date(year, month, day));
 
     }
+    
+    // ordered by date
+    public ArrayList<Day> getDaysAsList() {
+    	
+    	ArrayList<Day> days_list = new ArrayList<Day>();
+    	
+    	Iterator it = days.entrySet().iterator();
 
+        while (it.hasNext()) {
+        
+        	Map.Entry pairs = (Map.Entry)it.next();
+        	days_list.add((Day) pairs.getValue());
+             
+        }
+    	
+        
+        Collections.sort(days_list, new Comparator<Day>() {
+			@Override
+			public int compare(Day day1, Day day2) {
+		        return day1.date.compareTo(day2.date);
+		    }
+        });
+    	return days_list;
+    	
+    }
+    
+    
     public Date date(int year, int month, int day) {
 
         Date date = new Date();

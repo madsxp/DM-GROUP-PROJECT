@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import models.Day;
 import app.Data.EUROINVESTOR_ATTRIBUTE;
 import app.Data.PROPERTY;
+import app.Data.WEATHERDAY_ATTRIBUTE;
 
 public class App {
 
@@ -55,15 +56,24 @@ public class App {
 		
 		// date format: (year, month, date)
 		
-		Visualization visualization = new Visualization();
+		//Visualization visualization = new Visualization();
 		
-		visualization.showDaysTable(dataManager.days);
+		//visualization.showDaysTable(dataManager.days);
 		
-		//KNN knn = new KNN(dataManager.days, dataManager);
+		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
 		
-		Day testDay = dataManager.getDay(2010, 5, 10);
+		Day testDay = trainingSet.get(3403);
+		trainingSet.remove(testDay);
 		
-		//knn.run(testDay, EUROINVESTOR_ATTRIBUTE.development, 100);
+		KNN knn = new KNN(trainingSet, dataManager);
+		
+		
+		
+		Object result = knn.run(testDay, WEATHERDAY_ATTRIBUTE.temperature_max, 20);
+		System.out.println(result);
+		System.out.println(testDay.date);
+		System.out.println(testDay.get_weatherDay().get_temperature_max());
+		
 		
 		// Apriori
 		

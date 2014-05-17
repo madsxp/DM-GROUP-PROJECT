@@ -10,13 +10,13 @@ import models.Day;
 
 public class KNN extends Data {
 
-	private HashMap<Date, Day> trainingSet;
+	private ArrayList<Day> trainingSet;
 	private double[][] distances;
 	private DataManager dataManager;
 	
 	private String classLabelType;
 	
-	public KNN(HashMap<Date, Day> trainingSet, DataManager dataManager) {
+	public KNN(ArrayList<Day> trainingSet, DataManager dataManager) {
 		
 		this.trainingSet = trainingSet;
 		this.dataManager = dataManager;
@@ -24,7 +24,7 @@ public class KNN extends Data {
 	}	
 	
 	// K-nearest neighbours
-	public HashMap<String, Object> run(Day target, Object classLabel, int K) {
+	public Object run(Day target, Object classLabel, int K) {
 
 		System.out.println("----------------------------------------" );
 		System.out.println("Running KNN" );
@@ -46,93 +46,84 @@ public class KNN extends Data {
 //			
 //		}
 		
-//		
-//		HashMap<String, Object> result = new HashMap<String, Object>();
-//		result.put("newValue", countNeighbourClassLabel(K, classLabel));
-//		// TODO: put additional info in the result
-		
+
 		System.out.println("----------------------------------------" );
 		
-		return null;
+		return countNeighbourClassLabel(K, classLabel);
 		
 	}
 	
-//	// Count nearest neighbors classlabel value, and return the one with most occurrences
-//	private Object countNeighbourClassLabel(int K, Object classLabel) {
-//		
-//		if (getType(classLabel) == DataType.NUMERIC) {
-//			
-//			double sum = 0;
-//			
-//			for (int i = 0; i < K; i++) {
-//				
-//				if (trainingSet.get((int) distances[i][1]).get(classLabel) != null) {
-//				
-//					sum += (double) trainingSet.get((int) distances[i][1]).get(classLabel);
-//				
-//				}
-//			}
-//			
-//			return sum / K;
-//			
-//		}
-//		else {
-//				
-//			HashMap<Object, Integer> counter = new HashMap<Object, Integer>();
-//			
-//			for (int i = 0; i < K; i++) {
-//				
-//				Answer neighbour = trainingSet.get((int) distances[i][1]);
-//				
-//				Object attrVal = neighbour.get(classLabel);
-//				
-//				if (!counter.containsKey(attrVal)) {
-//					
-//					counter.put(attrVal, 0);
-//					
-//				}
-//				
-//				counter.put(attrVal, counter.get(attrVal) + 1);
-//				
-//			}
-//			
-//			Iterator it = counter.entrySet().iterator();
-//			
-//			Object attrWithMostCounts = null;
-//			int highestCount = 0;
-//			
-//			while (it.hasNext()) {
-//				 
-//				Map.Entry pairs = (Map.Entry)it.next();
-//				
-//				if ((int) pairs.getValue() > highestCount) {
-//					
-//					highestCount = (int) pairs.getValue();
-//					attrWithMostCounts = pairs.getKey();
-//					
-//				}
-//			}
-//			
-//			return attrWithMostCounts;
-//			
-//		}
-//	}
-//	
+//	// Count nearest neighbors classlabel value, and return the one with most occurrences or mean if numeric
+	private Object countNeighbourClassLabel(int K, Object classLabel) {
+		
+		// if numeric
+		if (get_weatherday_type((WEATHERDAY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
+			
+			Double sum = 0.;
+			
+			for (int i = 0; i < K; i++) {
+			
+				Day neighbour = trainingSet.get((int) distances[i][1]);
+				sum += (Double) neighbour.get_weatherDay().get((WEATHERDAY_ATTRIBUTE) classLabel);
+				
+			}
+			
+			return sum/K;
+			
+		}
+		// if nominal
+		else {
+				
+			HashMap<Object, Integer> counter = new HashMap<Object, Integer>();
+			
+			for (int i = 0; i < K; i++) {
+				
+				Day neighbour = trainingSet.get((int) distances[i][1]);
+				
+				Object attrVal = neighbour.get_weatherDay().get((WEATHERDAY_ATTRIBUTE) classLabel);
+				
+				if (!counter.containsKey(attrVal)) {
+					
+					counter.put(attrVal, 0);
+					
+				}
+				
+				counter.put(attrVal, counter.get(attrVal) + 1);
+				
+			}
+			
+			Iterator it = counter.entrySet().iterator();
+			
+			Object attrWithMostCounts = null;
+			int highestCount = 0;
+			
+			while (it.hasNext()) {
+				 
+				Map.Entry pairs = (Map.Entry)it.next();
+				
+				if ((int) pairs.getValue() > highestCount) {
+					
+					highestCount = (int) pairs.getValue();
+					attrWithMostCounts = pairs.getKey();
+					
+				}
+			}
+			
+			return attrWithMostCounts;
+			
+		}
+	}
+	
 	// Set all distances from the target to all answers in the set
 	private void setAllDistances(Day target, Object classLabel) {
 		
 		distances = new double[trainingSet.size()][2];
 		
-		Iterator it = trainingSet.entrySet().iterator();
-		int n = 0;
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next(); 
-            
-            distances[n] = new double[] { dayDistance((Day) pairs.getValue(), target, classLabel), (double) n };
-            
-            n++;
-        }
-		
+		for (int n = 0; n < trainingSet.size(); n++) {
+        
+            distances[n] = new double[] { dayDistance(trainingSet.get(n), target, classLabel), (double) n };
+
+		}
 		// Sort distances in ascending order
  		for (int i = 0; i < distances.length; i++) {
 			for (int j = 0; j < distances.length - i - 1; j++) {
@@ -163,7 +154,7 @@ public class KNN extends Data {
 				if (attr1 != null && attr2 != null ) {
 					
 					if (attr1.getClass().isArray()) {
-	
+						System.out.println("array?");
 //						Object[] objects1 = (Object[]) attr1;
 //						Object[] objects2 = (Object[]) attr2;
 //						
@@ -174,7 +165,7 @@ public class KNN extends Data {
 //							
 //							for (Object obj2 : objects2) {
 //								
-//								objsSum +=  Math.pow(attrDistance(obj1, obj2, attr), 2);
+//								objsSum +=  Math.pow(attrDistance(obj1, obj2, attr, DATA_MODEL.WeatherDay), 2);
 //								combinations ++;
 //								
 //							}
@@ -208,8 +199,8 @@ public class KNN extends Data {
 				break;
 			case WeatherDay:
 				if (get_weatherday_type((WEATHERDAY_ATTRIBUTE) attr) == DATA_TYPE.numeric) {
-					// TODO: normalized
-					return Math.abs(((double) attr1 - (double) attr2));
+					
+					return Math.abs(dataManager.getNormalizedValue(attr, (double) attr1) - dataManager.getNormalizedValue(attr, (double) attr2));
 					
 				}
 				else {
