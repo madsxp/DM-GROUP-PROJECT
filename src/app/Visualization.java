@@ -185,15 +185,15 @@ public class Visualization extends Data {
 	        		
 	        		switch (get_secondary_type(attr)) {
 		        		case date:
-		        			data = dateParserSimple.format((Date) day.get_euroinvesterDay().get(attr));
+		        			data = dateParserSimple.format((Date) day.get_secondaryDay().get(attr));
 		        			break;
 		        		case nominal:
-		        			data = day.get_euroinvesterDay().get(attr).toString();
+		        			data = day.get_secondaryDay().get(attr).toString();
 		        			break;
 		        		case numeric:
-		        			data = df.format((Double) day.get_euroinvesterDay().get(attr)).toString();
+		        			data = df.format((Double) day.get_secondaryDay().get(attr)).toString();
 		        			// exception for development. Add + symbol for clarity
-		        			if (attr == SECONDARY_ATTRIBUTE.development && (Double) day.get_euroinvesterDay().get(attr) > 0) {
+		        			if (attr == SECONDARY_ATTRIBUTE.development && (Double) day.get_secondaryDay().get(attr) > 0) {
 		        				
 		        				data = "+" + data;
 		        				

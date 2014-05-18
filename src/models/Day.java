@@ -6,7 +6,7 @@ public class Day {
 
 	public Date date;
 	private WeatherDay weatherDay;
-	private SecondaryDay euroinvesterDay;
+	private SecondaryDay secondaryDay;
 	
 	public String getReadableData() {
 		
@@ -15,7 +15,7 @@ public class Day {
 		+ 		"Day\n"
 		+ 		"Date: " + date.toString() + "\n"
 		+		"Weather data: " + weatherDay.getReadableData()
-		+		"Euroinvestor data: " + euroinvesterDay.getReadableData()
+		+		"Euroinvestor data: " + secondaryDay.getReadableData()
 		+		"-----------------------------------------------------\n";
 		
 	}
@@ -39,17 +39,17 @@ public class Day {
 	}
 	
 	// EUROINVESTERDAY
-    public void set_euroinvesterDay(SecondaryDay data) {
+    public void set_secondaryDay(SecondaryDay data) {
 		
-		euroinvesterDay = data;
+		secondaryDay = data;
 		
 	}
 	
-	public SecondaryDay get_euroinvesterDay() {
+	public SecondaryDay get_secondaryDay() {
 		
 		SecondaryDay value = null;
         try {
-            value = euroinvesterDay;
+            value = secondaryDay;
         } catch (Exception e) {
         }
         return value;

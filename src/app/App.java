@@ -84,7 +84,7 @@ public class App extends Data {
 		// create traning set with days that have the trend attribute
 		for (Day day : trainingSet) {
 			
-			if (day.get_euroinvesterDay().get_trend_afbudsrejser() != null) {
+			if (day.get_secondaryDay().get_trend_afbudsrejser() != null) {
 				
 				trainingSetOnlyTrends.add(day);
 				
@@ -238,14 +238,14 @@ public class App extends Data {
 					
 				}
 				
-				Object was = testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
+				Object was = testDay.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel);
 
 				if (get_secondary_type((SECONDARY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
 					
 					Double offBy = Math.abs((Double) result - (Double) was);
 					sum += offBy;
 					if (outputEachRun) {
-						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel));
+						System.out.println("  * Was: " + testDay.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel));
 						System.out.println("  * --- off by " + offBy);
 					}
 				}
@@ -258,7 +258,7 @@ public class App extends Data {
 						
 					}
 					if (outputEachRun) {
-						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel));
+						System.out.println("  * Was: " + testDay.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel));
 						System.out.println("--- " + guessedCorrect);
 					}
 				}

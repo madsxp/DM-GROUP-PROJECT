@@ -837,7 +837,7 @@ public class DataManager extends Data {
             for (SECONDARY_ATTRIBUTE attr : SECONDARY_ATTRIBUTE.values()) {
             	
             	if (get_secondary_type(attr) == DATA_TYPE.numeric) {
-            		Double value = (Double) day.get_euroinvesterDay().get(attr);
+            		Double value = (Double) day.get_secondaryDay().get(attr);
             		
             		if (value != null && value > stats.getMax(attr)) {
                 		
@@ -1009,7 +1009,7 @@ public class DataManager extends Data {
     		switch (attr) {
     		
     			case "afbudsrejser":
-    				day.get_euroinvesterDay().set(SECONDARY_ATTRIBUTE.trend_afbudsrejser, value);
+    				day.get_secondaryDay().set(SECONDARY_ATTRIBUTE.trend_afbudsrejser, value);
     				break;
     			default:
     			
@@ -1021,7 +1021,7 @@ public class DataManager extends Data {
     public void addDiscreteValuesToDay(Day day) {
     	
     	WeatherDay weatherDay = day.get_weatherDay();
-    	SecondaryDay euroinvestorDay = day.get_euroinvesterDay();
+    	SecondaryDay euroinvestorDay = day.get_secondaryDay();
     	
     	// Price development
        	if (euroinvestorDay.get_development() > 0) {
@@ -1314,7 +1314,7 @@ public class DataManager extends Data {
             for (SECONDARY_ATTRIBUTE s_attr : SECONDARY_ATTRIBUTE.values()) {
             	
             	if (get_secondary_type(s_attr) == DATA_TYPE.numeric) {
-            		s_map.put(s_attr, (Double) day.get_euroinvesterDay().get(s_attr));
+            		s_map.put(s_attr, (Double) day.get_secondaryDay().get(s_attr));
             	}
             }
             
@@ -1408,12 +1408,12 @@ public class DataManager extends Data {
 
             if (days.containsKey(date)) {
 
-                days.get(date).set_euroinvesterDay(ed);
+                days.get(date).set_secondaryDay(ed);
 
             } else {
 
                 Day day = new Day();
-                day.set_euroinvesterDay(ed);
+                day.set_secondaryDay(ed);
                 day.date = date;
 
                 days.put(date, day);
@@ -1430,7 +1430,7 @@ public class DataManager extends Data {
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry)it.next(); 
             
-            if (days.get(pairs.getKey()).get_weatherDay() == null || days.get(pairs.getKey()).get_euroinvesterDay() == null) {
+            if (days.get(pairs.getKey()).get_weatherDay() == null || days.get(pairs.getKey()).get_secondaryDay() == null) {
             	
             	toBeRemoved.add((Date)pairs.getKey());
             	

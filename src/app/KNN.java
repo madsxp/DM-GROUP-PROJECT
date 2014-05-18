@@ -144,7 +144,7 @@ public class KNN extends Data {
 				for (int i = 0; i < K; i++) {
 				
 					Day neighbour = trainingSet.get((int) distances[i][1]);
-					sum += (Double) neighbour.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
+					sum += (Double) neighbour.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel);
 					
 				}
 				
@@ -160,7 +160,7 @@ public class KNN extends Data {
 					
 					Day neighbour = trainingSet.get((int) distances[i][1]);
 					
-					Object attrVal = neighbour.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
+					Object attrVal = neighbour.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel);
 					
 					if (!counter.containsKey(attrVal)) {
 						

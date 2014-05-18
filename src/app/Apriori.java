@@ -322,7 +322,7 @@ public class Apriori {
         	ArrayList<PROPERTY> dataSet = new ArrayList<PROPERTY>();
         	
         	Day day = (Day) pairs.getValue();
-        	SecondaryDay euroinvestorDay = day.get_euroinvesterDay();
+        	SecondaryDay euroinvestorDay = day.get_secondaryDay();
         	WeatherDay weatherDay = day.get_weatherDay();
             
             for (PROPERTY property : euroinvestorDay.discreteValues) {
