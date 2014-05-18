@@ -14,7 +14,9 @@ public class KNN extends Data {
 	private double[][] distances;
 	private DataManager dataManager;
 	
-	private String classLabelType;
+	private ArrayList<WEATHERDAY_ATTRIBUTE> restrictedWeatherAttributes;
+	private ArrayList<SECONDARY_ATTRIBUTE> restrictedSecondaryAttributes;
+	
 	
 	public KNN(ArrayList<Day> trainingSet, DataManager dataManager) {
 		
@@ -35,6 +37,13 @@ public class KNN extends Data {
 		
 	}
 	
+	public void setRestrictedAttributes(ArrayList<WEATHERDAY_ATTRIBUTE> weatherAttributes, ArrayList<SECONDARY_ATTRIBUTE> secondaryAttributes) {
+		
+		this.restrictedSecondaryAttributes = secondaryAttributes;
+		this.restrictedWeatherAttributes = weatherAttributes;
+		
+	}
+	
 	// K-nearest neighbours
 	public Object run(Day target, Object classLabel, int K, boolean showFeedback) {
 		
@@ -42,12 +51,10 @@ public class KNN extends Data {
 			System.out.println("----------------------------------------" );
 			System.out.println("Running KNN" );
 			System.out.println("----------------------------------------" );	
-			
 			System.out.println("  * Classifying: " + target.date);
 			System.out.println("  * Class Label: " + classLabel);
 			System.out.println("  * K: " + K);
 		}
-		classLabelType = classLabel.getClass().getSimpleName();
 		
 		// ;
 		
@@ -127,7 +134,7 @@ public class KNN extends Data {
 				
 			}
 		}
-		else if (classLabel.getClass().getSimpleName().equals("EUROINVESTOR_ATTRIBUTE")) {
+		else if (classLabel.getClass().getSimpleName().equals("SECONDARY_ATTRIBUTE")) {
 			
 			// if numeric
 			if (get_secondary_type((SECONDARY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
@@ -222,7 +229,20 @@ public class KNN extends Data {
 		
 		double sum = 0;
 		
-		for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+		ArrayList<WEATHERDAY_ATTRIBUTE> WeatherDayAttributes;
+		
+		if (restrictedWeatherAttributes != null) {
+			
+			WeatherDayAttributes  = restrictedWeatherAttributes;
+			
+		}
+		else {
+		
+			WeatherDayAttributes = getAllWeatherDayAttributes();
+			
+		}
+		
+		for (WEATHERDAY_ATTRIBUTE attr : WeatherDayAttributes) {
 			
 			if (!attr.equals(classLabel)) {
 				// Don't use any temperature attribute if classLabel is one
@@ -245,7 +265,7 @@ public class KNN extends Data {
 								
 								for (Object obj2 : objects2) {
 									
-									objsSum +=  Math.pow(attrDistance(obj1, obj2, attr, DATA_MODEL.WeatherDay), 2);
+									objsSum +=  Math.pow(attrDistance(obj1, obj2, attr, DATA_MODEL.WeatherDay, d1.date), 2);
 									combinations ++;
 									
 								}
@@ -258,7 +278,7 @@ public class KNN extends Data {
 						}
 						else {
 							
-							sum += Math.pow(attrDistance(attr1, attr2, attr, DATA_MODEL.WeatherDay), 2);
+							sum += Math.pow(attrDistance(attr1, attr2, attr, DATA_MODEL.WeatherDay, d1.date), 2);
 						
 						}
 					}
@@ -311,7 +331,7 @@ public class KNN extends Data {
 	}
 
 	// Distance between two attributes
-	private Double attrDistance(Object attr1, Object attr2, Object attr, DATA_MODEL data_model) {
+	private Double attrDistance(Object attr1, Object attr2, Object attr, DATA_MODEL data_model, Date date) {
 		
 		// If value is numeric, return Euclidean distance between the normalized (0.-1.1) values
 		// Else, return 1 if the values are different and 0 if values are the same
@@ -321,7 +341,8 @@ public class KNN extends Data {
 			case SecondaryDay:
 				if (get_secondary_type((SECONDARY_ATTRIBUTE) attr) == DATA_TYPE.numeric) {
 					
-					return Math.abs(dataManager.getNormalizedValue(attr, (double) attr1) - dataManager.getNormalizedValue(attr, (double) attr2));
+					//return Math.abs(dataManager.calculateNormalizedValue(attr, (double) attr1) - dataManager.calculateNormalizedValue(attr, (double) attr2));
+					return Math.abs(dataManager.getNormalizedValueOnDate(date, attr1) - dataManager.getNormalizedValueOnDate(date, attr1));
 					
 				}
 				else {
@@ -332,7 +353,7 @@ public class KNN extends Data {
 			case WeatherDay: 
 				if (get_weatherday_type((WEATHERDAY_ATTRIBUTE) attr) == DATA_TYPE.numeric) {
 					
-					return Math.abs(dataManager.getNormalizedValue(attr, (double) attr1) - dataManager.getNormalizedValue(attr, (double) attr2));
+					return Math.abs(dataManager.calculateNormalizedValue(attr, (double) attr1) - dataManager.calculateNormalizedValue(attr, (double) attr2));
 					
 				}
 				else {

@@ -122,6 +122,45 @@ public class Visualization extends Data {
 		
 	}
 	
+	public void showStringArrayData(String[][] data, String[] headers) {
+		
+		JTable table;
+		
+		table = new JTable(data, headers);
+		
+		table.setFont(new Font("Arial", Font.PLAIN, 13));
+		
+		JScrollPane scrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+	
+		for (int k = 2; k < headers.length; k++) {
+			
+			table.getColumnModel().getColumn(k).setPreferredWidth(headers[k].length()*8);
+			
+		}
+		
+		// set min width of columns
+		table.getColumnModel().getColumn(0).setPreferredWidth(150);
+				
+		table.setRowHeight(30);
+		table.setIntercellSpacing(new Dimension(0,0));
+		
+		JFrame frame = new JFrame("Days");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		frame.add(scrollPane);
+		
+		Container c = frame.getContentPane();
+		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        c.setPreferredSize(d);
+        
+		frame.pack();
+	    frame.setVisible(true);
+		
+	}
+	
 	public String[][] convertDaysToStringArray(HashMap<Date, Day> days) {		
 		
 		String[][] daysS = new String[days.size()][];

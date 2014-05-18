@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 import models.Day;
 import app.Data.DATA_MODEL;
@@ -29,11 +31,13 @@ public class App extends Data {
 		String[][] wundergroundData = reader.readWunderground("data/weather.csv", false);
 		String[] wundergroundHeaders = reader.readHeaders("data/weather.csv");
 		
-		String[][] euroinvesterData = reader.readEuroinvester("data/OMX C20 and OMX C20 CAP.csv", false);
+		String[][] euroinvesterData = reader.readYahooFinanceData("data/OMX C20 and OMX C20 CAP.csv", false);
 		String[] euroinvesterHeaders = reader.readHeaders("data/OMX C20 and OMX C20 CAP.csv");
 		
 		String[][] noaaData = reader.readNoaa("data/weather_noaa.csv", false);
 		String[] noaaHeaders = reader.readHeadersComma("data/weather_noaa.csv");
+		
+		String[][] googleTrendsData = readAndCombineAllGoogleTrends(reader);
 		
 		// Data manager
 		dataManager = new DataManager();
@@ -49,33 +53,110 @@ public class App extends Data {
 		dataManager.createDays();
 		
 		dataManager.addNoaaDataToDays(dataManager.days, noaaData);
+		dataManager.addGoogleTrendsToSecondaryDays(googleTrendsData, getGoogleTrendsHeaders());
 		
 		dataManager.calculateStats();
 		
 		// Add discrete values (for apriori)
 		dataManager.addDiscreteValuesToDays();
 		
+		dataManager.calculateAllNormalizedValues();
+		
 		// date format: (year, month, date)
 		
 		//Visualization visualization = new Visualization();
 		
+		//visualization.showStringArrayData(googleTrendsData, getGoogleTrendsHeaders());
+		
 		//visualization.showDaysTable(dataManager.days);
 		
+		KNN knn = new KNN(dataManager);
 		
-		runRandomKNN(10, WEATHERDAY_ATTRIBUTE.temperature_max, 100, false);
+		ArrayList<WEATHERDAY_ATTRIBUTE> restrictedWeatherdayAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
+		
+		restrictedWeatherdayAttributes.add(WEATHERDAY_ATTRIBUTE.temperature_min);
+		
+		//knn.setRestrictedAttributes(restrictedWeatherdayAttributes, null);
+		
+		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
+		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
+		
+		// create traning set with days that have the trend attribute
+		for (Day day : trainingSet) {
+			
+			if (day.get_euroinvesterDay().get_trend_afbudsrejser() != null) {
+				
+				trainingSetOnlyTrends.add(day);
+				
+			}
+		}
+		
+		runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetOnlyTrends, false);
+		
 		// Apriori
 		
-		Apriori apriori = new Apriori(dataManager.days);
+		//Apriori apriori = new Apriori(dataManager.days);
 		
-		apriori.run(370);
+		//apriori.run(370);
 		
 		//waitForInput();
 		
+		
+
+		
+	}
+	
+	public String[] getGoogleTrendsHeaders() {
+		
+		String[] headers = new String[google_trends.length+1];
+		
+		headers[0] = "Date";
+		
+		for (int i = 1; i < google_trends.length+1; i++) {
+			
+			headers[i] = google_trends[i-1];
+			
+		}
+		
+		return headers;
+		
+	}
+	
+	public String[][] readAndCombineAllGoogleTrends(CSVFileReader reader) throws IOException {
+				
+		String[][] googleTrends = null;
+		
+		for (int i = 0; i < google_trends.length; i++) {
+			
+			String[][] trend = reader.readGoogleTrends("data/google_trends_" + google_trends[i] + ".csv", false);
+			
+			if (googleTrends == null) {
+				
+				googleTrends = new String[trend.length][google_trends.length+1];
+				
+				for (int row = 0; row < trend.length; row++) {
+					
+					googleTrends[row][0] = trend[row][0];
+					
+				}
+			}
+			
+			for (int row = 0; row < trend.length; row++) {
+				if (!googleTrends[row][0].equals(trend[row][0])) {
+					
+					System.out.println("google trends data not lined up");
+					
+				}
+				googleTrends[row][i+1] = trend[row][1];
+				
+			}
+		}
+		
+		return googleTrends;
+		
 	}
 
-	public void runRandomKNN(int numOfRuns, Object classLabel, int K, boolean outputEachRun) {
-		
-		KNN knn = new KNN(dataManager);
+	public void runRandomKNN(KNN knn, int numOfRuns, Object classLabel, int K, ArrayList<Day> trainingSet, boolean outputEachRun) {
 		
 		DATA_MODEL class_label_data_model;
 		String class_label_data_model_str = classLabel.getClass().getSimpleName();
@@ -85,7 +166,7 @@ public class App extends Data {
 			class_label_data_model = DATA_MODEL.WeatherDay;
 			
 		}
-		else if (class_label_data_model_str.equals("EUROINVESTOR_ATTRIBUTE")) {
+		else if (class_label_data_model_str.equals("SECONDARY_ATTRIBUTE")) {
 			
 			class_label_data_model = DATA_MODEL.SecondaryDay;
 			
@@ -102,8 +183,6 @@ public class App extends Data {
 		Double sum = 0.;
 		
 		for (int i = 0; i<numOfRuns; i++) {
-			
-			ArrayList<Day> trainingSet = dataManager.getDaysAsList();
 			
 			int random = (int)(Math.random() * ((trainingSet.size()-1) + 1));
 			

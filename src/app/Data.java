@@ -5,6 +5,13 @@ import java.util.Date;
 
 public class Data {
 
+	String[] google_trends = new String[] { 
+		"solbriller",
+		"ol",
+		"afbudsrejser",
+		"vejrudsigt"
+	};
+	
     public static int weatherDayCount = 0;
 
     public enum EVENT {
@@ -22,7 +29,9 @@ public class Data {
     	date,
     	close,
     	development,
-    	positive_development
+    	positive_development,
+    	// Google trends
+    	trend_afbudsrejser
     	
     }
      
@@ -65,6 +74,7 @@ public class Data {
     	case date:
     		return DATA_TYPE.date;
     	case development:
+    	case trend_afbudsrejser:
     	case close:
     		return DATA_TYPE.numeric;
     	default:
@@ -223,6 +233,20 @@ public class Data {
     	
     	WeatherDay,
     	SecondaryDay
+    	
+    }
+    
+    public ArrayList<WEATHERDAY_ATTRIBUTE> getAllWeatherDayAttributes() {
+    	
+    	ArrayList<WEATHERDAY_ATTRIBUTE> attributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
+    	
+    	for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+    		
+    		attributes.add(attr);
+    		
+    	}
+    	
+    	return attributes;
     	
     }
 

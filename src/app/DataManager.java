@@ -27,7 +27,9 @@ public class DataManager extends Data {
     public String[] headers;
     public Stats stats;
     
-
+    public HashMap<Date, HashMap<WEATHERDAY_ATTRIBUTE, Double>> normalizedWeatherValues;
+    public HashMap<Date, HashMap<SECONDARY_ATTRIBUTE, Double>> normalizedSecondaryValues;
+    
     public DataManager() {
 
         dateParser = new SimpleDateFormat("yyyy-MM-dd");
@@ -496,11 +498,16 @@ public class DataManager extends Data {
     	public Double minWinddirection;
     	public Double minWindspeed;
     	
-    	// Euroinvestor stats
+    	// Secondary data
+    	// Yahoo finance
     	public Double maxDevelopment;
     	public Double minDevelopment;
     	public Double maxClose;
     	public Double minClose;
+    	
+    	// Trend
+    	public Double max_trend_afbudsrejser;
+    	public Double min_trend_afbudsrejser;
     	
     	public void setMax(WEATHERDAY_ATTRIBUTE attr, Double value) {
     		
@@ -597,6 +604,9 @@ public class DataManager extends Data {
     			case close:
     				maxClose = value;
     				break;
+    			case trend_afbudsrejser:
+    				max_trend_afbudsrejser = value;
+    				break;
     			default:
     				System.out.println("error in stats.setMax(), attr: " + attr);
     				break;
@@ -611,6 +621,8 @@ public class DataManager extends Data {
 	    			return maxDevelopment;
 	    		case close:
 	    			return maxClose;
+	    		case trend_afbudsrejser:
+	    			return max_trend_afbudsrejser;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -714,6 +726,9 @@ public class DataManager extends Data {
 				case close:
 					minClose = value;
 					break;
+				case trend_afbudsrejser:
+					min_trend_afbudsrejser = value;
+					break;
 				default:
 					System.out.println("error in stats.setMin(), attr: " + attr);
 					break;
@@ -728,6 +743,8 @@ public class DataManager extends Data {
 	    			return minDevelopment;
 	    		case close:
 	    			return minClose;
+	    		case trend_afbudsrejser:
+	    			return min_trend_afbudsrejser;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -821,12 +838,13 @@ public class DataManager extends Data {
             	
             	if (get_secondary_type(attr) == DATA_TYPE.numeric) {
             		Double value = (Double) day.get_euroinvesterDay().get(attr);
-            		if (value > stats.getMax(attr)) {
+            		
+            		if (value != null && value > stats.getMax(attr)) {
                 		
             			stats.setMax(attr, value);
             			
                 	}
-            		if (value < stats.getMin(attr)) {
+            		if (value != null && value < stats.getMin(attr)) {
                 		
             			stats.setMin(attr, value);
             			
@@ -934,6 +952,70 @@ public class DataManager extends Data {
             addDiscreteValuesToDay(day);
         
         }   
+    }
+    
+    public void addGoogleTrendsToSecondaryDays(String[][] trends, String[] headers) {
+    	
+    	for (int i = 0; i < trends.length; i++) {
+    		
+    		String[] dates = trends[i][0].split(" ");
+    		
+    		String date1_str = dates[0];
+    		String date2_str = dates[2];
+    		
+    		Date date1 = null;
+    		
+    		try {
+				date1 = dateParser.parse(date1_str);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		Date date2 = null;
+    		
+    		try {
+				date2 = dateParser.parse(date2_str);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		for (int n = 0; n < 7; n++) {
+    			
+    			Date date = new Date(date1.getTime() + (n*(1000 * 60 * 60 * 24)));
+    			
+    			for (int j = 1; j<trends[i].length; j++) {
+        			String value_str = trends[i][j];
+    				try {
+    					Double value = Double.parseDouble(value_str);
+    					addGoogleTrendsToSecondaryDay(date, headers[j], value);
+    				}
+    				catch (Exception e) {
+    					
+    				}
+        			
+        		}
+    		}
+    	}
+    }
+    
+    public void addGoogleTrendsToSecondaryDay(Date date, String attr, Double value) {
+    	
+    	Day day = days.get(date);
+		
+    	if (days.containsKey(date)) {
+    		
+    		switch (attr) {
+    		
+    			case "afbudsrejser":
+    				day.get_euroinvesterDay().set(SECONDARY_ATTRIBUTE.trend_afbudsrejser, value);
+    				break;
+    			default:
+    			
+    		
+    		}
+    	}
     }
     
     public void addDiscreteValuesToDay(Day day) {
@@ -1199,7 +1281,69 @@ public class DataManager extends Data {
     	}
     }
     
-    public Double getNormalizedValue(Object attr, Double value) {
+    public void calculateAllNormalizedValues() {
+    	
+    	System.out.println("----------------------------------------" );
+		System.out.println("Calculating all normalized values");
+		System.out.println("----------------------------------------" );
+		System.out.println("----------------------------------------\n" );
+		
+    	normalizedWeatherValues = new HashMap<Date, HashMap<WEATHERDAY_ATTRIBUTE, Double>>();
+        normalizedSecondaryValues = new HashMap<Date, HashMap<SECONDARY_ATTRIBUTE, Double>>();
+    	
+    	Iterator it = days.entrySet().iterator();
+        
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next(); 
+            
+            Day day = (Day) pairs.getValue();
+            
+            HashMap<WEATHERDAY_ATTRIBUTE, Double> w_map = new HashMap<WEATHERDAY_ATTRIBUTE, Double>();
+            
+            for (WEATHERDAY_ATTRIBUTE w_attr : WEATHERDAY_ATTRIBUTE.values()) {
+            	
+            	if (get_weatherday_type(w_attr) == DATA_TYPE.numeric) {
+            		w_map.put(w_attr, (Double) day.get_weatherDay().get(w_attr));
+            	}
+            }
+            
+            normalizedWeatherValues.put(day.date, w_map);
+            
+            HashMap<SECONDARY_ATTRIBUTE, Double> s_map = new HashMap<SECONDARY_ATTRIBUTE, Double>();
+            
+            for (SECONDARY_ATTRIBUTE s_attr : SECONDARY_ATTRIBUTE.values()) {
+            	
+            	if (get_secondary_type(s_attr) == DATA_TYPE.numeric) {
+            		s_map.put(s_attr, (Double) day.get_euroinvesterDay().get(s_attr));
+            	}
+            }
+            
+            normalizedSecondaryValues.put(day.date, s_map);
+        
+        }
+        System.out.println("----------------------------------------\n" );
+    }
+    
+    public Double getNormalizedValueOnDate(Date date, Object attr) {
+
+    	switch (attr.getClass().getSimpleName()) {
+		
+			case "WEATHERDAY_ATTRIBUTE":
+				
+				return normalizedWeatherValues.get(date).get(attr);
+			
+			case "SECONDARY_ATTRIBUTE":
+			
+				return normalizedSecondaryValues.get(date).get(attr);
+				
+			default:
+				System.out.println("error in getNormalizedValueOnDate");
+				return 0.;
+		}
+    	
+    }
+    
+    public Double calculateNormalizedValue(Object attr, Double value) {
     	
     	switch (attr.getClass().getSimpleName()) {
     		
@@ -1211,7 +1355,7 @@ public class DataManager extends Data {
     				
     			}
     			break;
-    		case "EUROINVESTOR_ATTRIBUTE":
+    		case "SECONDARY_ATTRIBUTE":
     			SECONDARY_ATTRIBUTE e_attr = (SECONDARY_ATTRIBUTE) attr;
     			if (get_secondary_type(e_attr) == DATA_TYPE.numeric) {
     				

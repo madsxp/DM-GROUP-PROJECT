@@ -114,8 +114,61 @@ public class CSVFileReader {
 		return lines.toArray(ret);
 	}
 	
+	public static String[][] readGoogleTrends(String csvFile, boolean useNullForBlank)
+			throws IOException {
+
+		List<String[]> lines = new ArrayList<String[]>();
+		
+		BufferedReader bufRdr = new BufferedReader(new FileReader(new File(
+				csvFile)));
+		
+		// skip past information in the start of document
+		int infoLines = 4;
+		for (int i = 0; i < infoLines; i++) {
+			
+			bufRdr.readLine();
+			
+		}
+		
+		// read the header
+		String line = bufRdr.readLine();
+		
+		StringTokenizer tok = new StringTokenizer(line, ",");
+		
+		final int numberOfColumns = tok.countTokens();
+		
+		// read each line of text file
+		while ((line = bufRdr.readLine()) != null) {
+			
+			if (line.length() == 0) {
+				
+				break;
+				
+			}
+				
+			int col = 0;
+
+			String[] cols = line.split(",");
 	
-	public static String[][] readEuroinvester(String csvFile, boolean useNullForBlank)
+			String[] lineTokens = new String[numberOfColumns];
+			while (col < numberOfColumns) {
+				// get next token and store it in the array
+				lineTokens[col] = cols[col];
+				if (!useNullForBlank && lineTokens[col] == null)
+					lineTokens[col] = "";
+				col++;
+			}
+
+			lines.add(lineTokens);
+		}
+		String[][] ret = new String[lines.size()][];
+		bufRdr.close();		
+		
+		return lines.toArray(ret);
+	}
+	
+	
+	public static String[][] readYahooFinanceData(String csvFile, boolean useNullForBlank)
 			throws IOException {
 		
 		System.out.println("----------------------------------------" );
@@ -218,5 +271,7 @@ public class CSVFileReader {
 		return arr;
 		
 	}
+	
+	
 	
 }
