@@ -130,14 +130,14 @@ public class KNN extends Data {
 		else if (classLabel.getClass().getSimpleName().equals("EUROINVESTOR_ATTRIBUTE")) {
 			
 			// if numeric
-			if (get_euroinvestor_type((EUROINVESTOR_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
+			if (get_secondary_type((SECONDARY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
 				
 				Double sum = 0.;
 				
 				for (int i = 0; i < K; i++) {
 				
 					Day neighbour = trainingSet.get((int) distances[i][1]);
-					sum += (Double) neighbour.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel);
+					sum += (Double) neighbour.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
 					
 				}
 				
@@ -153,7 +153,7 @@ public class KNN extends Data {
 					
 					Day neighbour = trainingSet.get((int) distances[i][1]);
 					
-					Object attrVal = neighbour.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel);
+					Object attrVal = neighbour.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
 					
 					if (!counter.containsKey(attrVal)) {
 						
@@ -318,8 +318,8 @@ public class KNN extends Data {
 		
 		switch (data_model) {
 		
-			case EuroinvestorDay:
-				if (get_euroinvestor_type((EUROINVESTOR_ATTRIBUTE) attr) == DATA_TYPE.numeric) {
+			case SecondaryDay:
+				if (get_secondary_type((SECONDARY_ATTRIBUTE) attr) == DATA_TYPE.numeric) {
 					
 					return Math.abs(dataManager.getNormalizedValue(attr, (double) attr1) - dataManager.getNormalizedValue(attr, (double) attr2));
 					

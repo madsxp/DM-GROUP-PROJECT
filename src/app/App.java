@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import models.Day;
 import app.Data.DATA_MODEL;
 import app.Data.DATA_TYPE;
-import app.Data.EUROINVESTOR_ATTRIBUTE;
+import app.Data.SECONDARY_ATTRIBUTE;
 import app.Data.WEATHERDAY_ATTRIBUTE;
 
 public class App extends Data {
@@ -39,12 +39,12 @@ public class App extends Data {
 		dataManager = new DataManager();
 		
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
-		dataManager.fitAllEuroinvesterData(euroinvesterData, euroinvesterHeaders);
+		dataManager.fitAllSecondaryData(euroinvesterData, euroinvesterHeaders);
                 
                 
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
-		dataManager.addAdditionalDataToEuroinvestorDay(dataManager.euroinvesterData);
+		dataManager.addAdditionalDataToSecondaryDay(dataManager.secondaryData);
 		
 		dataManager.createDays();
 		
@@ -87,7 +87,7 @@ public class App extends Data {
 		}
 		else if (class_label_data_model_str.equals("EUROINVESTOR_ATTRIBUTE")) {
 			
-			class_label_data_model = DATA_MODEL.EuroinvestorDay;
+			class_label_data_model = DATA_MODEL.SecondaryDay;
 			
 		}
 		else {
@@ -148,7 +148,7 @@ public class App extends Data {
 					}
 				}
 			}
-			else if (class_label_data_model == DATA_MODEL.EuroinvestorDay) {
+			else if (class_label_data_model == DATA_MODEL.SecondaryDay) {
 				
 				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
 				
@@ -159,14 +159,14 @@ public class App extends Data {
 					
 				}
 				
-				Object was = testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel);
+				Object was = testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel);
 
-				if (get_euroinvestor_type((EUROINVESTOR_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
+				if (get_secondary_type((SECONDARY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
 					
 					Double offBy = Math.abs((Double) result - (Double) was);
 					sum += offBy;
 					if (outputEachRun) {
-						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel));
+						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel));
 						System.out.println("  * --- off by " + offBy);
 					}
 				}
@@ -179,7 +179,7 @@ public class App extends Data {
 						
 					}
 					if (outputEachRun) {
-						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel));
+						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((SECONDARY_ATTRIBUTE) classLabel));
 						System.out.println("--- " + guessedCorrect);
 					}
 				}

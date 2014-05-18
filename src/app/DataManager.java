@@ -15,13 +15,13 @@ import java.util.Map;
 import javax.swing.text.html.MinimalHTMLWriter;
 
 import models.Day;
-import models.EuroinvesterDay;
+import models.SecondaryDay;
 import models.WeatherDay;
 
 public class DataManager extends Data {
 
     public ArrayList<WeatherDay> weatherData;
-    public ArrayList<EuroinvesterDay> euroinvesterData;
+    public ArrayList<SecondaryDay> secondaryData;
     private SimpleDateFormat dateParser;
     public HashMap<Date, Day> days;
     public String[] headers;
@@ -369,19 +369,19 @@ public class DataManager extends Data {
 		
     }
     
-    public void addAdditionalDataToEuroinvestorDay(ArrayList<EuroinvesterDay> euroinvestorDays) {
+    public void addAdditionalDataToSecondaryDay(ArrayList<SecondaryDay> euroinvestorDays) {
     	
     	System.out.println("----------------------------------------" );
 		System.out.println("Adding additional data to EuroinvestorDays");
 		System.out.println("----------------------------------------" );
 		System.out.println("  * Price development");
 		
-		EuroinvesterDay previousDay = new EuroinvesterDay();
+		SecondaryDay previousDay = new SecondaryDay();
 		previousDay.set_close(0);
 		
-        for (EuroinvesterDay ed : euroinvestorDays) {
+        for (SecondaryDay ed : euroinvestorDays) {
         	
-        	addAdditionalEuroinvestorDataToDay(ed, previousDay);
+        	addAdditionalSecondaryDataToDay(ed, previousDay);
         	previousDay = ed;
 
         }
@@ -390,7 +390,7 @@ public class DataManager extends Data {
         
     }
     
-    public void addAdditionalEuroinvestorDataToDay(EuroinvesterDay euroinvestorDay, EuroinvesterDay previousDay) {
+    public void addAdditionalSecondaryDataToDay(SecondaryDay euroinvestorDay, SecondaryDay previousDay) {
     	
     	// development
     	euroinvestorDay.set_development(euroinvestorDay.get_close() - previousDay.get_close());
@@ -588,7 +588,7 @@ public class DataManager extends Data {
     		}
     	}
     	
-    	public void setMax(EUROINVESTOR_ATTRIBUTE attr, Double value) {
+    	public void setMax(SECONDARY_ATTRIBUTE attr, Double value) {
     		
     		switch (attr) {
     			case development:
@@ -604,7 +604,7 @@ public class DataManager extends Data {
     		}
     	}
     	
-    	public Double getMax(EUROINVESTOR_ATTRIBUTE attr) {
+    	public Double getMax(SECONDARY_ATTRIBUTE attr) {
     		
     		switch(attr) {
 	    		case development:
@@ -705,7 +705,7 @@ public class DataManager extends Data {
     		
     	}
     	
-    	public void setMin(EUROINVESTOR_ATTRIBUTE attr, Double value) {
+    	public void setMin(SECONDARY_ATTRIBUTE attr, Double value) {
     		
     		switch (attr) {
 				case development:
@@ -721,7 +721,7 @@ public class DataManager extends Data {
     		}
     	}
     	
-    	public Double getMin(EUROINVESTOR_ATTRIBUTE attr) {
+    	public Double getMin(SECONDARY_ATTRIBUTE attr) {
     		
     		switch(attr) {
 	    		case development:
@@ -769,9 +769,9 @@ public class DataManager extends Data {
     		}
     	}
     	// Euroinvestorday
-    	for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
+    	for (SECONDARY_ATTRIBUTE attr : SECONDARY_ATTRIBUTE.values()) {
     		
-    		if (get_euroinvestor_type(attr) == DATA_TYPE.numeric) {
+    		if (get_secondary_type(attr) == DATA_TYPE.numeric) {
     			stats.setMax(attr, Double.NEGATIVE_INFINITY);
     			stats.setMin(attr, Double.POSITIVE_INFINITY);
     		}
@@ -817,9 +817,9 @@ public class DataManager extends Data {
             	}
             }
             // Euroinvestorday
-            for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
+            for (SECONDARY_ATTRIBUTE attr : SECONDARY_ATTRIBUTE.values()) {
             	
-            	if (get_euroinvestor_type(attr) == DATA_TYPE.numeric) {
+            	if (get_secondary_type(attr) == DATA_TYPE.numeric) {
             		Double value = (Double) day.get_euroinvesterDay().get(attr);
             		if (value > stats.getMax(attr)) {
                 		
@@ -842,7 +842,7 @@ public class DataManager extends Data {
         
     }
 
-    public void fitAllEuroinvesterData(String[][] data, String[] headers) {
+    public void fitAllSecondaryData(String[][] data, String[] headers) {
 
         if (data.length > 0) {
         	
@@ -852,13 +852,13 @@ public class DataManager extends Data {
     		System.out.println("Creating EuroinvestorDays" );
     		System.out.println("----------------------------------------" );
     		
-            euroinvesterData = new ArrayList<EuroinvesterDay>();
+            secondaryData = new ArrayList<SecondaryDay>();
 
             for (String[] row : data) {
             	
-            	EuroinvesterDay ed = fitEuroinvesterEntry(row, headers);
+            	SecondaryDay ed = fitSecondaryEntry(row, headers);
             	if (ed != null)
-            		euroinvesterData.add(ed);
+            		secondaryData.add(ed);
             	else
             		skipped++;
 
@@ -871,9 +871,9 @@ public class DataManager extends Data {
     }
 
     // Create a EuroinvesterDay object and fit data to it
-    public EuroinvesterDay fitEuroinvesterEntry(String[] data, String[] headers) {
+    public SecondaryDay fitSecondaryEntry(String[] data, String[] headers) {
 
-        EuroinvesterDay ed = new EuroinvesterDay();
+        SecondaryDay ed = new SecondaryDay();
 
         // Date
         int index_date = Arrays.asList(headers).indexOf("Date");
@@ -939,7 +939,7 @@ public class DataManager extends Data {
     public void addDiscreteValuesToDay(Day day) {
     	
     	WeatherDay weatherDay = day.get_weatherDay();
-    	EuroinvesterDay euroinvestorDay = day.get_euroinvesterDay();
+    	SecondaryDay euroinvestorDay = day.get_euroinvesterDay();
     	
     	// Price development
        	if (euroinvestorDay.get_development() > 0) {
@@ -1212,8 +1212,8 @@ public class DataManager extends Data {
     			}
     			break;
     		case "EUROINVESTOR_ATTRIBUTE":
-    			EUROINVESTOR_ATTRIBUTE e_attr = (EUROINVESTOR_ATTRIBUTE) attr;
-    			if (get_euroinvestor_type(e_attr) == DATA_TYPE.numeric) {
+    			SECONDARY_ATTRIBUTE e_attr = (SECONDARY_ATTRIBUTE) attr;
+    			if (get_secondary_type(e_attr) == DATA_TYPE.numeric) {
     				
     				return (value - stats.getMin(e_attr)) / (stats.getMax(e_attr) - stats.getMin(e_attr));
     				
@@ -1257,8 +1257,8 @@ public class DataManager extends Data {
 
         }
 
-        // EuroinvestorDays
-        for (EuroinvesterDay ed : euroinvesterData) {
+        // SecondaryDays
+        for (SecondaryDay ed : secondaryData) {
 
             Date date = ed.get_date();
 

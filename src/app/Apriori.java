@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import models.Day;
-import models.EuroinvesterDay;
+import models.SecondaryDay;
 import models.WeatherDay;
 import app.Data.PROPERTY;
 
@@ -322,7 +322,7 @@ public class Apriori {
         	ArrayList<PROPERTY> dataSet = new ArrayList<PROPERTY>();
         	
         	Day day = (Day) pairs.getValue();
-        	EuroinvesterDay euroinvestorDay = day.get_euroinvesterDay();
+        	SecondaryDay euroinvestorDay = day.get_euroinvesterDay();
         	WeatherDay weatherDay = day.get_weatherDay();
             
             for (PROPERTY property : euroinvestorDay.discreteValues) {

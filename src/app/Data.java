@@ -16,166 +16,8 @@ public class Data {
         HAIL,
         TORNADO
     }
-
-    public enum APRIORI_TEMPERATURE_MAX {
-
-        MAXMinusInfinityToMinus15,
-        MAXMinus15toMinus10,
-        MAXMinus10toMinus5,
-        MAXMinus5toZero,
-        MAXZeroTo5,
-        MAX5To10,
-        MAX10To15,
-        MAX15To20,
-        MAX20To25,
-        MAX25To30,
-        MAX30To35,
-        MAX35ToInfinity
-    }
-
-    public enum APRIORI_TEMPERATURE_MIN {
-
-        MINMinusInfinityToMinus15,
-        MINMinus15toMinus10,
-        MINMinus10toMinus5,
-        MINMinus5toZero,
-        MINZeroTo5,
-        MIN5To10,
-        MIN10To15,
-        MIN15To20,
-        MIN20To25,
-        MIN25To30,
-        MIN30To35,
-        MIN35ToInfinity
-    }
-
-    public enum APRIORI_TEMPERATURE_MEAN {
-
-        MEANMinusInfinityToMinus15,
-        MEANMinus15toMinus10,
-        MEANMinus10toMinus5,
-        MEANMinus5toZero,
-        MEANZeroTo5,
-        MEAN5To10,
-        MEAN10To15,
-        MEAN15To20,
-        MEAN20To25,
-        MEAN25To30,
-        MEAN30To35,
-        MEAN35ToInfinity
-    }
-
-    public enum APRIORY_WIND_SPEED_MAX {
-
-        MAXCalm,
-        MAXLightAir,
-        MAXLightBreeze,
-        MAXGentleBreese,
-        MAXModerate,
-        MAXFreshBreeze,
-        MAXStrongBreeeze,
-        MAXModerateGale,
-        MAXFreshGale,
-        MAXStrongGale,
-        MAXWholeGale,
-        MAXStorm,
-        MAXHurricane
-    }
-
-    public enum APRIORY_WIND_SPEED_MEAN {
-
-        MEANCalm,
-        MEANLightAir,
-        MEANLightBreeze,
-        MEANGentleBreeze,
-        MEANModerate,
-        MEANFreshBreeze,
-        MEANStrongBreeze,
-        MEANModerateGale,
-        MEANFreshGale,
-        MEANStrongGale,
-        MEANStorm,
-        MEANViolentStorm,
-        MEANHurricane
-    }
     
-    public enum APRIORY_GUST_SPEED {
-
-        KMPERHOURHigh,
-        KMPERHOURMid,
-        KMPERHOURLow
-        
-    }
-    
-     public enum APRIORY_WIND_DIRECTION {
-
-        NORTHERN,
-        NORTHEASTERN,
-        EASTERN,
-        SOUTHEASTERN,
-        SOUTHERN,
-        SOUTHWESTERN,
-        WESTERN,
-        NORTHWESTERN
-        
-    }
-
-    public enum APRIORY_MAX_HUMIDITY {
-
-        MAXHigh,
-        MAXMid,
-        MAXLow
-    
-    }
-
-    public enum APRIORY_MIN_HUMIDITY {
-
-        MINHigh,
-        MINMid,
-        MINLow
-    }
-
-    public enum APRIORY_DEW_POINT {
-        
-        CELSIUSHigh,
-        CELSIUSMid,
-        CELSIUSLow
-        
-    }
-    
-    public enum APRIORY_PRESSURE {
-
-        HPAHigh,
-        HPAMid,
-        HPALow
-        
-    }
-    
-    public enum APRIORY_VISIBILITY {
-
-        KMHigh,
-        KMMid,
-        KMLow
-        
-    }
-    
-     public enum APRIORY_CLOUD_COVER {
-
-        High,
-        Mid,
-        Low
-    }
-     
-     public enum APRIORY_PRECIPITATION {
-    	 
-    	 no_rain,
-    	 small_rain,
-    	 medium_rain,
-    	 high_rain
-         
-    }
-    
-    public enum EUROINVESTOR_ATTRIBUTE {
+    public enum SECONDARY_ATTRIBUTE {
     	
     	date,
     	close,
@@ -217,7 +59,7 @@ public class Data {
     
     }
     
-    public DATA_TYPE get_euroinvestor_type(EUROINVESTOR_ATTRIBUTE attr) {
+    public DATA_TYPE get_secondary_type(SECONDARY_ATTRIBUTE attr) {
     	
     	switch (attr) {
     	case date:
@@ -380,7 +222,7 @@ public class Data {
     public enum DATA_MODEL {
     	
     	WeatherDay,
-    	EuroinvestorDay
+    	SecondaryDay
     	
     }
 

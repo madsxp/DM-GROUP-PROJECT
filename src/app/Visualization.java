@@ -3,7 +3,6 @@ package app;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -23,13 +22,11 @@ import models.Day;
 
 public class Visualization extends Data {
 	
-	private SimpleDateFormat dateParser;
 	private SimpleDateFormat dateParserSimple;
 	private DecimalFormat df;
 	
 	public Visualization() {
-		
-		dateParser = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+
 		dateParserSimple = new SimpleDateFormat("yyyy-MM-dd EEE");
 		df = new DecimalFormat("#.#");
 		
@@ -39,11 +36,11 @@ public class Visualization extends Data {
 		
 		String[][] daysS = convertDaysToStringArray(days);
 		// -1 because both has date
-		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+EUROINVESTOR_ATTRIBUTE.values().length-1;
+		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+SECONDARY_ATTRIBUTE.values().length-1;
 		String[] headers = new String[numOfcolumns];
 		
 		int i = 0;
-		for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
+		for (SECONDARY_ATTRIBUTE attr : SECONDARY_ATTRIBUTE.values()) {
     		
     		headers[i] = attr.toString();
        		i++;  		
@@ -131,7 +128,7 @@ public class Visualization extends Data {
 		
 		Iterator it = days.entrySet().iterator();
 		// TODO: +1 is a bit dirty...
-		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+EUROINVESTOR_ATTRIBUTE.values().length-1;
+		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+SECONDARY_ATTRIBUTE.values().length-1;
 		int j = 0;
 		
         while (it.hasNext()) {
@@ -141,13 +138,13 @@ public class Visualization extends Data {
         	String[] dayS = new String[numOfcolumns];
         	
         	int i = 0;
-        	for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
+        	for (SECONDARY_ATTRIBUTE attr : SECONDARY_ATTRIBUTE.values()) {
         		
 	        		String data;
 	        		
 	        		data = null;
 	        		
-	        		switch (get_euroinvestor_type(attr)) {
+	        		switch (get_secondary_type(attr)) {
 		        		case date:
 		        			data = dateParserSimple.format((Date) day.get_euroinvesterDay().get(attr));
 		        			break;
@@ -157,7 +154,7 @@ public class Visualization extends Data {
 		        		case numeric:
 		        			data = df.format((Double) day.get_euroinvesterDay().get(attr)).toString();
 		        			// exception for development. Add + symbol for clarity
-		        			if (attr == EUROINVESTOR_ATTRIBUTE.development && (Double) day.get_euroinvesterDay().get(attr) > 0) {
+		        			if (attr == SECONDARY_ATTRIBUTE.development && (Double) day.get_euroinvesterDay().get(attr) > 0) {
 		        				
 		        				data = "+" + data;
 		        				

@@ -2,14 +2,15 @@ package models;
 import java.util.ArrayList;
 import java.util.Date;
 
-import app.Data;
-import app.Data.EUROINVESTOR_ATTRIBUTE;
 import app.Data.PROPERTY;
-import app.Data.WEATHERDAY_ATTRIBUTE;
+import app.Data.SECONDARY_ATTRIBUTE;
 
-public class EuroinvesterDay {
-
+public class SecondaryDay {
+	
+	// Date
 	private Date date;
+	
+	// Yahoo finance data
 	private Double close;
 	private Double development;
 	private Boolean positive_development;
@@ -19,7 +20,7 @@ public class EuroinvesterDay {
 	
 	// CONSTRUCTOR
 	
-	public EuroinvesterDay() {
+	public SecondaryDay() {
 		
 		discreteValues = new ArrayList<PROPERTY>();
 		
@@ -32,7 +33,7 @@ public class EuroinvesterDay {
 		
 	}
 	
-	public Object get(EUROINVESTOR_ATTRIBUTE attr) {
+	public Object get(SECONDARY_ATTRIBUTE attr) {
     	
     	switch(attr) {
     		
@@ -50,7 +51,7 @@ public class EuroinvesterDay {
     	}
     }
 	
-	public Object set(EUROINVESTOR_ATTRIBUTE attr, Object value) {
+	public Object set(SECONDARY_ATTRIBUTE attr, Object value) {
     	
     	switch(attr) {
     		
