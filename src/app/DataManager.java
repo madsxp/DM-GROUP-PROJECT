@@ -392,7 +392,12 @@ public class DataManager extends Data {
     
     public void addAdditionalEuroinvestorDataToDay(EuroinvesterDay euroinvestorDay, EuroinvesterDay previousDay) {
     	
+    	// development
     	euroinvestorDay.set_development(euroinvestorDay.get_close() - previousDay.get_close());
+    	
+    	// positive development bool
+    	// TODO: 0 is not possible
+    	euroinvestorDay.set_positive_development(euroinvestorDay.get_development() >= 0);
     	
     }
     

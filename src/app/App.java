@@ -6,11 +6,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import models.Day;
+import app.Data.DATA_MODEL;
+import app.Data.DATA_TYPE;
 import app.Data.EUROINVESTOR_ATTRIBUTE;
-import app.Data.PROPERTY;
 import app.Data.WEATHERDAY_ATTRIBUTE;
 
-public class App {
+public class App extends Data {
 
 	DataManager dataManager;	
 	
@@ -60,30 +61,153 @@ public class App {
 		
 		//visualization.showDaysTable(dataManager.days);
 		
-		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
 		
-		Day testDay = trainingSet.get(3403);
-		trainingSet.remove(testDay);
-		
-		KNN knn = new KNN(trainingSet, dataManager);
-		
-		
-		
-		Object result = knn.run(testDay, WEATHERDAY_ATTRIBUTE.temperature_max, 20);
-		System.out.println(result);
-		System.out.println(testDay.date);
-		System.out.println(testDay.get_weatherDay().get_temperature_max());
-		
-		
+		runRandomKNN(10, WEATHERDAY_ATTRIBUTE.temperature_max, 100, false);
 		// Apriori
 		
-		//Apriori apriori = new Apriori(dataManager.days);
+		Apriori apriori = new Apriori(dataManager.days);
 		
-		//apriori.run(370);
+		apriori.run(370);
 		
 		//waitForInput();
 		
 	}
+
+	public void runRandomKNN(int numOfRuns, Object classLabel, int K, boolean outputEachRun) {
+		
+		KNN knn = new KNN(dataManager);
+		
+		DATA_MODEL class_label_data_model;
+		String class_label_data_model_str = classLabel.getClass().getSimpleName();
+		
+		if (class_label_data_model_str.equals("WEATHERDAY_ATTRIBUTE")) {
+			
+			class_label_data_model = DATA_MODEL.WeatherDay;
+			
+		}
+		else if (class_label_data_model_str.equals("EUROINVESTOR_ATTRIBUTE")) {
+			
+			class_label_data_model = DATA_MODEL.EuroinvestorDay;
+			
+		}
+		else {
+			
+			//TODO: error
+			System.out.println("not a valid classLabel");
+			return;
+			
+		}		
+		
+		int numberOfCorrects = 0;
+		Double sum = 0.;
+		
+		for (int i = 0; i<numOfRuns; i++) {
+			
+			ArrayList<Day> trainingSet = dataManager.getDaysAsList();
+			
+			int random = (int)(Math.random() * ((trainingSet.size()-1) + 1));
+			
+			Day testDay = trainingSet.get(random);
+			trainingSet.remove(testDay);
+			
+			knn.setTrainingSet(trainingSet);
+			
+			if (class_label_data_model == DATA_MODEL.WeatherDay) {
+				
+				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
+				
+				if (outputEachRun) {
+	
+					System.out.println("\n  * On day: " + testDay.date);
+					System.out.println("  * Guessed: " + result);
+					
+				}
+				
+				Object was = testDay.get_weatherDay().get((WEATHERDAY_ATTRIBUTE) classLabel);
+
+				if (get_weatherday_type((WEATHERDAY_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
+					
+					Double offBy = Math.abs((Double) result - (Double) was);
+					sum += offBy;
+					if (outputEachRun) {
+						System.out.println("  * Was: " + testDay.get_weatherDay().get((WEATHERDAY_ATTRIBUTE) classLabel));
+						System.out.println("  * --- off by " + offBy);
+					}
+				}
+				else {
+					
+					Boolean guessedCorrect = result.equals(was);
+					if (guessedCorrect) {
+						
+						numberOfCorrects ++;
+						
+					}
+					if (outputEachRun) {
+						System.out.println("  * Was: " + testDay.get_weatherDay().get((WEATHERDAY_ATTRIBUTE) classLabel));
+						System.out.println("--- " + guessedCorrect);
+					}
+				}
+			}
+			else if (class_label_data_model == DATA_MODEL.EuroinvestorDay) {
+				
+				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
+				
+				if (outputEachRun) {
+	
+					System.out.println("\n  * On day: " + testDay.date);
+					System.out.println("  * Guessed: " + result);
+					
+				}
+				
+				Object was = testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel);
+
+				if (get_euroinvestor_type((EUROINVESTOR_ATTRIBUTE) classLabel) == DATA_TYPE.numeric) {
+					
+					Double offBy = Math.abs((Double) result - (Double) was);
+					sum += offBy;
+					if (outputEachRun) {
+						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel));
+						System.out.println("  * --- off by " + offBy);
+					}
+				}
+				else {
+					
+					Boolean guessedCorrect = result.equals(was);
+					if (guessedCorrect) {
+						
+						numberOfCorrects ++;
+						
+					}
+					if (outputEachRun) {
+						System.out.println("  * Was: " + testDay.get_euroinvesterDay().get((EUROINVESTOR_ATTRIBUTE) classLabel));
+						System.out.println("--- " + guessedCorrect);
+					}
+				}
+			}
+			if (outputEachRun) {
+				System.out.println("----------------------------------------");
+			}
+			else {
+				
+				System.out.println(i + "/" + numOfRuns);
+				
+			}
+		}
+		
+		if (sum>0) {
+			
+			System.out.println("\nOff by mean : " + sum/numOfRuns);
+			
+		}
+		else {
+		
+			System.out.println("\nCorrects : " + numberOfCorrects);
+			System.out.println(numberOfCorrects + "/" + numOfRuns);
+			System.out.println(((double) numberOfCorrects / (double) numOfRuns * 100) + "%");
+			
+		}
+	}
+	
 	
 	public void waitForInput() throws IOException {
 		

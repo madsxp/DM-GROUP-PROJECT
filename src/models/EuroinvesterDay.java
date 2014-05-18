@@ -12,6 +12,7 @@ public class EuroinvesterDay {
 	private Date date;
 	private Double close;
 	private Double development;
+	private Boolean positive_development;
 	
 	// discrete values (for apriori)
 	public ArrayList<PROPERTY> discreteValues;
@@ -41,6 +42,26 @@ public class EuroinvesterDay {
 	    		return get_development();
 	    	case date:
 	    		return get_date();
+	    	case positive_development:
+	    		return get_positive_development();
+    		default:
+    			return null;
+    		
+    	}
+    }
+	
+	public Object set(EUROINVESTOR_ATTRIBUTE attr, Object value) {
+    	
+    	switch(attr) {
+    		
+	    	case close:
+	    		set_close((Double) value);
+	    	case development:
+	    		set_development((Double) value);
+	    	case date:
+	    		set_date((Date) value);
+	    	case positive_development:
+	    		set_positive_development((Boolean) value);
     		default:
     			return null;
     		
@@ -90,6 +111,19 @@ public class EuroinvesterDay {
 		
 	}
 
+	// POSITIVE_DEVELOPMENT	
+	
+	public void set_positive_development(Boolean data) {
+		
+		positive_development = data;
+		
+	}
+	
+	public Boolean get_positive_development() {
+		
+		return positive_development;
+		
+	}
 }
 
 

@@ -179,7 +179,8 @@ public class Data {
     	
     	date,
     	close,
-    	development
+    	development,
+    	positive_development
     	
     }
      
