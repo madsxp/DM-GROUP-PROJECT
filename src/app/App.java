@@ -22,15 +22,10 @@ public class App extends Data {
 	
 	public void run() throws IOException {
 
-		// Load file
+		// CSV file reader
 		CSVFileReader reader = new CSVFileReader();
 		
-//		String[][] wundergroundData = reader.readWunderground("/Users/mads/Google Drive/DEV/S3/DM-GROUP-PROJECT/data/weather.csv", false);
-//		String[] wundergroundHeaders = reader.readHeaders("/Users/mads/Google Drive/DEV/S3/DM-GROUP-PROJECT/data/weather.csv");
-//		
-//		String[][] euroinvesterData = reader.readEuroinvester("/Users/mads/Google Drive/DEV/S3/DM-GROUP-PROJECT/data/OMX C20 and OMX C20 CAP.csv", false);
-//		String[] euroinvesterHeaders = reader.readHeaders("/Users/mads/Google Drive/DEV/S3/DM-GROUP-PROJECT/data/OMX C20 and OMX C20 CAP.csv");
-//		
+		// Load all our data sets
 		String[][] wundergroundData = reader.readWunderground("data/weather.csv", false);
 		String[] wundergroundHeaders = reader.readHeaders("data/weather.csv");
 		
@@ -46,18 +41,20 @@ public class App extends Data {
 		dataManager = new DataManager();
 		
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
-		dataManager.fitAllSecondaryData(euroinvesterData, euroinvesterHeaders);
-                
+		dataManager.fitAllSecondaryData(euroinvesterData, euroinvesterHeaders);       
                 
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
 		dataManager.addAdditionalDataToSecondaryDay(dataManager.secondaryData);
 		
+		// Combine weatherDays and secondaryDays into Days
+		// Hash on Date
 		dataManager.createDays();
 		
 		dataManager.addNoaaDataToDays(dataManager.days, noaaData);
 		dataManager.addGoogleTrendsToSecondaryDays(googleTrendsData, getGoogleTrendsHeaders());
 		
+		// Min, Max, mean on all numeric attributes
 		dataManager.calculateStats();
 		
 		// Add discrete values (for apriori)
@@ -67,30 +64,80 @@ public class App extends Data {
 		
 		// date format: (year, month, date)
 		
-		//Visualization visualization = new Visualization();
+		Visualization visualization = new Visualization();
 		
 		//visualization.showStringArrayData(googleTrendsData, getGoogleTrendsHeaders());
 		
 		//visualization.showDaysTable(dataManager.days);
 		
-		//KNN knn = new KNN(dataManager);
-		
-		//ArrayList<WEATHERDAY_ATTRIBUTE> restrictedWeatherdayAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
-		
-		//restrictedWeatherdayAttributes.add(WEATHERDAY_ATTRIBUTE.temperature_min);
-		
-		//knn.setRestrictedAttributes(restrictedWeatherdayAttributes, null);
-		
-		//ArrayList<Day> trainingSet = dataManager.getDaysAsList();
-		//ArrayList<Day> trainingSetOnlyTrends = filterOutDaysWithoutTrends(trainingSet);
-		
-		//runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetOnlyTrends, false);
-		
+//		KNN knn = new KNN(dataManager);
+//		
+//		ArrayList<Object> restrictedWeatherdayAttributes = allAttributes();
+//		
+//		restrictedWeatherdayAttributes.remove(SECONDARY_ATTRIBUTE.trend_afbudsrejser);
+//		
+//		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
+//		
+//		ArrayList<Day> trainingSetWithYahoo = filterOutDaysWithoutYahoo(trainingSet);
+//		ArrayList<Day> traningSetWithWeather = filterDaysWithWeatherData(trainingSet);
+//		ArrayList<Day> trainingSetWithTrends = filterOutDaysWithoutTrends(traningSetWithWeather);
+//		
+//		runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetWithTrends, false);
+//		
 		// Apriori
 		
-		
-		Apriori apriori = new Apriori(filterDaysWithWeatherData(dataManager.getDaysAsList()));
+//		ArrayList<Day> dataSet = filterDaysWithTrendSolbriller((filterDaysWithWeatherData(dataManager.getDaysAsList())));
 //		
+//		Apriori apriori = new Apriori(dataSet);		
+//		
+//		apriori.setSpecificPropertySet(weatherProberties());
+//		
+//		apriori.run(1200);
+
+//		int sunny = 0;
+//		int positive = 0;
+//		for (Day day : dataSet) {
+//			
+//			if (day.get_weatherDay().discreteValues.contains(PROPERTY.sunny)) {
+//				sunny++;
+//				if (day.get_secondaryDay().get_positive_development() == true) {
+//					positive++;
+//					
+//				}
+//			}
+//		}
+//		System.out.println(positive + "/" + sunny);
+		
+		//waitForInput();
+		
+		
+
+	}
+	
+	public ArrayList<Object> allAttributes() {
+		
+		ArrayList<WEATHERDAY_ATTRIBUTE> weatherdayAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>(Arrays.asList(WEATHERDAY_ATTRIBUTE.values()));
+		ArrayList<SECONDARY_ATTRIBUTE> secondaryAttributes = new ArrayList<SECONDARY_ATTRIBUTE>(Arrays.asList(SECONDARY_ATTRIBUTE.values()));
+		
+		ArrayList<Object> allAttributes = new ArrayList<Object>();
+		
+		for (WEATHERDAY_ATTRIBUTE weatherdayAttribute : weatherdayAttributes) {
+			
+			allAttributes.add(weatherdayAttribute);
+			
+		}
+		
+		for (SECONDARY_ATTRIBUTE secondaryAttribute : secondaryAttributes) {
+			
+			allAttributes.add(secondaryAttribute);
+			
+		}
+		
+		return allAttributes;
+		
+	}
+	
+	public ArrayList<PROPERTY> weatherProberties() {
 		
 		ArrayList<PROPERTY> weatherProbs = new ArrayList<PROPERTY>(Arrays.asList(PROPERTY.values()));
 		
@@ -98,11 +145,8 @@ public class App extends Data {
 		weatherProbs.remove(PROPERTY.price_increase);
 		weatherProbs.remove(PROPERTY.price_no_change);
 		
-		apriori.setSpecificPropertySet(weatherProbs);
-		apriori.run(100);
-//		
-		//waitForInput();
-
+		return weatherProbs;
+	
 	}
 	
 	public ArrayList<Day> filterDaysWithWeatherData(ArrayList<Day> set) {
@@ -174,6 +218,24 @@ public class App extends Data {
 		
 		return trainingSetOnlyTrends;
 	}
+	
+	public ArrayList<Day> filterDaysWithTrendSolbriller(ArrayList<Day> set) {
+		
+		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
+
+		for (Day day : set) {
+			
+			if (day.get_secondaryDay() != null) {
+				if (day.get_secondaryDay().get_trend_solbriller() != null && day.get_secondaryDay().get_trend_solbriller() > 0) {
+					
+					trainingSetOnlyTrends.add(day);
+					
+				}
+			}
+		}
+		
+		return trainingSetOnlyTrends;
+	} 
 	
 	public ArrayList<Day> filterOutDaysWithoutYahoo(ArrayList<Day> days) {
 		

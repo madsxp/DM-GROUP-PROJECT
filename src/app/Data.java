@@ -52,7 +52,8 @@ public class Data {
     	development,
     	positive_development,
     	// Google trends
-    	trend_afbudsrejser
+    	trend_afbudsrejser,
+    	trend_solbriller
     	
     }
      
@@ -96,6 +97,7 @@ public class Data {
     		return DATA_TYPE.date;
     	case development:
     	case trend_afbudsrejser:
+    	case trend_solbriller:
     	case close:
     		return DATA_TYPE.numeric;
     	default:
@@ -231,7 +233,11 @@ public class Data {
 		feels_hotter,
 		
 		// Wind chill
-		feels_colder
+		feels_colder,
+		
+		// sunny/cloudy
+		sunny,
+   	 	cloudy
    	 	
 	}
 

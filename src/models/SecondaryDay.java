@@ -17,6 +17,8 @@ public class SecondaryDay {
 	
 	// google trends
 	private Double trend_afbudsrejser;
+	// google trends
+	private Double trend_solbriller;
 	
 	// discrete values (for apriori)
 	public ArrayList<PROPERTY> discreteValues;
@@ -50,6 +52,8 @@ public class SecondaryDay {
 	    		return get_positive_development();
 	    	case trend_afbudsrejser:
 	    		return get_trend_afbudsrejser();
+	    	case trend_solbriller:
+	    		return get_trend_solbriller();
     		default:
     			return null;
     		
@@ -70,6 +74,8 @@ public class SecondaryDay {
 	    		set_positive_development((Boolean) value);
 	    	case trend_afbudsrejser:
 	    		set_trend_afbudsrejser((Double) value);
+	    	case trend_solbriller:
+	    		set_trend_solbriller((Double) value);
     		default:
     			return null;
     		
@@ -144,6 +150,19 @@ public class SecondaryDay {
 	public Double get_trend_afbudsrejser() {
 		
 		return trend_afbudsrejser;
+		
+	}
+
+	// Solbriller
+	public void set_trend_solbriller(Double data) {
+		
+		trend_solbriller = data;
+		
+	}
+	
+	public Double get_trend_solbriller() {
+		
+		return trend_solbriller;
 		
 	}
 	

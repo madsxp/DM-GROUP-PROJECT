@@ -513,6 +513,9 @@ public class DataManager extends Data {
     	public Double max_trend_afbudsrejser;
     	public Double min_trend_afbudsrejser;
     	
+    	public Double max_trend_solbriller;
+    	public Double min_trend_solbriller;
+    	
     	public void setMax(WEATHERDAY_ATTRIBUTE attr, Double value) {
     		
     		switch (attr) {
@@ -611,6 +614,9 @@ public class DataManager extends Data {
     			case trend_afbudsrejser:
     				max_trend_afbudsrejser = value;
     				break;
+    			case trend_solbriller:
+    				max_trend_solbriller = value;
+    				break;
     			default:
     				System.out.println("error in stats.setMax(), attr: " + attr);
     				break;
@@ -627,6 +633,8 @@ public class DataManager extends Data {
 	    			return maxClose;
 	    		case trend_afbudsrejser:
 	    			return max_trend_afbudsrejser;
+	    		case trend_solbriller:
+	    			return max_trend_solbriller;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -733,6 +741,9 @@ public class DataManager extends Data {
 				case trend_afbudsrejser:
 					min_trend_afbudsrejser = value;
 					break;
+				case trend_solbriller:
+					min_trend_solbriller = value;
+					break;
 				default:
 					System.out.println("error in stats.setMin(), attr: " + attr);
 					break;
@@ -749,6 +760,8 @@ public class DataManager extends Data {
 	    			return minClose;
 	    		case trend_afbudsrejser:
 	    			return min_trend_afbudsrejser;
+	    		case trend_solbriller:
+	    			return min_trend_solbriller;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -797,7 +810,9 @@ public class DataManager extends Data {
     			stats.setMin(attr, Double.POSITIVE_INFINITY);
     		}
     	}
-  
+    	
+    	int counterWeatherDays = 0;
+    	
         while (it.hasNext()) {
             
         	Map.Entry pairs = (Map.Entry)it.next(); 
@@ -818,8 +833,9 @@ public class DataManager extends Data {
 	            	stats.meanPrecipitation += precipitation;
 	            	
 	            }
-            }
-           
+	            
+	            counterWeatherDays++;
+            }       
             
             // all max and min
             // Weatherday
@@ -859,12 +875,10 @@ public class DataManager extends Data {
 	            	}
             	}
             }
-           
-            
         }
         
-        stats.meanPrecipitation = stats.meanPrecipitation / days.size();
-        stats.meanHumidity = stats.meanHumidity / days.size();
+        stats.meanPrecipitation = stats.meanPrecipitation / counterWeatherDays;
+        stats.meanHumidity = stats.meanHumidity / counterWeatherDays;
         
     }
 
@@ -1157,12 +1171,12 @@ public class DataManager extends Data {
 	    	// Humidity
 	    	Double humidity = weatherDay.get_humidity_max();
 	    	
-	    	if ((humidity - stats.meanHumidity) > 1) {
+	    	if ((humidity - stats.meanHumidity) > 4) {
 	    		
 	    		weatherDay.discreteValues.add(PROPERTY.high_humidity);
 	    		
 	    	}
-	    	else if ((humidity - stats.meanHumidity) < -1) {
+	    	else if ((humidity - stats.meanHumidity) < -4) {
 	    		
 	    		weatherDay.discreteValues.add(PROPERTY.low_humidity);
 	    		
@@ -1300,6 +1314,19 @@ public class DataManager extends Data {
 	    		weatherDay.discreteValues.add(PROPERTY.feels_colder);
 	    		
 	    	}
+	    	
+	    	//  Sunny / cloudy
+
+	    	if (cloudCover <= 5) {
+	    		
+	    		weatherDay.discreteValues.add(PROPERTY.sunny);
+	    		
+	    	}
+	    	else {
+	    		
+	    		weatherDay.discreteValues.add(PROPERTY.cloudy);
+	    		
+	    	}
     	}
     }
     
@@ -1359,6 +1386,9 @@ public class DataManager extends Data {
     		
     			case "afbudsrejser":
     				day.get_secondaryDay().set(SECONDARY_ATTRIBUTE.trend_afbudsrejser, value);
+    				break;
+    			case "solbriller":
+    				day.get_secondaryDay().set(SECONDARY_ATTRIBUTE.trend_solbriller, value);
     				break;
     			default:
     			

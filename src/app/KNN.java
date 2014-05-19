@@ -37,10 +37,30 @@ public class KNN extends Data {
 		
 	}
 	
-	public void setRestrictedAttributes(ArrayList<WEATHERDAY_ATTRIBUTE> weatherAttributes, ArrayList<SECONDARY_ATTRIBUTE> secondaryAttributes) {
+	public void setRestrictedAttributes(ArrayList<Object> attributes) {
 		
-		this.restrictedSecondaryAttributes = secondaryAttributes;
-		this.restrictedWeatherAttributes = weatherAttributes;
+		ArrayList<WEATHERDAY_ATTRIBUTE> weatherAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
+		ArrayList<SECONDARY_ATTRIBUTE> secondaryAttributes = new ArrayList<SECONDARY_ATTRIBUTE>();
+		
+		for (Object attr : attributes) {
+			
+			String type = attr.getClass().getSimpleName();
+			
+			switch (type) {
+			
+			case "WEATHERDAY_ATTRIBUTE":
+				weatherAttributes.add((WEATHERDAY_ATTRIBUTE) attr);
+				break;
+			case "SECONDARY_ATTRIBUTE":
+				secondaryAttributes.add((SECONDARY_ATTRIBUTE) attr);
+				break;
+			default:
+			
+			}
+		}
+		
+		this.restrictedWeatherAttributes = (weatherAttributes.size() != 0) ? weatherAttributes : null;
+		this.restrictedSecondaryAttributes = (secondaryAttributes.size() != 0) ? secondaryAttributes : null;		
 		
 	}
 	

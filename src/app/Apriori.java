@@ -97,6 +97,8 @@ public class Apriori {
 		System.out.println("..DONE!\n");
 		System.out.println("Item set size: " + (K-1) + ".");
 		System.out.println("Candidates with support: " + previousSupportCount.size());
+		System.out.println("\n# of days: " + days.size());
+		System.out.println("\nCandidates: \n");
 		outputPreviousSupportCount();
 			
 	}
