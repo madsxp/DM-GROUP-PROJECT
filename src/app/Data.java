@@ -24,6 +24,27 @@ public class Data {
         TORNADO
     }
     
+    public PROPERTY getEventAsDiscrete(EVENT event) {
+    	
+    	switch (event) {
+    	
+    		case FOG:
+    			return PROPERTY.event_fog;
+    		case HAIL:
+    			return PROPERTY.event_hail;
+    		case RAIN:
+    			return PROPERTY.event_rain;
+    		case SNOW:
+    			return PROPERTY.event_snow;
+    		case THUNDERSTORM:
+    			return PROPERTY.event_thunderstorm;
+    		case TORNADO:
+    			return PROPERTY.event_tornado;
+    		default:
+    			return null;
+    	}
+    }
+    
     public enum SECONDARY_ATTRIBUTE {
     	
     	date,
@@ -113,7 +134,7 @@ public class Data {
     }
     
     public enum PROPERTY {
-		
+
 		// EUROINVESTOR
 		// Price
 		price_no_change,
@@ -122,55 +143,96 @@ public class Data {
 		
 		// WEATHER
 		// temperature
-		TempMaxMinusInfinityToMinus15,
-        TempMaxMinus15toMinus10,
-        TempMaxMinus10toMinus5,
-        TempMaxMinus5toZero,
-        TempMaxZeroTo5,
-        TempMax5To10,
-        TempMax10To15,
-        TempMax15To20,
-        TempMax20To25,
-        TempMax25To30,
-        TempMax30To35,
-        TempMax35ToInfinity,
+		temperature_freezing,
+		temperature_cold,
+		temperature_snug,
+		temperature_warm,
+		temperature_hot,
+		temperature_very_hot,
 		
-        // wind speed max
-        SpeedMaxCalm,
-        SpeedMaxLightAir,
-        SpeedMaxLightBreeze,
-        SpeedMaxGentleBreese,
-        SpeedMaxModerate,
-        SpeedMaxFreshBreeze,
-        SpeedMaxStrongBreeeze,
-        SpeedMaxModerateGale,
-        SpeedMaxFreshGale,
-        SpeedMaxStrongGale,
-        SpeedMaxStorm,
-        SpeedMaxViolentStorm,
-        SpeedMaxHurricane,
-        
-        // wind direction
-        directionNORTHERN,
-        directionNORTHEASTERN,
-        directionEASTERN,
-        directionSOUTHEASTERN,
-        directionSOUTHERN,
-        directionSOUTHWESTERN,
-        directionWESTERN,
-        directionNORTHWESTERN,
-        
-        // humidity
-        humidityMaxHigh,
-        humidityMaxMid,
-        humidityMaxLow,
-        
-        // precipitation
-        no_rain,
-   	 	small_rain,
-   	 	medium_rain,
-   	 	high_rain
-        
+//		TempMaxMinusInfinityToMinus15,
+//		TempMaxMinus15toMinus10,
+//		TempMaxMinus10toMinus5,
+//		TempMaxMinus5toZero,
+//		TempMaxZeroTo5,
+//		TempMax5To10,
+//		TempMax10To15,
+//		TempMax15To20,
+//		TempMax20To25,
+//		TempMax25To30,
+//		TempMax30To35,
+//		TempMax35ToInfinity,
+		
+		// wind speed max
+		wind_calm,
+		wind_light_air,
+		wind_light_breeze,
+		wind_gentle_breeze,
+		wind_moderate,
+		wind_fresh_breeze,
+		wind_strong_breeze,
+		wind_moderate_gale,
+		wind_fresh_gale,
+		wind_strong_gale,
+		wind_storm,
+		wind_violent_storm,
+		wind_hurricane,
+		
+		// wind direction
+		wind_direction_N,
+		wind_direction_NE,
+		wind_direction_E,
+		wind_direction_SE,
+		wind_direction_S,
+		wind_direction_SW,
+		wind_direction_W,
+		wind_direction_NW,
+		
+		// humidity
+		high_humidity,
+		med_humidity,
+		low_humidity,
+		
+		// precipitation
+		no_rain,
+		small_rain,
+		medium_rain,
+		high_rain,
+		
+		// Gust speed
+		low_gust_speed,
+		med_gust_speed,
+		high_gust_speed,
+		
+		// Cloud cover
+		no_clouds,
+		med_cloud_cover,
+		high_cloud_cover,
+		
+		// Visibility
+		low_visibility,
+		med_visibility,
+		high_visibility,
+		
+		// Pressure
+		low_pressure,
+		med_pressure,
+		high_pressure,
+		
+		// Events
+		event_fog,
+		event_rain,
+		event_snow,
+		event_thunderstorm,
+		event_hail,
+		event_tornado,
+		
+		// Heat index
+		feels_hotter,
+		
+		// Wind chill
+		feels_colder
+   	 	
 	}
 
     public String get_weatherday_label(WEATHERDAY_ATTRIBUTE attribute) {

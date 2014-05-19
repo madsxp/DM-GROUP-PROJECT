@@ -6,6 +6,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import models.Day;
 import app.Data.DATA_MODEL;
@@ -70,39 +73,129 @@ public class App extends Data {
 		
 		//visualization.showDaysTable(dataManager.days);
 		
-		KNN knn = new KNN(dataManager);
+		//KNN knn = new KNN(dataManager);
 		
-		ArrayList<WEATHERDAY_ATTRIBUTE> restrictedWeatherdayAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
+		//ArrayList<WEATHERDAY_ATTRIBUTE> restrictedWeatherdayAttributes = new ArrayList<WEATHERDAY_ATTRIBUTE>();
 		
-		restrictedWeatherdayAttributes.add(WEATHERDAY_ATTRIBUTE.temperature_min);
+		//restrictedWeatherdayAttributes.add(WEATHERDAY_ATTRIBUTE.temperature_min);
 		
 		//knn.setRestrictedAttributes(restrictedWeatherdayAttributes, null);
 		
-		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
-		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
+		//ArrayList<Day> trainingSet = dataManager.getDaysAsList();
+		//ArrayList<Day> trainingSetOnlyTrends = filterOutDaysWithoutTrends(trainingSet);
 		
-		// create traning set with days that have the trend attribute
-		for (Day day : trainingSet) {
+		//runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetOnlyTrends, false);
+		
+		// Apriori
+		
+		
+		Apriori apriori = new Apriori(filterDaysWithWeatherData(dataManager.getDaysAsList()));
+//		
+		
+		ArrayList<PROPERTY> weatherProbs = new ArrayList<PROPERTY>(Arrays.asList(PROPERTY.values()));
+		
+		weatherProbs.remove(PROPERTY.price_decrease);
+		weatherProbs.remove(PROPERTY.price_increase);
+		weatherProbs.remove(PROPERTY.price_no_change);
+		
+		apriori.setSpecificPropertySet(weatherProbs);
+		apriori.run(100);
+//		
+		//waitForInput();
+
+	}
+	
+	public ArrayList<Day> filterDaysWithWeatherData(ArrayList<Day> set) {
+		
+		ArrayList<Day> newSet = new ArrayList<Day>();
+		
+		for (Day day : set) {
 			
-			if (day.get_secondaryDay().get_trend_afbudsrejser() != null) {
-				
-				trainingSetOnlyTrends.add(day);
+			if (day.get_weatherDay() != null) {
+
+				newSet.add(day);	
 				
 			}
 		}
 		
-		runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetOnlyTrends, false);
+		return newSet;
+	}
+	
+	public ArrayList<Day> filterDaysWithPositiveDevelopmen(ArrayList<Day> set) {
 		
-		// Apriori
+		ArrayList<Day> newSet = new ArrayList<Day>();
 		
-		//Apriori apriori = new Apriori(dataManager.days);
+		for (Day day : set) {
+			
+			if (day.get_secondaryDay() != null) {
+				if (day.get_secondaryDay().get_positive_development() == true) {
+					
+					newSet.add(day);
+					
+				}
+			}
+		}
 		
-		//apriori.run(370);
+		return newSet;
+	}
+	
+	public ArrayList<Day> filterDaysWithNegativeDevelopmen(ArrayList<Day> set) {
 		
-		//waitForInput();
+		ArrayList<Day> newSet = new ArrayList<Day>();
 		
+		for (Day day : set) {
+			
+			if (day.get_secondaryDay() != null) {
+				if (day.get_secondaryDay().get_positive_development() == false) {
+					
+					newSet.add(day);
+					
+				}
+			}
+		}
 		
+		return newSet;
+	}
+	
+	public ArrayList<Day> filterOutDaysWithoutTrends(ArrayList<Day> set) {
+		
+		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
 
+		for (Day day : set) {
+			
+			if (day.get_secondaryDay() != null) {
+				if (day.get_secondaryDay().get_trend_afbudsrejser() != null) {
+					
+					trainingSetOnlyTrends.add(day);
+					
+				}
+			}
+		}
+		
+		return trainingSetOnlyTrends;
+	}
+	
+	public ArrayList<Day> filterOutDaysWithoutYahoo(ArrayList<Day> days) {
+		
+        // Remove days that has no weather or euroinvestor data
+        ArrayList<Day> toBeRemoved = new ArrayList<Day>();
+        
+        for (Day day : days) {
+
+            if (day.get_weatherDay() == null || day.get_secondaryDay() == null) {
+            	
+            	toBeRemoved.add(day);
+            	
+            }
+        }
+        
+        for (Day day : toBeRemoved) {
+        	
+        	days.remove(day);
+        	
+        }
+        
+        return days;
 		
 	}
 	

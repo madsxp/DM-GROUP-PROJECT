@@ -21,7 +21,7 @@ public class Apriori {
 	int K = 1;
 	
 	// Days
-	HashMap<Date, Day> days;
+	ArrayList<Day> days;
 
 	ArrayList<ArrayList<PROPERTY>> dataSets;
 	
@@ -30,7 +30,7 @@ public class Apriori {
 	HashMap<ArrayList<PROPERTY>, Integer> supportCount;
 	HashMap<ArrayList<PROPERTY>, Integer> previousSupportCount;
 	
-	public Apriori(HashMap<Date, Day> days) {
+	public Apriori(ArrayList<Day> days) {
 		
 		this.days = days;
 		convertDays(this.days, null);
@@ -303,7 +303,7 @@ public class Apriori {
 		
 	}
 	
-	private void convertDays(HashMap<Date, Day> days, ArrayList<PROPERTY> properties) {
+	private void convertDays(ArrayList<Day> days, ArrayList<PROPERTY> properties) {
 		
 		System.out.println("----------------------------------------" );
 		System.out.println("Apriori");
@@ -313,32 +313,30 @@ public class Apriori {
 		
 		dataSets = new ArrayList<ArrayList<PROPERTY>>();
 		
-		Iterator it = days.entrySet().iterator();
 		int i = 0;
-        while (it.hasNext()) {
-            
-        	Map.Entry pairs = (Map.Entry)it.next(); 
+        for (Day day : days) {
             
         	ArrayList<PROPERTY> dataSet = new ArrayList<PROPERTY>();
-        	
-        	Day day = (Day) pairs.getValue();
+
         	SecondaryDay euroinvestorDay = day.get_secondaryDay();
         	WeatherDay weatherDay = day.get_weatherDay();
             
-            for (PROPERTY property : euroinvestorDay.discreteValues) {
-            	
-            	if (properties == null || properties.indexOf(property) != -1) {
-            		dataSet.add(property);
-            	}
-            }
-            
-            for (PROPERTY property : weatherDay.discreteValues) {
-            	
-            	if (properties == null || properties.indexOf(property) != -1) {
-            		dataSet.add(property);
-            	}
-            }
-                        
+        	if (euroinvestorDay != null) {
+	            for (PROPERTY property : euroinvestorDay.discreteValues) {
+	            	
+	            	if (properties == null || properties.indexOf(property) != -1) {
+	            		dataSet.add(property);
+	            	}
+	            }
+        	}
+        	if (weatherDay != null) {
+	            for (PROPERTY property : weatherDay.discreteValues) {
+	            	
+	            	if (properties == null || properties.indexOf(property) != -1) {
+	            		dataSet.add(property);
+	            	}
+	            }
+        	}
             dataSets.add(dataSet);
             
         }	
