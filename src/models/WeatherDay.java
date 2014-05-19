@@ -9,13 +9,13 @@ public class WeatherDay extends app.Data {
 
     public int id;
     private Date date;
-    private ArrayList<EVENT> events;
+    private ArrayList<EVENT> events; // Rain, Fog, 
     private Double temperature_max;
     private Double temperature_min;
     private Double wind_speed_max;
     private Double wind_speed_mean;
     private Double humidity_min;
-    private Double humidity_max;
+    private Double humidity_max; //
     private Double dew_point;
     private Double pressure;
     private Double visibility;
