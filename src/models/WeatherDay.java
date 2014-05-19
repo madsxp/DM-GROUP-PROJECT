@@ -9,26 +9,26 @@ public class WeatherDay extends app.Data {
 
     public int id;
     private Date date;
-    private ArrayList<EVENT> events; // Fog, Rain, Snow, Thunderstorm, Hail, Tornado
-    private Double temperature_max; // Maximum temperature measured that day in degrees Celsius
-    private Double temperature_min; // Minimum temperature measured that day in degrees Celsius
-    private Double wind_speed_max; // Maximum wind speed measured in km/h
-    private Double wind_speed_mean; // Average wind speed measured in km/h
-    private Double humidity_min; // Minimum humidity measured in g/m3
-    private Double humidity_max; // Maximum humidity measured in g/m3
-    private Double dew_point; // Temperature at which the water vapor in air at constant barometric pressure condenses into liquid water
-    private Double pressure; // Mean sea level pressure measured in h/Pa (hectopascal)
-    private Double visibility; // Measured in km
-    private Double gust_speed; // Measured in km/h
-    private Double precipitation; // Measured in mm
-    private Double wind_direction; // Measured in degrees zero degrees is north
-    private Double cloud_cover; // Measured in 0-8 oktas where 0 is no clouds
+    private ArrayList<EVENT> events; 	// Fog, Rain, Snow, Thunderstorm, Hail, Tornado
+    private Double temperature_max; 	// Maximum temperature measured that day in degrees Celsius
+    private Double temperature_min; 	// Minimum temperature measured that day in degrees Celsius
+    private Double wind_speed_max; 		// Maximum wind speed measured in km/h
+    private Double wind_speed_mean; 	// Average wind speed measured in km/h
+    private Double humidity_min; 		// Minimum humidity measured in g/m3
+    private Double humidity_max; 		// Maximum humidity measured in g/m3
+    private Double dew_point; 			// Temperature at which the water vapor in air at constant barometric pressure condenses into liquid water
+    private Double pressure; 			// Mean sea level pressure measured in h/Pa (hectopascal)
+    private Double visibility; 			// Measured in km
+    private Double gust_speed; 			// Measured in km/h
+    private Double precipitation; 		// Measured in mm
+    private Double wind_direction; 		// Measured in degrees zero degrees is north
+    private Double cloud_cover; 		// Measured in 0-8 oktas where 0 is no clouds
     
     // post calculated data
     
-    private Double heat_index; // Heat index is a derived value and is the factor we times with the degrees Celsius
-    private Double temperature_mean; // Average temperature measured that day in degrees Celsius
-    private Double wind_chill_factor; // Is a derived value and is the factor we times with the degrees Celsius
+    private Double heat_index; 			// Heat index is a derived value and is the factor we times with the degrees Celsius
+    private Double temperature_mean; 	// Average temperature measured that day in degrees Celsius
+    private Double wind_chill_factor; 	// Is a derived value and is the factor we times with the degrees Celsius
 
     // discrete values (for apriori)
  	public ArrayList<PROPERTY> discreteValues;
