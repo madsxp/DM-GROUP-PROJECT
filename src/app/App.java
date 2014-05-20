@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import models.Day;
 import app.Data.DATA_MODEL;
 import app.Data.DATA_TYPE;
@@ -100,59 +102,25 @@ public class App extends Data {
 //		
 //		runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetWithTrends, false);
 //		
+		
+		
+		
 		// Apriori
 		
-//		ArrayList<Day> dataSet = filterOutDaysWithoutYahoo(filterDaysWithWeatherData(dataManager.getDaysAsList()));
+//		ArrayList<Day> dataSet = filterDaysWithWeatherData(dataManager.getDaysAsList());
 //		
 //		Apriori apriori = new Apriori(dataSet, null);
-//		apriori.run(200);
+//		apriori.run(50, 4);
 //		
-//		apriori.outputAssociationRules();
-		
-//		
-//		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>(Arrays.asList(PROPERTY.values()));
-		
-//		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
-//		props.add(PROPERTY.temperature_cold);
-//		props.add(PROPERTY.temperature_freezing);
-//		props.add(PROPERTY.temperature_hot);
-//		props.add(PROPERTY.temperature_snug);
-//		props.add(PROPERTY.temperature_very_hot);
-//		props.add(PROPERTY.temperature_warm);
-//		
-//		props.add(PROPERTY.trend_solbriller_low);
-//		props.add(PROPERTY.trend_solbriller_med);
-//		props.add(PROPERTY.trend_solbriller_high);
-//		
+//		apriori.outputAssociationRules();	
 
-//		apriori.setSpecificPropertySet(props);
-//
-//		apriori.run(500);
-//		apriori.outputAssociationRules();
-//		apriori.outputAssociationRules(PROPERTY.price_increase);
 
-//		int sunny = 0;
-//		int positive = 0;
-//		for (Day day : dataSet) {
-//			
-//			if (day.get_weatherDay().discreteValues.contains(PROPERTY.sunny)) {
-//				sunny++;
-//				if (day.get_secondaryDay().get_positive_development() == true) {
-//					positive++;
-//					
-//				}
-//			}
-//		}
-//		System.out.println(positive + "/" + sunny);
-		
 		//waitForInput();
 		
 		
-		//ArrayList<String> trends = new ArrayList<String>();
-		//trends.add("iphone");
-		//runAprioriOnTrend(trends, 10);
-		
-		
+//		ArrayList<String> trends = new ArrayList<String>();
+//		trends.add("strand");
+//		runAprioriOnTrend(trends, 10);
 		
 	}
 	
@@ -162,7 +130,7 @@ public class App extends Data {
 		
 		Apriori apriori = new Apriori(dataSet, trends);		
 		
-		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
+		ArrayList<PROPERTY> props = weatherProberties();//new ArrayList<PROPERTY>();
 
 		props.add(PROPERTY.high_temp);
 		props.add(PROPERTY.low_temp);
@@ -171,7 +139,7 @@ public class App extends Data {
 		
 		apriori.setSpecificPropertySet(props);
 		
-		apriori.run(K);
+		apriori.run(K, 3);
 		
 		apriori.outputAssociationRules(trends);
 	}

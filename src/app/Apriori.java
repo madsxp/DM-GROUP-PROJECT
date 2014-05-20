@@ -52,7 +52,7 @@ public class Apriori {
 		
 	}
 	
-	public void run(int minSupport) {
+	public void run(int minSupport, int maxSetSize) {
 		
 		this.allSupportCounts = new HashMap<Double, Integer>();
 		this.minSupport = minSupport;
@@ -71,16 +71,25 @@ public class Apriori {
 		
 		// Remove low support candidates
 		removeLowSupportCandidates();
+		outputSupportCount();
 		
 		System.out.println("Candidates with support after removing min. support: " + supportCount.size() + "\n");
 		
 		// Run until supportCount is 0
 		while (supportCount.size() > 0) {
 			
+			if (K >= maxSetSize && maxSetSize != 0) {
+				
+				break;
+				
+			}
+			
+			System.out.println("Item set size: " + (K));
+			
 			// 1) Find new candidates from old candidates
+			System.out.println("Finding candidates ...");
 			findCandidates();
 			
-			System.out.println("Item set size: " + (K) + ".");
 			System.out.println("Candidates: " + candidates.size());
 			
 			// 2) Count candidates in itemset
@@ -335,6 +344,10 @@ public class Apriori {
 		
 		dataSets = new ArrayList<ArrayList<String>>();
 		
+		int low = 0;
+		int med = 0;
+		int high = 0;
+		
 		int i = 0;
         for (Day day : days) {
             
@@ -359,9 +372,10 @@ public class Apriori {
 	            	}
 	            }
         	}
+        	
         	if (trends != null) {
         		
-        		// discretize trends
+        		// Discretize trends
         		for (String[] trend : day.google_trends) {
         			
         			if (trends.contains(trend[0])) {
@@ -369,29 +383,87 @@ public class Apriori {
 	        			String trend_name = trend[0];
 	        			Double trend_value = Double.parseDouble(trend[1]);
 	        			
-	        			if (trend_value > 90) {
+	        			int skew = 0;
+	        			int numOfDays = 350;
+	        			
+	        			if (i <= numOfDays) {
 	        				
-	        				dataSet.add("trend_" + trend_name + "_high");
+	        				skew = (numOfDays - i) +1;
 	        				
 	        			}
-	        			else if (trend_value > 40) {
+	        			else if (i >= days.size() - numOfDays) {
+
+	        				skew = -numOfDays + (days.size()-i) -1;
+	        				
+	        			}
+	       
+	        			Double sum = 0.;
+	        			Double min = Double.POSITIVE_INFINITY;
+	        			Double counter = 0.;
+	        			
+	        			for (int j = -numOfDays; j <= numOfDays; j++) {
+	        				
+	        				int index = i+j+skew;
+	        				
+	        				if (index != i) {
+	        					
+	        					int trendIndex = -1;
+	        					
+	        					for (int n = 0; n < days.get(index).google_trends.size(); n++) {
+	        						
+	        						if (days.get(index).google_trends.get(n)[0].equals(trend_name)) {
+	        							
+	        							trendIndex = n;
+	        							
+	        						}
+	        					}
+	        					
+	        					if (trendIndex > -1) {
+	        						
+	        						Double trendValue = Double.parseDouble(days.get(index).google_trends.get(trendIndex)[1]);
+	        						sum += trendValue;
+	        						
+	        						if (trendValue < min) {
+	        							
+	        							min = trendValue;
+	        							
+	        						}
+	        						
+	        						counter ++;
+	        						
+	        					}
+	        				}
+	        			}
+	        			
+	        			Double mean = sum/counter;
+	        			
+	        			if (trend_value > mean) {
+	        				
+	        				dataSet.add("trend_" + trend_name + "_high");
+	        				high++;
+	        				
+	        			}
+	        			else if (trend_value > min+10) {
 	        				
 	        				dataSet.add("trend_" + trend_name + "_med");
-	        				
+	        				med++;
 	        			}
 	        			else {
 	        				
 	        				dataSet.add("trend_" + trend_name + "_low");
-	        				
+	        				low++;
 	        			}
         			}
         		}
-        		
         	}
         	
             dataSets.add(dataSet);
-            
-        }	
+            i++;
+        }  
+        
+        System.out.println("high: " + high);
+        System.out.println("med: " + med);
+        System.out.println("low: " + low);
 	}
 	
 	public void generateAssociationRules(HashMap<ArrayList<String>, Integer> supportCount) {
@@ -410,7 +482,7 @@ public class Apriori {
 				
 				Double confidence = (double) supportCount_b/(double)supportCount_a*100;
 				
-				if (confidence > 50) {
+				if (confidence > 70) {
 					
 					associationRules.add(new AssociationRule(prop, association, confidence, supportCount_a, supportCount_b));
 					
