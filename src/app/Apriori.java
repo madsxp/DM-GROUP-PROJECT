@@ -58,13 +58,17 @@ public class Apriori {
 		this.minSupport = minSupport;
 		this.associationRules = new ArrayList<AssociationRule>();	
 		
-		System.out.println("---------------------------");
+		System.out.println("----------------------------------------");
 		System.out.println("Runnin apriori with minimum support of " + minSupport + ".");
-		System.out.println("---------------------------\n");
-	
+		System.out.println("----------------------------------------\n");
+		
+		System.out.println("\n----------------- " + K + " --------------------\n");
+		
 		// Create initial candidates, of itemset size 1
 		findCandidatesOfSize1();
 
+		System.out.println("\n----------------------------------------\n");
+		
 		System.out.println("Item set size: " + (K) + ".");
 		System.out.println("Candidates: " + candidates.size());
 		System.out.println("Candidates with support: " + supportCount.size());			
@@ -84,6 +88,8 @@ public class Apriori {
 				
 			}
 			
+			System.out.println("\n----------------- " + K + " --------------------\n");
+			
 			System.out.println("Item set size: " + (K));
 			
 			// 1) Find new candidates from old candidates
@@ -100,8 +106,6 @@ public class Apriori {
 			// 3) Remove low support candidates
 			removeLowSupportCandidates();
 			
-			generateAssociationRules(supportCount);
-			
 			System.out.println("Candidates with support removing min. support: " + supportCount.size());
 			
 			if (true) {
@@ -109,9 +113,19 @@ public class Apriori {
 				outputSupportCount();
 			
 			}
+			
+			int rulesGenerated = generateAssociationRules(supportCount);
+			
+			System.out.println("\nGenerated " + rulesGenerated + " new association rules");
+			
+			if (rulesGenerated == 0) {
+				
+//				System.out.println("stopped because no rules could be generated with confidence of 70% or more");
+//				break;
+				
+			}
 
-			System.out.println("");
-
+			System.out.println("\n----------------------------------------\n");
 		}
 
 		// output the previous support count
@@ -121,7 +135,8 @@ public class Apriori {
 		System.out.println("Candidates with support: " + previousSupportCount.size());
 		System.out.println("\n# of days: " + days.size());
 		System.out.println("\nCandidates: \n");
-		outputPreviousSupportCount();			
+		outputPreviousSupportCount();
+		
 	}
 	
 	// Find the first set of candidates
@@ -437,7 +452,7 @@ public class Apriori {
 	        			
 	        			Double mean = sum/counter;
 	        			
-	        			if (trend_value > mean) {
+	        			if (trend_value > mean || trend_value > 90) {
 	        				
 	        				dataSet.add("trend_" + trend_name + "_high");
 	        				high++;
@@ -466,8 +481,8 @@ public class Apriori {
         System.out.println("low: " + low);
 	}
 	
-	public void generateAssociationRules(HashMap<ArrayList<String>, Integer> supportCount) {
-		
+	public int generateAssociationRules(HashMap<ArrayList<String>, Integer> supportCount) {
+		int rulesGenerated = 0;
 		for (ArrayList<String> itemSet : supportCount.keySet()) {
 			
 			for (String prop : itemSet) {
@@ -482,13 +497,17 @@ public class Apriori {
 				
 				Double confidence = (double) supportCount_b/(double)supportCount_a*100;
 				
-				if (confidence > 60) {
+				if (confidence > 50) {
 					
 					associationRules.add(new AssociationRule(prop, association, confidence, supportCount_a, supportCount_b));
+					rulesGenerated++;
 					
 				}	
 			}
-		}	
+		}
+		
+		return rulesGenerated;
+		
 	}
 	
 	public void outputAssociationRules() {
@@ -527,7 +546,40 @@ public class Apriori {
 		
 		for (AssociationRule a : associationRules) {
 			
-			if (a.subject.equals(onlyWith) || a.association.contains(onlyWith)) {
+			if (a.subject.equals("" + onlyWith) || a.association.contains("" + onlyWith)) {
+				System.out.println(a.subject + " (" + a.subjectCount + ") -> " + a.association + " (" + a.associationCount + ") = " + df.format(a.confidence) + "% confidence");
+			}
+		}
+		
+	}
+	
+	public void outputAssociationRulesOnlyWith(ArrayList<PROPERTY> onlyWith) {
+		
+		System.out.println("\n\nAssociation rules (only with "+ onlyWith + "):\n");
+		
+		DecimalFormat df = new DecimalFormat("#.#");
+		
+		Collections.sort(associationRules, new Comparator<AssociationRule>() {
+			@Override
+			public int compare(AssociationRule asso1, AssociationRule asso2) {
+		        return asso1.confidence.compareTo(asso2.confidence);
+		    }
+        });
+		
+		for (AssociationRule a : associationRules) {
+			
+			boolean outPut = false;
+			
+			for (PROPERTY property : onlyWith) {
+				
+				if (a.subject.equals("" + property) || a.association.contains("" + property)) {
+					
+					outPut = true;
+					break;
+				}
+			}
+			
+			if (outPut) {
 				System.out.println(a.subject + " (" + a.subjectCount + ") -> " + a.association + " (" + a.associationCount + ") = " + df.format(a.confidence) + "% confidence");
 			}
 		}

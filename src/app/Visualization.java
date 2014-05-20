@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -32,7 +33,7 @@ public class Visualization extends Data {
 		
 	}
 
-	public void showDaysTable(HashMap<Date, Day> days) {
+	public void showDaysTable(ArrayList<Day> days) {
 		
 		String[][] daysS = convertDaysToStringArray(days);
 		// -1 because both has date
@@ -161,19 +162,15 @@ public class Visualization extends Data {
 		
 	}
 	
-	public String[][] convertDaysToStringArray(HashMap<Date, Day> days) {		
+	public String[][] convertDaysToStringArray(ArrayList<Day> days) {		
 		
 		String[][] daysS = new String[days.size()][];
 		
-		Iterator it = days.entrySet().iterator();
-		// TODO: +1 is a bit dirty...
 		int numOfcolumns = WEATHERDAY_ATTRIBUTE.values().length+SECONDARY_ATTRIBUTE.values().length-1;
 		int j = 0;
 		
-        while (it.hasNext()) {
+       	for (Day day : days) {
             
-        	Map.Entry pairs = (Map.Entry)it.next(); 
-        	Day day = (Day) pairs.getValue();
         	String[] dayS = new String[numOfcolumns];
         	
         	int i = 0;

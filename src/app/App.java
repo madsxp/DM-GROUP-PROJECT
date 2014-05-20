@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.AttributedCharacterIterator.Attribute;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -36,8 +37,10 @@ public class App extends Data {
 		String[][] wundergroundData = reader.readWunderground("data/weather.csv", false);
 		String[] wundergroundHeaders = reader.readHeaders("data/weather.csv");
 		
-		String[][] euroinvesterData = reader.readYahooFinanceData("data/OMX C20 and OMX C20 CAP.csv", false);
-		String[] euroinvesterHeaders = reader.readHeaders("data/OMX C20 and OMX C20 CAP.csv");
+		String[][] yahooData = reader.readYahooFinanceData("data/OMX C20 and OMX C20 CAP.csv", false);
+		String[] yahooHeaders = reader.readHeaders("data/OMX C20 and OMX C20 CAP.csv");
+//		String[][] yahooData = reader.readYahooFinanceData("data/MAERSK-A.CO.csv", false);
+//		String[] yahooHeaders = reader.readHeaders("data/MAERSK-A.CO.csv");
 		
 		String[][] noaaData = reader.readNoaa("data/weather_noaa.csv", false);
 		String[] noaaHeaders = reader.readHeadersComma("data/weather_noaa.csv");
@@ -62,7 +65,7 @@ public class App extends Data {
 		dataManager = new DataManager();
 		
 		dataManager.fitAllWundergroundData(wundergroundData, wundergroundHeaders);
-		dataManager.fitAllSecondaryData(euroinvesterData, euroinvesterHeaders);       
+		dataManager.fitAllSecondaryData(yahooData, yahooHeaders);       
                 
 		// Calculate stuff like mean, wind-chill-factor etc.
 		dataManager.addAdditionalWeatherDataToWeatherDays(dataManager.weatherData);
@@ -85,14 +88,20 @@ public class App extends Data {
 		
 		// date format: (year, month, date)
 		
-		Visualization visualization = new Visualization();
+//		Visualization visualization = new Visualization();
+//		
+//		visualization.showStringArrayData(googleTrendsData, getGoogleTrendsHeaders());
 		
-		//visualization.showStringArrayData(googleTrendsData, getGoogleTrendsHeaders());
-		
-		//visualization.showDaysTable(dataManager.days);
+		//visualization.showDaysTable(filterOutDaysWithoutYahoo(filterDaysWithWeatherData(dataManager.getDaysAsList())));
 		
 //		KNN knn = new KNN(dataManager);
 //
+//		ArrayList<Object> attributes = new ArrayList<Object>();
+//		attributes.add(WEATHERDAY_ATTRIBUTE.precipitation);
+//		knn.setRestrictedAttributes(attributes);
+//		
+//		runRandomKNN(knn, 500, SECONDARY_ATTRIBUTE.positive_development, 20, filterDaysWithWeatherData(filterOutDaysWithoutYahoo(dataManager.getDaysAsList())), false);
+//		
 //		ArrayList<Object> attributes = new ArrayList<Object>();
 //		
 //		attributes.add(WEATHERDAY_ATTRIBUTE.cloud_cover);
@@ -109,34 +118,73 @@ public class App extends Data {
 //		attributes.add(WEATHERDAY_ATTRIBUTE.wind_direction);
 //		attributes.add(WEATHERDAY_ATTRIBUTE.wind_speed_mean);
 //		attributes.add(WEATHERDAY_ATTRIBUTE.gust_speed);
-//		
-//		knn.setRestrictedAttributes(attributes);
-//		
-//		runRandomKNN(knn, 2000, "strand", 100, filterDaysWithWeatherData(filterDaysWithTrends(dataManager.getDaysAsList())), false);
-//		
+		
+		
+		
+//		for (WEATHERDAY_ATTRIBUTE attr : WEATHERDAY_ATTRIBUTE.values()) {
+//			
+//			ArrayList<Object> attributes = new ArrayList<Object>(Arrays.asList(WEATHERDAY_ATTRIBUTE.values()));
+//			knn.setRestrictedAttributes(attributes);
+//
+//			runRandomKNN(knn, 10, attr, 20, filterDaysWithWeatherData(filterDaysWithTrends(dataManager.getDaysAsList())), false);
+//			
+//		}
+		
+//		for (String trend : google_trends) {
+//			KNN knn = new KNN(dataManager);
+//			ArrayList<Object> attributes = new ArrayList<Object>(Arrays.asList(WEATHERDAY_ATTRIBUTE.values()));
+//			knn.setRestrictedAttributes(attributes);
+//			runRandomKNN(knn, 500, trend, 10, filterDaysWithWeatherData(filterDaysWithTrends(dataManager.getDaysAsList())), false);
+//		}
+		//		
 //		System.out.println(dataManager.stats.getMax(WEATHERDAY_ATTRIBUTE.precipitation));
 //		System.out.println(dataManager.stats.getMin(WEATHERDAY_ATTRIBUTE.precipitation));
 		
 		// Apriori
 		
+//		ArrayList<Day> dataSet = filterOutDaysWithoutYahoo(filterDaysWithWeatherData(dataManager.getDaysAsList()));
+//		
+//		Apriori apriori = new Apriori(dataSet, null);
+//		apriori.run(10, 3);
+//		
+//		ArrayList<PROPERTY> proplist = new ArrayList<PROPERTY>();
+//		proplist.add(PROPERTY.price_decrease);
+//		proplist.add(PROPERTY.price_increase);
+//		proplist.add(PROPERTY.price_no_change);
+//		
+//		apriori.outputAssociationRulesOnlyWith(proplist);	
+
+		
+		
+		// HER!!!!!!
 //		ArrayList<Day> dataSet = filterDaysWithWeatherData(dataManager.getDaysAsList());
 //		
 //		Apriori apriori = new Apriori(dataSet, null);
-//		apriori.run(50, 4);
+//		apriori.setSpecificPropertySet(weatherProberties());
+//		apriori.run(100, 0);
 //		
 //		apriori.outputAssociationRules();	
-
-
+		
 		//waitForInput();
 		
 		
 //		ArrayList<String> trends = new ArrayList<String>();
-//		trends.add("strand");
+//		trends.add("nespresso");
 //		runAprioriOnTrend(trends, 10);
 	
+//		for (WEATHERDAY_ATTRIBUTE wa : WEATHERDAY_ATTRIBUTE.values()) {
+//			
+//			System.out.println("");
+//			System.out.println(wa);
+//			System.out.println("max: " + dataManager.stats.getMax(wa));
+//			System.out.println("min: " + dataManager.stats.getMin(wa));
+//			System.out.println("");
+//		}
+//		
+		
 		
 		//showChart();
-		showOneYearTrend();
+		//showOneYearTrend();
 	}
 	
 	public void showChart() {
@@ -214,14 +262,7 @@ public class App extends Data {
 		
 		Apriori apriori = new Apriori(dataSet, trends);		
 		
-		ArrayList<PROPERTY> props = weatherProberties();//new ArrayList<PROPERTY>();
-
-		props.add(PROPERTY.high_temp);
-		props.add(PROPERTY.low_temp);
-		
-		props.add(PROPERTY.cloudy);
-		
-		apriori.setSpecificPropertySet(props);
+		apriori.setSpecificPropertySet(weatherProberties());
 		
 		apriori.run(K, 3);
 		
@@ -546,10 +587,13 @@ public class App extends Data {
 			}
 			else {
 				
-				System.out.println(i + "/" + numOfRuns);
+				//System.out.println(i + "/" + numOfRuns);
 				
 			}
 		}
+		
+		System.out.println("Class label: " + classLabel);
+		System.out.println("K: " + K);
 		
 		if (sum>0) {
 			
@@ -563,6 +607,8 @@ public class App extends Data {
 			System.out.println(((double) numberOfCorrects / (double) numOfRuns * 100) + "%");
 			
 		}
+		
+		System.out.println("");
 	}
 	
 	
