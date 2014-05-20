@@ -1,25 +1,27 @@
 package app;
 
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Random;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+import com.xeiam.xchart.Chart;
+import com.xeiam.xchart.ChartBuilder;
+import com.xeiam.xchart.QuickChart;
+import com.xeiam.xchart.Series;
+import com.xeiam.xchart.SeriesMarker;
+import com.xeiam.xchart.SwingWrapper;
 
 import models.Day;
-import app.Data.DATA_MODEL;
-import app.Data.DATA_TYPE;
-import app.Data.SECONDARY_ATTRIBUTE;
-import app.Data.WEATHERDAY_ATTRIBUTE;
-import app.DataManager.Stats;
 
 public class App extends Data {
 
@@ -131,7 +133,79 @@ public class App extends Data {
 //		ArrayList<String> trends = new ArrayList<String>();
 //		trends.add("strand");
 //		runAprioriOnTrend(trends, 10);
+	
 		
+		//showChart();
+		showOneYearTrend();
+	}
+	
+	public void showChart() {
+		
+		// Create Chart
+		Chart chart = new ChartBuilder().width(800).height(600).title("Year Scale").build();
+		chart.getStyleManager().setLegendVisible(true);
+		
+		// generate data
+		List<Date> solbriller_x = new ArrayList<Date>();
+		List<Double> solbriller_y = new ArrayList<Double>();
+		
+		List<Date> close_x = new ArrayList<Date>();
+		List<Double> close_y = new ArrayList<Double>();
+		 		 
+		for (Day day : filterOutDaysWithoutYahoo(filterDaysWithTrends(dataManager.getDaysAsList()))) {
+			
+			solbriller_x.add(day.date);
+			solbriller_y.add(dataManager.getNormalizedValueOnDate(day.date, WEATHERDAY_ATTRIBUTE.temperature_max));
+			
+			close_x.add(day.date);
+			close_y.add(dataManager.getNormalizedValueOnDate(day.date, SECONDARY_ATTRIBUTE.close));
+			
+		}
+		
+		Series series1 = chart.addSeries("Temperature", solbriller_x, solbriller_y);
+		Series series2 = chart.addSeries("C20", close_x, close_y);
+		
+		series1.setMarker(SeriesMarker.NONE);
+		series2.setMarker(SeriesMarker.NONE);
+		
+		// Show it
+		new SwingWrapper(chart).displayChart();
+
+	    
+	}
+	
+	public void showOneYearTrend() {
+		
+		// Create Chart
+		Chart chart = new ChartBuilder().width(800).height(600).title("Year Scale").build();
+		chart.getStyleManager().setLegendVisible(true);
+		
+		// generate data
+		List<Date> trend_x = new ArrayList<Date>();
+		List<Double> trend_y = new ArrayList<Double>();
+		 	
+		ArrayList<Day> days = filterDaysWithTrends(dataManager.getDaysAsList());
+		ArrayList<Day> twoYears = new ArrayList<Day>();
+		
+		for (int i = 0; i < 300; i++) {
+		
+			twoYears.add(days.get(i+880));
+			
+		}
+		
+		for (Day day : days) {
+			
+			trend_x.add(day.date);
+			trend_y.add(day.get_trend("solbriller"));
+
+		}
+		
+		Series series1 = chart.addSeries("Trend <solbriller>", trend_x, trend_y);
+		
+		series1.setMarker(SeriesMarker.NONE);
+		
+		// Show it
+		new SwingWrapper(chart).displayChart();
 	}
 	
 	public void runAprioriOnTrend(ArrayList<String> trends, int K) {

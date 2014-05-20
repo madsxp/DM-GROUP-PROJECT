@@ -1319,7 +1319,7 @@ public class DataManager extends Data {
     }
     
     public void addGoogleTrendsToSecondaryDays(String[][] trends, String[] headers) {
-    	
+
     	for (int i = 0; i < trends.length; i++) {
     		
     		String[] dates = trends[i][0].split(" ");
@@ -1344,22 +1344,24 @@ public class DataManager extends Data {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-    		
-    		for (int n = 0; n < 7; n++) {
-    			
-    			Date date = new Date(date1.getTime() + (n*(1000 * 60 * 60 * 24)));
-    			
-    			for (int j = 1; j<trends[i].length; j++) {
-        			String value_str = trends[i][j];
-    				try {
-    					Double value = Double.parseDouble(value_str);
-    					addGoogleTrendsToSecondaryDay(date, headers[j], value);
-    				}
-    				catch (Exception e) {
-    					
-    				}
-        			
-        		}
+    		if (i > 7) {
+	    		for (int n = 0; n < 7; n++) {
+	    			
+	    			Date date = new Date(date1.getTime() - (n*(1000 * 60 * 60 * 24)));
+	    			
+	    			for (int j = 1; j<trends[i].length; j++) {
+	        			
+	    				String value_str = trends[i][j];
+	    				Double value = null;
+	    				try {
+	    					value = Double.parseDouble(value_str);
+	    				}
+	    				catch (Exception e) {
+	    					
+	    				}
+	    				addGoogleTrendsToSecondaryDay(date, headers[j], value);
+	        		}
+	    		}
     		}
     	}
     }
@@ -1399,7 +1401,7 @@ public class DataManager extends Data {
 	            for (WEATHERDAY_ATTRIBUTE w_attr : WEATHERDAY_ATTRIBUTE.values()) {
 	            	
 	            	if (get_weatherday_type(w_attr) == DATA_TYPE.numeric) {
-	            		w_map.put(w_attr, (Double) day.get_weatherDay().get(w_attr));
+	            		w_map.put(w_attr, calculateNormalizedValue(w_attr, (Double) day.get_weatherDay().get(w_attr)));
 	            	}
 	            }
 	            
@@ -1412,7 +1414,7 @@ public class DataManager extends Data {
 	            for (SECONDARY_ATTRIBUTE s_attr : SECONDARY_ATTRIBUTE.values()) {
 	            	
 	            	if (get_secondary_type(s_attr) == DATA_TYPE.numeric) {
-	            		s_map.put(s_attr, (Double) day.get_secondaryDay().get(s_attr));
+	            		s_map.put(s_attr, calculateNormalizedValue(s_attr, (Double) day.get_secondaryDay().get(s_attr)));
 	            	}
 	            }
 	            
