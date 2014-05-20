@@ -482,7 +482,7 @@ public class Apriori {
 				
 				Double confidence = (double) supportCount_b/(double)supportCount_a*100;
 				
-				if (confidence > 70) {
+				if (confidence > 60) {
 					
 					associationRules.add(new AssociationRule(prop, association, confidence, supportCount_a, supportCount_b));
 					

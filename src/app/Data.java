@@ -294,7 +294,8 @@ public class Data {
     public enum DATA_MODEL {
     	
     	WeatherDay,
-    	SecondaryDay
+    	SecondaryDay,
+    	Trend
     	
     }
     

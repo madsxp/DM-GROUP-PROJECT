@@ -19,6 +19,7 @@ import app.Data.DATA_MODEL;
 import app.Data.DATA_TYPE;
 import app.Data.SECONDARY_ATTRIBUTE;
 import app.Data.WEATHERDAY_ATTRIBUTE;
+import app.DataManager.Stats;
 
 public class App extends Data {
 
@@ -89,21 +90,30 @@ public class App extends Data {
 		//visualization.showDaysTable(dataManager.days);
 		
 //		KNN knn = new KNN(dataManager);
+//
+//		ArrayList<Object> attributes = new ArrayList<Object>();
 //		
-//		ArrayList<Object> restrictedWeatherdayAttributes = allAttributes();
+//		attributes.add(WEATHERDAY_ATTRIBUTE.cloud_cover);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.dew_point);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.events);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.gust_speed);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.heat_index);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.humidity_max);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.precipitation);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.pressure);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.temperature_max);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.visibility);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.wind_chill_factor);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.wind_direction);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.wind_speed_mean);
+//		attributes.add(WEATHERDAY_ATTRIBUTE.gust_speed);
 //		
-//		restrictedWeatherdayAttributes.remove(SECONDARY_ATTRIBUTE.trend_afbudsrejser);
+//		knn.setRestrictedAttributes(attributes);
 //		
-//		ArrayList<Day> trainingSet = dataManager.getDaysAsList();
+//		runRandomKNN(knn, 2000, "strand", 100, filterDaysWithWeatherData(filterDaysWithTrends(dataManager.getDaysAsList())), false);
 //		
-//		ArrayList<Day> trainingSetWithYahoo = filterOutDaysWithoutYahoo(trainingSet);
-//		ArrayList<Day> traningSetWithWeather = filterDaysWithWeatherData(trainingSet);
-//		ArrayList<Day> trainingSetWithTrends = filterOutDaysWithoutTrends(traningSetWithWeather);
-//		
-//		runRandomKNN(knn, 100, SECONDARY_ATTRIBUTE.trend_afbudsrejser, 100, trainingSetWithTrends, false);
-//		
-		
-		
+//		System.out.println(dataManager.stats.getMax(WEATHERDAY_ATTRIBUTE.precipitation));
+//		System.out.println(dataManager.stats.getMin(WEATHERDAY_ATTRIBUTE.precipitation));
 		
 		// Apriori
 		
@@ -336,6 +346,11 @@ public class App extends Data {
 			class_label_data_model = DATA_MODEL.SecondaryDay;
 			
 		}
+		else if (class_label_data_model_str.equals("String")) {
+			
+			class_label_data_model = DATA_MODEL.Trend;
+			
+		}
 		else {
 			
 			//TODO: error
@@ -356,6 +371,7 @@ public class App extends Data {
 			
 			knn.setTrainingSet(trainingSet);
 			
+			// WEATHER DAY
 			if (class_label_data_model == DATA_MODEL.WeatherDay) {
 				
 				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
@@ -392,6 +408,7 @@ public class App extends Data {
 					}
 				}
 			}
+			// SECONDARY DAY
 			else if (class_label_data_model == DATA_MODEL.SecondaryDay) {
 				
 				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
@@ -428,6 +445,28 @@ public class App extends Data {
 					}
 				}
 			}
+			// TREND
+			else if (class_label_data_model == DATA_MODEL.Trend) {
+				
+				Object result = knn.run(testDay, classLabel, 200, outputEachRun);
+				
+				if (outputEachRun) {
+	
+					System.out.println("\n  * On day: " + testDay.date);
+					System.out.println("  * Guessed: " + result);
+					
+				}
+				
+				Object was = testDay.get_trend((String) classLabel);
+				
+				Double offBy = Math.abs((Double) result - (Double) was);
+				sum += offBy;
+				if (outputEachRun) {
+					System.out.println("  * Was: " + testDay.get_secondaryDay().get((SECONDARY_ATTRIBUTE) classLabel));
+					System.out.println("  * --- off by " + offBy);
+				}
+			}
+			
 			if (outputEachRun) {
 				System.out.println("----------------------------------------");
 			}

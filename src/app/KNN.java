@@ -214,6 +214,20 @@ public class KNN extends Data {
 			}
 			
 		}
+		else if (classLabel.getClass().getSimpleName().equals("String")) {
+			
+			Double sum = 0.;
+			
+			for (int i = 0; i < K; i++) {
+			
+				Day neighbour = trainingSet.get((int) distances[i][1]);
+				sum += neighbour.get_trend((String) classLabel);
+				
+			}
+			
+			return sum/K;
+			
+		}
 		else {
 			
 			System.out.println("Wrong class label type");
@@ -302,50 +316,15 @@ public class KNN extends Data {
 						
 						}
 					}
+					else {
+						// else - distance is maximum
+						sum += 1;
+						
+					}
 				}
 			}
 		}
 		
-//		for (EUROINVESTOR_ATTRIBUTE attr : EUROINVESTOR_ATTRIBUTE.values()) {
-//			
-//			if (!attr.equals(classLabel)) {
-//				
-//				Object attr1 = d1.get_euroinvesterDay().get(attr);
-//				Object attr2 = d2.get_euroinvesterDay().get(attr);
-//				
-//				if (attr1 != null && attr2 != null ) {
-//					
-//					if (attr1.getClass().getSimpleName().equals("ArrayList")) {
-//						
-//						ArrayList objects1 = (ArrayList) attr1;
-//						ArrayList objects2 = (ArrayList) attr2;
-//						
-//						double objsSum = 0;
-//						double combinations = 0;
-//						
-//						for (Object obj1 : objects1) {
-//							
-//							for (Object obj2 : objects2) {
-//								
-//								objsSum +=  Math.pow(attrDistance(obj1, obj2, attr, DATA_MODEL.EuroinvestorDay), 2);
-//								combinations ++;
-//								
-//							}
-//						}
-//						if (combinations != 0) {
-//							
-//							sum += Math.pow(objsSum / combinations, 2);
-//							
-//						}							
-//					}
-//					else {
-//						
-//						sum += Math.pow(attrDistance(attr1, attr2, attr, DATA_MODEL.EuroinvestorDay), 2);
-//					
-//					}
-//				}
-//			}
-//		}
 		return Math.sqrt(sum);
 		
 	}

@@ -30,6 +30,21 @@ public class Day {
 		
 	}
 	
+	// GOOGLE TRENDS
+	
+	public Double get_trend(String trend) {
+		Double result = null;
+		for (String[] trend_a : google_trends) {
+			
+			if (trend_a[0].equals(trend)) {
+				result = Double.parseDouble(trend_a[1]);
+				break;
+			}
+			
+		}
+		return result;
+	}
+	
 	// WEATHERDAY
 	public void set_weatherDay(WeatherDay data) {
 		
