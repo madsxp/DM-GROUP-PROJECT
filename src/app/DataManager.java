@@ -509,13 +509,6 @@ public class DataManager extends Data {
     	public Double maxClose;
     	public Double minClose;
     	
-    	// Trend
-    	public Double max_trend_afbudsrejser;
-    	public Double min_trend_afbudsrejser;
-    	
-    	public Double max_trend_solbriller;
-    	public Double min_trend_solbriller;
-    	
     	public void setMax(WEATHERDAY_ATTRIBUTE attr, Double value) {
     		
     		switch (attr) {
@@ -611,12 +604,6 @@ public class DataManager extends Data {
     			case close:
     				maxClose = value;
     				break;
-    			case trend_afbudsrejser:
-    				max_trend_afbudsrejser = value;
-    				break;
-    			case trend_solbriller:
-    				max_trend_solbriller = value;
-    				break;
     			default:
     				System.out.println("error in stats.setMax(), attr: " + attr);
     				break;
@@ -631,10 +618,6 @@ public class DataManager extends Data {
 	    			return maxDevelopment;
 	    		case close:
 	    			return maxClose;
-	    		case trend_afbudsrejser:
-	    			return max_trend_afbudsrejser;
-	    		case trend_solbriller:
-	    			return max_trend_solbriller;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -738,12 +721,6 @@ public class DataManager extends Data {
 				case close:
 					minClose = value;
 					break;
-				case trend_afbudsrejser:
-					min_trend_afbudsrejser = value;
-					break;
-				case trend_solbriller:
-					min_trend_solbriller = value;
-					break;
 				default:
 					System.out.println("error in stats.setMin(), attr: " + attr);
 					break;
@@ -758,10 +735,6 @@ public class DataManager extends Data {
 	    			return minDevelopment;
 	    		case close:
 	    			return minClose;
-	    		case trend_afbudsrejser:
-	    			return min_trend_afbudsrejser;
-	    		case trend_solbriller:
-	    			return min_trend_solbriller;
 	    		default:
 	    			System.out.println("error in stats.getMin(), attr: " + attr);
 	    			return 0.;
@@ -984,25 +957,27 @@ public class DataManager extends Data {
     public void addDiscreteValuesToDay(Day day) {
     	
     	WeatherDay weatherDay = day.get_weatherDay();
-    	SecondaryDay euroinvestorDay = day.get_secondaryDay();
+    	SecondaryDay secondaryDay = day.get_secondaryDay();
     	
-    	if (euroinvestorDay != null) {
+    	if (secondaryDay != null) {
 	    	// Price development
-	       	if (euroinvestorDay.get_development() > 0) {
+	       	if (secondaryDay.get_development() > 0) {
 	    		
-	    		euroinvestorDay.discreteValues.add(PROPERTY.price_increase);
+	    		secondaryDay.discreteValues.add(PROPERTY.price_increase);
 	    		
 	    	}
-	    	else if (euroinvestorDay.get_development() < 0) {
+	    	else if (secondaryDay.get_development() < 0) {
 	    		
-	    		euroinvestorDay.discreteValues.add(PROPERTY.price_decrease);
+	    		secondaryDay.discreteValues.add(PROPERTY.price_decrease);
 	    		
 	    	}
 	    	else {
 	    		
-	    		euroinvestorDay.discreteValues.add(PROPERTY.price_no_change);
+	    		secondaryDay.discreteValues.add(PROPERTY.price_no_change);
 	    		
 	    	}
+	       	
+
     	}
     	if (weatherDay != null) {
 	    	// Temperature (max)
@@ -1317,7 +1292,7 @@ public class DataManager extends Data {
 	    	
 	    	//  Sunny / cloudy
 
-	    	if (cloudCover <= 5) {
+	    	if (cloudCover <= 4) {
 	    		
 	    		weatherDay.discreteValues.add(PROPERTY.sunny);
 	    		
@@ -1325,6 +1300,19 @@ public class DataManager extends Data {
 	    	else {
 	    		
 	    		weatherDay.discreteValues.add(PROPERTY.cloudy);
+	    		
+	    	}
+	    	
+	    	//  temperature group
+
+	    	if (maxTemp > 15) {
+	    		
+	    		weatherDay.discreteValues.add(PROPERTY.high_temp);
+	    		
+	    	}
+	    	else {
+	    		
+	    		weatherDay.discreteValues.add(PROPERTY.low_temp);
 	    		
 	    	}
     	}
@@ -1382,18 +1370,9 @@ public class DataManager extends Data {
 		
     	if (days.containsKey(date)) {
     		
-    		switch (attr) {
+    		String[] trend = new String[] { attr, value.toString() };
     		
-    			case "afbudsrejser":
-    				day.get_secondaryDay().set(SECONDARY_ATTRIBUTE.trend_afbudsrejser, value);
-    				break;
-    			case "solbriller":
-    				day.get_secondaryDay().set(SECONDARY_ATTRIBUTE.trend_solbriller, value);
-    				break;
-    			default:
-    			
-    		
-    		}
+    		day.google_trends.add(trend);
     	}
     }
     
@@ -1538,7 +1517,6 @@ public class DataManager extends Data {
                 days.put(date, day);
 
             }
-
         }
         
         System.out.println("----------------------------------------\n" );

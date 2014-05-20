@@ -1,6 +1,8 @@
 package app;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -35,6 +37,20 @@ public class App extends Data {
 		String[][] noaaData = reader.readNoaa("data/weather_noaa.csv", false);
 		String[] noaaHeaders = reader.readHeadersComma("data/weather_noaa.csv");
 		
+		// Find all google trend files in data directory
+		File dir = new File("data");
+		File[] matches = dir.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.startsWith("google_trends_") && name.endsWith(".csv");
+			}
+		});
+		
+		for (File file : matches) {
+	
+			google_trends.add(file.getName().substring(14, file.getName().length()-4));
+			
+		}
+
 		String[][] googleTrendsData = readAndCombineAllGoogleTrends(reader);
 		
 		// Data manager
@@ -86,13 +102,34 @@ public class App extends Data {
 //		
 		// Apriori
 		
-//		ArrayList<Day> dataSet = filterDaysWithTrendSolbriller((filterDaysWithWeatherData(dataManager.getDaysAsList())));
+//		ArrayList<Day> dataSet = filterOutDaysWithoutYahoo(filterDaysWithWeatherData(dataManager.getDaysAsList()));
 //		
-//		Apriori apriori = new Apriori(dataSet);		
+//		Apriori apriori = new Apriori(dataSet, null);
+//		apriori.run(200);
 //		
-//		apriori.setSpecificPropertySet(weatherProberties());
+//		apriori.outputAssociationRules();
+		
 //		
-//		apriori.run(1200);
+//		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>(Arrays.asList(PROPERTY.values()));
+		
+//		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
+//		props.add(PROPERTY.temperature_cold);
+//		props.add(PROPERTY.temperature_freezing);
+//		props.add(PROPERTY.temperature_hot);
+//		props.add(PROPERTY.temperature_snug);
+//		props.add(PROPERTY.temperature_very_hot);
+//		props.add(PROPERTY.temperature_warm);
+//		
+//		props.add(PROPERTY.trend_solbriller_low);
+//		props.add(PROPERTY.trend_solbriller_med);
+//		props.add(PROPERTY.trend_solbriller_high);
+//		
+
+//		apriori.setSpecificPropertySet(props);
+//
+//		apriori.run(500);
+//		apriori.outputAssociationRules();
+//		apriori.outputAssociationRules(PROPERTY.price_increase);
 
 //		int sunny = 0;
 //		int positive = 0;
@@ -111,7 +148,32 @@ public class App extends Data {
 		//waitForInput();
 		
 		
+		//ArrayList<String> trends = new ArrayList<String>();
+		//trends.add("iphone");
+		//runAprioriOnTrend(trends, 10);
+		
+		
+		
+	}
+	
+	public void runAprioriOnTrend(ArrayList<String> trends, int K) {
+		
+		ArrayList<Day> dataSet = filterDaysWithTrends(filterDaysWithWeatherData(dataManager.getDaysAsList()));
+		
+		Apriori apriori = new Apriori(dataSet, trends);		
+		
+		ArrayList<PROPERTY> props = new ArrayList<PROPERTY>();
 
+		props.add(PROPERTY.high_temp);
+		props.add(PROPERTY.low_temp);
+		
+		props.add(PROPERTY.cloudy);
+		
+		apriori.setSpecificPropertySet(props);
+		
+		apriori.run(K);
+		
+		apriori.outputAssociationRules(trends);
 	}
 	
 	public ArrayList<Object> allAttributes() {
@@ -201,41 +263,21 @@ public class App extends Data {
 		return newSet;
 	}
 	
-	public ArrayList<Day> filterOutDaysWithoutTrends(ArrayList<Day> set) {
+	public ArrayList<Day> filterDaysWithTrends(ArrayList<Day> set) {
 		
 		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
 
 		for (Day day : set) {
-			
-			if (day.get_secondaryDay() != null) {
-				if (day.get_secondaryDay().get_trend_afbudsrejser() != null) {
-					
-					trainingSetOnlyTrends.add(day);
-					
-				}
+
+			if (day.google_trends.size() > 0) {
+				
+				trainingSetOnlyTrends.add(day);
+				
 			}
 		}
 		
 		return trainingSetOnlyTrends;
 	}
-	
-	public ArrayList<Day> filterDaysWithTrendSolbriller(ArrayList<Day> set) {
-		
-		ArrayList<Day> trainingSetOnlyTrends = new ArrayList<Day>();
-
-		for (Day day : set) {
-			
-			if (day.get_secondaryDay() != null) {
-				if (day.get_secondaryDay().get_trend_solbriller() != null && day.get_secondaryDay().get_trend_solbriller() > 0) {
-					
-					trainingSetOnlyTrends.add(day);
-					
-				}
-			}
-		}
-		
-		return trainingSetOnlyTrends;
-	} 
 	
 	public ArrayList<Day> filterOutDaysWithoutYahoo(ArrayList<Day> days) {
 		
@@ -263,13 +305,13 @@ public class App extends Data {
 	
 	public String[] getGoogleTrendsHeaders() {
 		
-		String[] headers = new String[google_trends.length+1];
+		String[] headers = new String[google_trends.size()+1];
 		
 		headers[0] = "Date";
 		
-		for (int i = 1; i < google_trends.length+1; i++) {
+		for (int i = 1; i < google_trends.size()+1; i++) {
 			
-			headers[i] = google_trends[i-1];
+			headers[i] = google_trends.get(i-1);
 			
 		}
 		
@@ -281,13 +323,13 @@ public class App extends Data {
 				
 		String[][] googleTrends = null;
 		
-		for (int i = 0; i < google_trends.length; i++) {
+		for (int i = 0; i < google_trends.size(); i++) {
 			
-			String[][] trend = reader.readGoogleTrends("data/google_trends_" + google_trends[i] + ".csv", false);
+			String[][] trend = reader.readGoogleTrends("data/google_trends_" + google_trends.get(i) + ".csv", false);
 			
 			if (googleTrends == null) {
 				
-				googleTrends = new String[trend.length][google_trends.length+1];
+				googleTrends = new String[trend.length][google_trends.size()+1];
 				
 				for (int row = 0; row < trend.length; row++) {
 					

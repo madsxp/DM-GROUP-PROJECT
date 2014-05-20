@@ -1,4 +1,5 @@
 package models;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -7,6 +8,15 @@ public class Day {
 	public Date date;
 	private WeatherDay weatherDay;
 	private SecondaryDay secondaryDay;
+	
+	// google trends
+	public ArrayList<String[]> google_trends;
+	
+	public Day() {
+		
+		google_trends = new ArrayList<String[]>();
+		
+	}
 	
 	public String getReadableData() {
 		

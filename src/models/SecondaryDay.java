@@ -1,6 +1,8 @@
 package models;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import app.Data.PROPERTY;
 import app.Data.SECONDARY_ATTRIBUTE;
@@ -14,11 +16,6 @@ public class SecondaryDay {
 	private Double close;
 	private Double development;
 	private Boolean positive_development;
-	
-	// google trends
-	private Double trend_afbudsrejser;
-	// google trends
-	private Double trend_solbriller;
 	
 	// discrete values (for apriori)
 	public ArrayList<PROPERTY> discreteValues;
@@ -50,10 +47,6 @@ public class SecondaryDay {
 	    		return get_date();
 	    	case positive_development:
 	    		return get_positive_development();
-	    	case trend_afbudsrejser:
-	    		return get_trend_afbudsrejser();
-	    	case trend_solbriller:
-	    		return get_trend_solbriller();
     		default:
     			return null;
     		
@@ -72,10 +65,6 @@ public class SecondaryDay {
 	    		set_date((Date) value);
 	    	case positive_development:
 	    		set_positive_development((Boolean) value);
-	    	case trend_afbudsrejser:
-	    		set_trend_afbudsrejser((Double) value);
-	    	case trend_solbriller:
-	    		set_trend_solbriller((Double) value);
     		default:
     			return null;
     		
@@ -138,34 +127,6 @@ public class SecondaryDay {
 		return positive_development;
 		
 	}
-	
-	// TRENDS
-	// Afbudsrejser
-	public void set_trend_afbudsrejser(Double data) {
-		
-		trend_afbudsrejser = data;
-		
-	}
-	
-	public Double get_trend_afbudsrejser() {
-		
-		return trend_afbudsrejser;
-		
-	}
-
-	// Solbriller
-	public void set_trend_solbriller(Double data) {
-		
-		trend_solbriller = data;
-		
-	}
-	
-	public Double get_trend_solbriller() {
-		
-		return trend_solbriller;
-		
-	}
-	
 }
 
 
